@@ -1,0 +1,8 @@
+Left
+Right
+Up
+Down
+Confirm
+Jump
+Pause
+Reset

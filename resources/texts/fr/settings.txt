@@ -1,0 +1,8 @@
+Gauche
+Droite
+Haut
+Bas
+Confirmer
+Sauter
+Pause
+Réinitialiser

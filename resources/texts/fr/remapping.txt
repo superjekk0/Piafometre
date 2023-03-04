@@ -1,0 +1,4 @@
+Appuyez sur la touche à remapper - a
+La touche actuelle est - a
+Réinitialiser les touches? - 7
+Oui (Y)			Non (N) - 7
