@@ -104,6 +104,7 @@ enum class TypePlateforme {
 
 class Plateforme {
 public:
+	bool touche;
 	bool visible;
 	sf::Sprite sprite;
 	TypePlateforme comportement;
