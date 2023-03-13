@@ -131,8 +131,8 @@ Collision touchePlateformeBas(sf::Sprite& joueur, std::vector<Plateforme>& plate
 				return Collision::checkpoint;
 				break;
 			case TypePlateforme::objet:
-				plateforme.touche = true;
-				return Collision::objet;
+				if (!plateforme.touche) plateforme.touche = true;
+				break;
 			default:
 				break;
 			}
@@ -163,8 +163,7 @@ Collision touchePlateformeGauche(sf::Sprite& joueur, std::vector<Plateforme>& pl
 				return Collision::checkpoint;
 				break;
 			case TypePlateforme::objet:
-				plateforme.touche = true;
-				return Collision::objet;
+				if (!plateforme.touche) plateforme.touche = true;
 				break;
 			default:
 				break;
@@ -192,8 +191,8 @@ Collision touchePlateformeDroite(sf::Sprite& joueur, std::vector<Plateforme>& pl
 			case TypePlateforme::checkPoint:
 				return Collision::checkpoint;
 			case TypePlateforme::objet:
-				plateforme.touche = true;
-				return Collision::objet;
+				if (!plateforme.touche) plateforme.touche = true;
+				break;
 			default:
 				break;
 			}
@@ -218,8 +217,8 @@ Collision touchePlateformeHaut(sf::Sprite& joueur, std::vector<Plateforme>& plat
 			case TypePlateforme::pics:
 				return Collision::pics;
 			case TypePlateforme::objet:
-				plateforme.touche = true;
-				return Collision::objet;
+				if (!plateforme.touche) plateforme.touche = true;
+				break;
 			case TypePlateforme::checkPoint:
 				return Collision::checkpoint;
 			default:
@@ -282,7 +281,7 @@ void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
 		//Sera à modifier
 		if (plateforme.touche)
 		{
-			std::this_thread::sleep_for(std::chrono::milliseconds(3));
+			std::this_thread::sleep_for(std::chrono::seconds(3));
 			plateforme.touche = false;
 		}
 	}
