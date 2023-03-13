@@ -724,7 +724,6 @@ void chargementTexteHUD(std::vector<std::wstring>& textesHUD, ObjetADessiner& en
 	std::wfstream chemin{ chargementTextures(Jeu::symboleLangue(ensemble.langue), ensemble.positionDansJeu) };
 	std::wstring texteActuel;
 
-
 	switch (ensemble.positionDansJeu)
 	{
 	case PositionJeu::accueil:

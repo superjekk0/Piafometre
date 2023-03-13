@@ -157,9 +157,6 @@ Collision touchePlateformeGauche(sf::Sprite& joueur, std::vector<Plateforme>& pl
 				return Collision::normale;
 				break;
 			case TypePlateforme::checkPoint:
-				//if (!moteur.checkpoint.checkpointActif())
-				//	moteur.checkpoint.miseAJourCheckpoint(camera.getCenter(),
-				//		sf::Vector2f(joueur.getPosition().x, plateformes[i].sprite.getPosition().y + getHeight(plateformes[i].sprite) - getHeight(joueur)));
 				return Collision::checkpoint;
 				break;
 			case TypePlateforme::objet:
@@ -265,11 +262,7 @@ void doitAfficher(const sf::View& camera, std::vector<Plateforme>& plateformes, 
 		{
 			plateforme.visible = (plateforme.comportement == TypePlateforme::objet) ? dansEcran(camera, plateforme.sprite) && !plateforme.touche : dansEcran(camera, plateforme.sprite);
 		}
-		//for (int i{ 0 }; i < plateformes.size(); ++i)
-		//{
-		//	plateformes[i].visible = dansEcran(camera, plateformes[i].sprite) && plateformes[i].touche;
-		//}
-		std::this_thread::sleep_for(std::chrono::microseconds(utilitaire::tempsParImage - cycle.restart().asMicroseconds()));
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - cycle.restart().asMicroseconds()));
 	}
 }
 
@@ -325,11 +318,6 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 					spritesEtFond.joueur.getPosition(),
 					spritesEtFond.arrierePlan);
 				break;
-			case Collision::objet:
-				deplacementVectoriel.x -= utilitaire::deplacement;
-
-				//TODO: désactiver l'objet
-				break;
 			default:
 				break;
 			}
@@ -347,7 +335,6 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 				break;
 			case Collision::objet:
 				deplacementVectoriel.x += utilitaire::deplacement;
-				//TODO: désactiver l'objet
 				break;
 			default:
 				break;
@@ -366,7 +353,6 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 				break;
 			case Collision::objet:
 				deplacementVectoriel.y -= utilitaire::deplacement;
-				//TODO: désactiver l'objet
 				break;
 			default:
 				break;
@@ -439,9 +425,9 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 			if (cameraPeutContinuerGauche(spritesEtFond.joueur, spritesEtFond.camera, moteur))
 			{
 				spritesEtFond.camera.move(deplacementVectoriel.x, 0);
-				for (int i{ 0 }; i < spritesEtFond.arrierePlan.size(); ++i)
+				for (auto& arrierePlan : spritesEtFond.arrierePlan)
 				{
-					spritesEtFond.arrierePlan[i].move(deplacementVectoriel.x * .75, 0);
+					arrierePlan.move(deplacementVectoriel.x * .75, 0);
 				}
 			}
 		}
@@ -451,9 +437,9 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 			if (cameraPeutContinuerHaut(spritesEtFond.joueur, spritesEtFond.camera, moteur))
 			{
 				spritesEtFond.camera.move(0, deplacementVectoriel.y);
-				for (int i{ 0 }; i < spritesEtFond.arrierePlan.size(); ++i)
+				for (auto& arrierePlan : spritesEtFond.arrierePlan)
 				{
-					spritesEtFond.arrierePlan[i].move(0, deplacementVectoriel.y * .75);
+					arrierePlan.move(0, deplacementVectoriel.y * .75);
 				}
 			}
 		}
@@ -462,15 +448,15 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 			if (cameraPeutContinuerBas(spritesEtFond.joueur, spritesEtFond.camera, moteur))
 			{
 				spritesEtFond.camera.move(0, deplacementVectoriel.y);
-				for (int i{ 0 }; i < spritesEtFond.arrierePlan.size(); ++i)
+				for (auto& arrierePlan : spritesEtFond.arrierePlan)
 				{
-					spritesEtFond.arrierePlan[i].move(0, deplacementVectoriel.y * .75);
+					arrierePlan.move(0, deplacementVectoriel.y * .75);
 				}
 			}
 		}
 		spritesEtFond.joueur.move(deplacementVectoriel);
 
-		std::this_thread::sleep_for(std::chrono::microseconds(16666 - debutCycle.restart().asMicroseconds()));
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 	}
 	//std::this_thread::sleep_for(std::chrono::seconds(1));
 	*tempsDixiemeSeconde = 31;
