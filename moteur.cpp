@@ -271,12 +271,37 @@ void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
 	sf::Clock minuterie;
 	while (threadsActifs)
 	{
-		//Sera à modifier
 		if (plateforme.touche)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(3));
 			plateforme.touche = false;
 		}
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage));
+	}
+}
+
+void animationCheckpoint(Checkpoint& checkpoint, const bool& threadsActifs, sf::Sprite& spriteCheckpoint)
+{
+	int frame{ 1 };
+	while (threadsActifs)
+	{
+		if (checkpoint.checkpointActif())
+		{
+			spriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*spriteCheckpoint.getTexture()) / 3 + getWidth(*spriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*spriteCheckpoint.getTexture()) / 3, getHeight(*spriteCheckpoint.getTexture())));
+			++frame;
+		}
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
+	}
+}
+
+int indexCheckpoint(const int niveau)
+{
+	switch (niveau)
+	{
+	case 1:
+		return 7;
+	default:
+		break;
 	}
 }
 
@@ -292,6 +317,7 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 	std::unique_ptr<std::thread> reglerVisible{ new (std::nothrow) std::thread {doitAfficher, std::ref(spritesEtFond.camera), std::ref(spritesEtFond.avantPlan), std::ref(threadActifs) } };
 	unsigned long long frameAnimation{ 0 };
 	std::vector<std::thread> minuterieObjetsTouches;
+	std::thread animationDrapeau{animationCheckpoint, std::ref(moteur.checkpoint), std::ref(threadActifs), std::ref(spritesEtFond.avantPlan[indexCheckpoint(moteur.niveau)].sprite)};
 	//for (int i{ 0 }; i < spritesEtFond.avantPlan.size(); ++i)
 	for (auto& plateforme : spritesEtFond.avantPlan)
 		if (plateforme.comportement == TypePlateforme::objet)
@@ -301,6 +327,7 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 		minuterie.detach();
 	
 	reglerVisible->detach();
+	animationDrapeau.detach();
 	sf::Clock debutCycle{};
 	while (peutDeplacer)
 	{
@@ -407,7 +434,6 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 			else
 				*tempsDixiemeSeconde = 0;
 		}
-
 		if (deplacementVectoriel.x > vecteurNul)
 		{
 			if (cameraPeutContinuerDroite(spritesEtFond.joueur, spritesEtFond.camera, moteur))

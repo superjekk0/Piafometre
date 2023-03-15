@@ -231,10 +231,8 @@ private:
 	//index 6: touche pour le bouton de pause
 	//index 7: indique lorsque le programme doit arrêter
 	touchesActives touchesActionnees{ false, false, false, false, false, false, false, false };
-	//std::bitset<8> touchesActionnees{ 0b0000'0000 };
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
 	std::unique_ptr<ObjetADessiner> sprites{ new (std::nothrow) ObjetADessiner };
-	//sf::View camera{ sf::FloatRect(0,0, 1280, 720) };
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
 	void rendu()
 	{
@@ -253,7 +251,6 @@ private:
 		fenetre->draw(sprites->ecranNoir);
 		for (auto& hud : sprites->hud)
 		{
-			//PLOGD << "index : " << i;
 			fenetre->draw(hud);
 		}
 		fenetre->display();
