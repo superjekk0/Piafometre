@@ -19,6 +19,7 @@
 #include <cassert>
 #include <algorithm>
 #include <memory>
+#include <filesystem>
 
 enum class Langue {
 	fr,
@@ -60,22 +61,22 @@ public:
 			m_CoordonneesArrierePlan[i] = pEnsembleArrierePlan[i].getPosition();
 	}
 
-	const sf::Vector2f coordonneesCamera()
+	sf::Vector2f coordonneesCamera() const
 	{
 		return m_CoordonneesCamera;
 	}
 
-	const sf::Vector2f coordonneesJoueur()
+	sf::Vector2f coordonneesJoueur() const
 	{
 		return m_CoordonneesJoueur;
 	}
 
-	const std::vector<sf::Vector2f> coordonneesArrierePlan()
+	std::vector<sf::Vector2f> coordonneesArrierePlan() const
 	{
 		return m_CoordonneesArrierePlan;
 	}
 
-	const bool checkpointActif()
+	bool checkpointActif() const
 	{
 		return m_checkpointActif;
 	}

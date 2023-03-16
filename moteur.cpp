@@ -236,7 +236,7 @@ void desactiverSaut(std::bitset<3>& autorisationsSaut, std::unique_ptr<int>& tem
 		}
 		else
 		{
-			if (*tempsDixiemeSeconde == finTempsSaut) PLOGD << L"A arrêté de sauter";
+			//if (*tempsDixiemeSeconde == finTempsSaut) PLOGD << L"A arrêté de sauter";
 			*tempsDixiemeSeconde = 0;
 			autorisationsSaut.reset(2);
 		}
@@ -280,8 +280,9 @@ void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
 	}
 }
 
-void animationCheckpoint(Checkpoint& checkpoint, const bool& threadsActifs, sf::Sprite& spriteCheckpoint)
+void animationCheckpoint(const Checkpoint& checkpoint, const bool& threadsActifs, sf::Sprite& spriteCheckpoint)
 {
+	sf::Clock minuterie;
 	int frame{ 1 };
 	while (threadsActifs)
 	{
@@ -290,7 +291,49 @@ void animationCheckpoint(Checkpoint& checkpoint, const bool& threadsActifs, sf::
 			spriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*spriteCheckpoint.getTexture()) / 3 + getWidth(*spriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*spriteCheckpoint.getTexture()) / 3, getHeight(*spriteCheckpoint.getTexture())));
 			++frame;
 		}
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10 
+			//- minuterie.restart().asMicroseconds()
+		));
+	}
+}
+
+/// <summary>
+/// 
+/// </summary>
+/// <param name="joueur"></param>
+/// <param name="threadsActifs"></param>
+/// <param name="mouvementsJoueur"></param>
+/// <param name="gauche">Indique si la direction de l'oiseau est à gauche</param>
+void animationJoueur(sf::Sprite& joueur, const bool& threadsActifs, const sf::Vector2f& mouvementsJoueur, const bool& gauche)
+{
+	sf::Clock minuterie;
+	long frameAnimation{ 0 };
+	while (threadsActifs)
+	{
+		if (mouvementsJoueur.y < 0)
+		{
+			//Pourquoi je divise la taille de la texture par 3? Il y a 3 frames d'animation
+			joueur.setTextureRect(sf::IntRect(frameAnimation % 3 * getWidth(*joueur.getTexture()) / 3,
+				((gauche) ? Oiseau::vole_gauche : Oiseau::vole_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
+				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
+			++frameAnimation;
+		}
+		else if (mouvementsJoueur.y > 0)
+		{
+			//Puisque l'image de l'oiseau où il plane est à la position 1, il est inutile de faire le modulo
+			joueur.setTextureRect(sf::IntRect(getWidth(*joueur.getTexture()) / 3,
+				((gauche) ? Oiseau::vole_gauche : Oiseau::vole_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
+				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
+			//++frameAnimation;
+		}
+		else if (mouvementsJoueur.x != vecteurNul)
+		{
+			joueur.setTextureRect(sf::IntRect(frameAnimation % 3 * getWidth(*joueur.getTexture()) / 3,
+				((gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
+				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
+			++frameAnimation;
+		}
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 5 - minuterie.restart().asMicroseconds()));
 	}
 }
 
@@ -307,6 +350,7 @@ int indexCheckpoint(const int niveau)
 
 void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& spritesEtFond, bool& peutDeplacer, const bool& threadActifs, Moteur& moteur, std::bitset<3>& touchesNonRepetables)
 {
+	sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 	//Le bit 0 correspond à si le joueur peut sauter
 	//Le bit 1 correspond à si le joueur peut faire un autre saut
 	//Le bit 2 correspond à si un saut est en cours.
@@ -316,8 +360,10 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 	std::unique_ptr<std::thread> sautEffectif{ new (std::nothrow) std::thread{ desactiverSaut, std::ref(autorisationsSaut), std::ref(tempsDixiemeSeconde), std::ref(peutDeplacer), std::ref(threadActifs) } };
 	std::unique_ptr<std::thread> reglerVisible{ new (std::nothrow) std::thread {doitAfficher, std::ref(spritesEtFond.camera), std::ref(spritesEtFond.avantPlan), std::ref(threadActifs) } };
 	unsigned long long frameAnimation{ 0 };
+	bool gauche{ false }; //Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
 	std::vector<std::thread> minuterieObjetsTouches;
 	std::thread animationDrapeau{animationCheckpoint, std::ref(moteur.checkpoint), std::ref(threadActifs), std::ref(spritesEtFond.avantPlan[indexCheckpoint(moteur.niveau)].sprite)};
+	std::thread animerJoueur{ animationJoueur, std::ref(spritesEtFond.joueur), std::ref(threadActifs), std::ref(deplacementVectoriel), std::ref(gauche)};
 	//for (int i{ 0 }; i < spritesEtFond.avantPlan.size(); ++i)
 	for (auto& plateforme : spritesEtFond.avantPlan)
 		if (plateforme.comportement == TypePlateforme::objet)
@@ -328,10 +374,12 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 	
 	reglerVisible->detach();
 	animationDrapeau.detach();
+	animerJoueur.detach();
 	sf::Clock debutCycle{};
 	while (peutDeplacer)
 	{
-		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
+		deplacementVectoriel.x = 0;
+		deplacementVectoriel.y = 0;
 		if ((touchesActionnees[0] && spritesEtFond.joueur.getPosition().x > moteur.minCameraX))
 		{
 			switch (touchePlateformeGauche(spritesEtFond.joueur, spritesEtFond.avantPlan, moteur, spritesEtFond.camera))
@@ -426,7 +474,7 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 		}
 		if (touchesActionnees[5] && !touchesNonRepetables.test(2))
 		{
-			PLOGD << L"A commencé à sauter";
+			//PLOGD << L"A commencé à sauter";
 			touchesNonRepetables.set(2);
 			autorisationsSaut.set(2);
 			if (sautEffectif->joinable())
@@ -436,6 +484,7 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 		}
 		if (deplacementVectoriel.x > vecteurNul)
 		{
+			gauche = false;
 			if (cameraPeutContinuerDroite(spritesEtFond.joueur, spritesEtFond.camera, moteur))
 			{
 				spritesEtFond.camera.move(deplacementVectoriel.x, 0);
@@ -448,6 +497,7 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 		}
 		else if (deplacementVectoriel.x < vecteurNul)
 		{
+			gauche = true;
 			if (cameraPeutContinuerGauche(spritesEtFond.joueur, spritesEtFond.camera, moteur))
 			{
 				spritesEtFond.camera.move(deplacementVectoriel.x, 0);
