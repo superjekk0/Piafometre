@@ -19,6 +19,7 @@
 #include <cassert>
 #include <algorithm>
 #include <memory>
+#include <filesystem>
 
 enum class Langue {
 	fr,
@@ -60,22 +61,22 @@ public:
 			m_CoordonneesArrierePlan[i] = pEnsembleArrierePlan[i].getPosition();
 	}
 
-	const sf::Vector2f coordonneesCamera()
+	sf::Vector2f coordonneesCamera() const
 	{
 		return m_CoordonneesCamera;
 	}
 
-	const sf::Vector2f coordonneesJoueur()
+	sf::Vector2f coordonneesJoueur() const
 	{
 		return m_CoordonneesJoueur;
 	}
 
-	const std::vector<sf::Vector2f> coordonneesArrierePlan()
+	std::vector<sf::Vector2f> coordonneesArrierePlan() const
 	{
 		return m_CoordonneesArrierePlan;
 	}
 
-	const bool checkpointActif()
+	bool checkpointActif() const
 	{
 		return m_checkpointActif;
 	}
@@ -104,6 +105,7 @@ enum class TypePlateforme {
 
 class Plateforme {
 public:
+	bool touche;
 	bool visible;
 	sf::Sprite sprite;
 	TypePlateforme comportement;
@@ -174,9 +176,9 @@ using touchesActives = std::vector<bool>;
 
 constexpr int vecteurNul{ 0 };
 
+	constexpr int tempsParImage{ 1000000 / 60 };				//Temps en microsecondes
 namespace utilitaire {
 	constexpr unsigned int limiteFramerate{ 60 };
-	constexpr int tempsParImage{ 1000000 / 60 };				//Temps en microsecondes
 	constexpr int deplacement{ 3 };
 }
 
@@ -212,7 +214,7 @@ private:
 	bool deplacementActif{ false };
 	//int niveau{ 0 };
 
-	sf::RenderWindow* fenetre{ new (std::nothrow) sf::RenderWindow {sf::VideoMode(1280, 720), "Piafometre", sf::Style::Default} };
+	std::unique_ptr<sf::RenderWindow> fenetre{ new (std::nothrow) sf::RenderWindow {sf::VideoMode(1280, 720), "Piafometre", sf::Style::Default} };
 
 	//Index 0: touche de confirmation
 	//Index 1: touche de pause
@@ -230,30 +232,27 @@ private:
 	//index 6: touche pour le bouton de pause
 	//index 7: indique lorsque le programme doit arrêter
 	touchesActives touchesActionnees{ false, false, false, false, false, false, false, false };
-	//std::bitset<8> touchesActionnees{ 0b0000'0000 };
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
-	ObjetADessiner* sprites{ new (std::nothrow) ObjetADessiner };
-	//sf::View camera{ sf::FloatRect(0,0, 1280, 720) };
-	Moteur* moteurJeu{ new (std::nothrow) Moteur{} };
+	std::unique_ptr<ObjetADessiner> sprites{ new (std::nothrow) ObjetADessiner };
+	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
 	void rendu()
 	{
 		fenetre->clear(sprites->couleur);
 		fenetre->setView(sprites->camera);
-		for (int i{ 0 }; i < sprites->arrierePlan.size(); ++i)
+		for (auto& arrierePlan : sprites->arrierePlan)
 		{
-			fenetre->draw(sprites->arrierePlan[i]);
+			fenetre->draw(arrierePlan);
 		}
-		for (int i{ 0 }; i < sprites->avantPlan.size(); ++i)
+		for (auto& avantPlan : sprites->avantPlan)
 		{
-			if (sprites->avantPlan[i].visible)
-				fenetre->draw(sprites->avantPlan[i].sprite);
+			if (avantPlan.visible)
+				fenetre->draw(avantPlan.sprite);
 		}
 		fenetre->draw(sprites->joueur);
 		fenetre->draw(sprites->ecranNoir);
-		for (int i{ 0 }; i < sprites->hud.size(); ++i)
+		for (auto& hud : sprites->hud)
 		{
-			//PLOGD << "index : " << i;
-			fenetre->draw(sprites->hud[i]);
+			fenetre->draw(hud);
 		}
 		fenetre->display();
 	}
@@ -362,7 +361,6 @@ public:
 			*fichierReglages << touches[i] << ' ';
 		}
 		*fichierReglages << symboleLangue(sprites->langue);
-		delete sprites;
 		PLOGI << "sprites Structure deleted";
 		PLOGI << "Main object deleted";
 	}
@@ -414,17 +412,17 @@ public:
 		//PLOGD << L"Fil de détection des touches: " << detecTouches->;
 		//PLOGD << "Fil des mouvements: " << mouvementMenu->get_id();
 
-		sf::Clock debutCycle{};
+		sf::Clock debutCycle;
 		while (!touchesActionnees[7])
 		{
 			fenetre->pollEvent(*evenementFenetre);
 			rendu();
-			std::this_thread::sleep_for(std::chrono::microseconds(utilitaire::tempsParImage - debutCycle.restart().asMicroseconds())); //Se met à jour à chaque 1/60ème de seconde
+			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds())); //Se met à jour à chaque 1/60ème de seconde
 		}
 
 		fenetre->close();
-		delete moteurJeu;
-		delete fenetre;
+		//delete moteurJeu;
+		//delete fenetre;
 
 		//delete evenementFenetre;
 		//delete mouvementMenu;

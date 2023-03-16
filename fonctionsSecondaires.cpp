@@ -1,9 +1,18 @@
 #include "ressources.h"
 
+void verifFichierExiste(const std::string& chemin)
+{
+	std::filesystem::directory_entry fichierNiveau{ chemin };
+	if (!fichierNiveau.exists())
+		PLOGE << chemin << "is not an existing file";
+	assert(fichierNiveau.exists(), "Le fichier " && cheminNiveau && " n'existe pas");
+	//Ça fonctionne très bien!
+}
+
 void chargementTexturesNiveau(std::vector<sf::Texture>& textures, const int& niveau, const std::string& langue)
 {
-	if (!textures.at(0).loadFromFile("resources/texts/" + langue + "/keyboards/" + std::to_string(niveau) + ".png"))
-		PLOGE << "Unable to load resources/texts/" << langue << "/keyboards/" << std::to_string(niveau) << ".png";
+	//if (!textures.at(0).loadFromFile("resources/texts/" + langue + "/keyboards/" + std::to_string(niveau) + ".png"))
+	//	PLOGE << "Unable to load resources/texts/" << langue << "/keyboards/" << std::to_string(niveau) << ".png";
 	if (!textures.at(1).loadFromFile("resources/sprites/player.png"))
 		PLOGE << "Unable to load resources/sprites/player.png";
 	//à l'index 0 et 1 sont réservés pour l'écran de chargement
@@ -42,7 +51,9 @@ void chargementTexturesNiveau(std::vector<sf::Texture>& textures, const int& niv
 void chargementNiveau(ObjetADessiner& spritesEtFond, const int& niveau)
 {
 	spritesEtFond.hud.resize(1);
-	std::wfstream nomNiveau{ "resources/texts/" + Jeu::symboleLangue(spritesEtFond.langue) + "/loading.txt" }; //StreamReader nomNiveau = new StreamReader;
+	std::string cheminNiveau{ "resources/texts/" + Jeu::symboleLangue(spritesEtFond.langue) + "/loading.txt" };
+	verifFichierExiste(cheminNiveau);
+	std::wfstream nomNiveau{ cheminNiveau }; //StreamReader nomNiveau = new StreamReader;
 	std::wstring contenuNomNiveau{};
 	std::wstring nomFinalNiveau{};
 
@@ -177,18 +188,18 @@ void creationLimiteCamera(Moteur& moteur)
 }
 
 //Grandeur du texte du HUD
-int grandeurImage(const PositionJeu& menu)
-{
-	switch (menu)
-	{
-	case PositionJeu::accueil:
-		return 70;
-	case PositionJeu::options:
-		return 50;
-	default:
-		return 0;
-	}
-}
+//int grandeurImage(const PositionJeu& menu)
+//{
+//	switch (menu)
+//	{
+//	case PositionJeu::accueil:
+//		return 70;
+//	case PositionJeu::options:
+//		return 50;
+//	default:
+//		return 0;
+//	}
+//}
 
 Clv::Key tradToucheCode(Clv::Key pTouche)
 {
@@ -721,26 +732,27 @@ void detectionEvenement(const sf::Event& evenementJeu, bool& threadsActifs, bool
 
 void chargementTexteHUD(std::vector<std::wstring>& textesHUD, ObjetADessiner& ensemble, const ensembleTouches& pTouches, const int index)
 {
-	std::wfstream chemin{ chargementTextures(Jeu::symboleLangue(ensemble.langue), ensemble.positionDansJeu) };
+	std::string chemin{chargementTextures(Jeu::symboleLangue(ensemble.langue), ensemble.positionDansJeu)};
+	if (ensemble.positionDansJeu != PositionJeu::chargement) verifFichierExiste(chemin);
+	std::wfstream fichier{ chemin };
 	std::wstring texteActuel;
-
 
 	switch (ensemble.positionDansJeu)
 	{
 	case PositionJeu::accueil:
-		for (int i{ 0 }; i < textesHUD.size() && chemin; ++i)
+		for (int i{ 0 }; i < textesHUD.size() && fichier; ++i)
 		{
 			std::wstring ligneTemp;
-			chemin >> ligneTemp;
+			fichier >> ligneTemp;
 			textesHUD[i] = ligneTemp;
 			ensemble.hud[i].setString(textesHUD[i]);
 		}
 		break;
 	case PositionJeu::options:
-		for (int i{ 0 }; i < textesHUD.size() && chemin; i += 2)
+		for (int i{ 0 }; i < textesHUD.size() && fichier; i += 2)
 		{
 			std::wstring ligneTemp;
-			chemin >> ligneTemp;
+			fichier >> ligneTemp;
 			textesHUD[i] = ligneTemp;
 			ensemble.hud[i].setString(textesHUD[i]);
 		}
@@ -752,10 +764,10 @@ void chargementTexteHUD(std::vector<std::wstring>& textesHUD, ObjetADessiner& en
 		}
 		break;
 	case PositionJeu::credits:
-		while (chemin)
+		while (fichier)
 		{
 			std::wstring ligneTemp;
-			std::getline(chemin, ligneTemp);
+			std::getline(fichier, ligneTemp);
 			texteActuel += ligneTemp + L'\n';
 		}
 		if (textesHUD.size() > 0)
@@ -765,10 +777,10 @@ void chargementTexteHUD(std::vector<std::wstring>& textesHUD, ObjetADessiner& en
 		}
 		break;
 	case PositionJeu::remmapage:
-		while (chemin)
+		while (fichier)
 		{
 			std::wstring ligneTemp;
-				std::getline(chemin, ligneTemp);
+				std::getline(fichier, ligneTemp);
 				auto balise{ (index == pTouches.size()) ? ligneTemp.find(L"- 7") : ligneTemp.find(L"- a") };
 				if (balise != ligneTemp.npos)
 				{
