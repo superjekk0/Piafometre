@@ -188,7 +188,7 @@ void resetTouches(ensembleTouches& pTouches);
 //void surveillanceFPS(bool& pThreadsActifs, sf::Text& pMoniteurFPS, const sf::CircleShape& cercle);
 void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
 void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& spritesEtFond, bool& peutDeplacer, const bool& threadActifs, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
-void detectionEvenement(const sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
+void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
 void deplacementMenus(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond,fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& toucheNonRepetables);
 std::string nomDossierJeu(const PositionJeu& positionDansJeu, fonctionsRessources& fncFichiersTexte, const bool& pImageTouche);
 void verifMenu(ObjetADessiner& ensemble, int& index, std::vector<std::wstring>& textesHUD, const ensembleTouches& pTouches);
@@ -375,15 +375,16 @@ public:
 
 	int principal()
 	{
+		//bool evenementValide{};
 		sprites->positionDansJeu = PositionJeu::accueil;
 		std::function<std::string(const int&)> ptrFcn{};
 
 		std::unique_ptr<sf::Event> evenementFenetre{ new (std::nothrow) sf::Event };
-		std::unique_ptr<std::thread> detecTouches{ new (std::nothrow) std::thread {
+		/*std::unique_ptr<std::thread> detecTouches{new (std::nothrow) std::thread {
 			detectionEvenement, std::ref(*evenementFenetre),
 			std::ref(threadsActifs), std::ref(deplacementActif) , std::ref(touchesActionnees),
 			std::ref(touches), std::ref(*fenetre), std::ref(toucheNonRepetables)
-		}};
+		}}*/;
 		std::unique_ptr<std::thread> mouvementMenu{ new (std::nothrow) std::thread
 		{deplacementAChoisir, std::ref(touchesActionnees), std::ref(indexMenus),
 			std::ref(indexMaxMenu) , std::ref(deplacementActif),
@@ -391,8 +392,9 @@ public:
 			std::ref(touches), std::ref(threadsActifs),
 			std::ref(*evenementFenetre), std::ref(*moteurJeu), std::ref(toucheNonRepetables)} };
 		//Permet de changer entre les deux types de déplacement
+		
 
-		if ((!evenementFenetre) || (!fenetre) || (!detecTouches) || (!mouvementMenu) || (!sprites))
+		if ((!evenementFenetre) || (!fenetre) || (!mouvementMenu) || (!sprites))
 		{
 			PLOGE << "A dynamic variable is NULL";
 			return -1;
@@ -402,12 +404,10 @@ public:
 		sprites->avantPlan.resize(0);
 		sprites->hud.resize(4);
 		sprites->police.loadFromFile("resources/font/verdanai.ttf");
-		//fenetre->setFramerateLimit(60);
 
-		//moteurJeu.longueurEcran = fenetre->getSize().x;
-		//moteurJeu.hauteurEcran = fenetre->getSize().y;
-
-		detecTouches->detach();
+		//evenementValide = 
+			//fenetre->pollEvent(*evenementFenetre);
+		//detecTouches->detach();
 		mouvementMenu->detach();
 		//PLOGD << L"Fil de détection des touches: " << detecTouches->;
 		//PLOGD << "Fil des mouvements: " << mouvementMenu->get_id();
@@ -415,7 +415,10 @@ public:
 		sf::Clock debutCycle;
 		while (!touchesActionnees[7])
 		{
-			fenetre->pollEvent(*evenementFenetre);
+			//Remplacer par la fonction detectionEvenement
+			//fenetre->pollEvent(*evenementFenetre);
+			detectionEvenement(*evenementFenetre, threadsActifs, deplacementActif,
+				touchesActionnees, touches, *fenetre, toucheNonRepetables);
 			rendu();
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds())); //Se met à jour à chaque 1/60ème de seconde
 		}

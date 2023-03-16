@@ -564,13 +564,13 @@ void deplacementMenus(touchesActives& touchesActionnees, int& index, int& indexM
 	chargementTexteHUD(texteHUD, spritesEtFond, pTouches, index);
 
 	while (!peutDeplacer)
-	{	
+	{
 		sf::Clock debutCycle{}; //TRÈS IMPORTANT! NE PAS DÉPLACER
 		//static bool imageClavier{ false };
 		if (touchesActionnees[2])
 			--index;
 		if (touchesActionnees[3])
-			++index;		
+			++index;
 		if (touchesActionnees[4] && !toucheNonRepetables.test(0))
 		{
 			toucheNonRepetables.set(0);
@@ -695,11 +695,10 @@ void deplacementMenus(touchesActives& touchesActionnees, int& index, int& indexM
 	}
 }
 
-void detectionEvenement(const sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables)
+void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables)
 {
-	while (threadsActifs)
+	if (pFenetre.pollEvent(evenementJeu))
 	{
-		sf::Clock debutCycle{};
 		switch (evenementJeu.type)
 		{
 		case sf::Event::KeyPressed:
@@ -726,13 +725,12 @@ void detectionEvenement(const sf::Event& evenementJeu, bool& threadsActifs, bool
 		default:
 			break;
 		}
-		std::this_thread::sleep_for(std::chrono::microseconds(10 - debutCycle.restart().asMicroseconds()));
 	}
 }
 
 void chargementTexteHUD(std::vector<std::wstring>& textesHUD, ObjetADessiner& ensemble, const ensembleTouches& pTouches, const int index)
 {
-	std::string chemin{chargementTextures(Jeu::symboleLangue(ensemble.langue), ensemble.positionDansJeu)};
+	std::string chemin{ chargementTextures(Jeu::symboleLangue(ensemble.langue), ensemble.positionDansJeu) };
 	if (ensemble.positionDansJeu != PositionJeu::chargement) verifFichierExiste(chemin);
 	std::wfstream fichier{ chemin };
 	std::wstring texteActuel;
@@ -780,15 +778,15 @@ void chargementTexteHUD(std::vector<std::wstring>& textesHUD, ObjetADessiner& en
 		while (fichier)
 		{
 			std::wstring ligneTemp;
-				std::getline(fichier, ligneTemp);
-				auto balise{ (index == pTouches.size()) ? ligneTemp.find(L"- 7") : ligneTemp.find(L"- a") };
-				if (balise != ligneTemp.npos)
-				{
-					texteActuel += ligneTemp.substr(0, balise - 1);
-					balise = texteActuel.find(L"La touche actuelle est");
-					if (balise != texteActuel.npos) 
-						texteActuel += L' ' + nomFichierImageTouches(pTouches[index], ensemble.langue);
-				}
+			std::getline(fichier, ligneTemp);
+			auto balise{ (index == pTouches.size()) ? ligneTemp.find(L"- 7") : ligneTemp.find(L"- a") };
+			if (balise != ligneTemp.npos)
+			{
+				texteActuel += ligneTemp.substr(0, balise - 1);
+				balise = texteActuel.find(L"La touche actuelle est");
+				if (balise != texteActuel.npos)
+					texteActuel += L' ' + nomFichierImageTouches(pTouches[index], ensemble.langue);
+			}
 			texteActuel += L'\n';
 		}
 		if (textesHUD.size() > 0)
