@@ -55,7 +55,7 @@ bool cameraToucheBordGauche(const sf::View& camera, const Moteur& moteur)
 }
 bool cameraToucheBordHaut(const sf::View& camera, const Moteur& moteur)
 {
-	return (camera.getCenter().x - camera.getSize().y / 2 <= moteur.minCameraY);
+	return (camera.getCenter().y - camera.getSize().y / 2 <= moteur.minCameraY);
 }
 bool cameraToucheBordBas(const sf::View& camera, const Moteur& moteur)
 {
@@ -300,9 +300,9 @@ void animationCheckpoint(const Checkpoint& checkpoint, const bool& threadsActifs
 /// <summary>
 /// 
 /// </summary>
-/// <param name="joueur"></param>
-/// <param name="threadsActifs"></param>
-/// <param name="mouvementsJoueur"></param>
+/// <param name="joueur">Sprite du joueur</param>
+/// <param name="threadsActifs">Sémaphore pour le fil d'exécution</param>
+/// <param name="mouvementsJoueur">Mouvements vectoriels du joueur</param>
 /// <param name="gauche">Indique si la direction de l'oiseau est à gauche</param>
 void animationJoueur(sf::Sprite& joueur, const bool& threadsActifs, const sf::Vector2f& mouvementsJoueur, const bool& gauche)
 {
@@ -426,9 +426,6 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 				deplacementVectoriel.y -= utilitaire::deplacement;
 				moteur.checkpoint.miseAJourCheckpoint(spritesEtFond.camera.getCenter(), spritesEtFond.joueur.getPosition(), spritesEtFond.arrierePlan);
 				break;
-			case Collision::objet:
-				deplacementVectoriel.y -= utilitaire::deplacement;
-				break;
 			default:
 				break;
 			}
@@ -449,11 +446,6 @@ void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& sprite
 				{
 					spritesEtFond.joueur.setPosition(moteur.checkpoint.coordonneesJoueur());
 					spritesEtFond.camera.setCenter(moteur.checkpoint.coordonneesCamera());
-					//Un for each sera utile pour mettre à la bonne position l'arrière-plan
-					//
-					// For each:
-					// for (type valeur : tableau)
-					//
 
 					for (int i{ 0 }; i < spritesEtFond.arrierePlan.size(); ++i)
 					{

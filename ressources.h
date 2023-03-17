@@ -237,24 +237,29 @@ private:
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
 	void rendu()
 	{
-		fenetre->clear(sprites->couleur);
-		fenetre->setView(sprites->camera);
-		for (auto& arrierePlan : sprites->arrierePlan)
-		{
-			fenetre->draw(arrierePlan);
-		}
-		for (auto& avantPlan : sprites->avantPlan)
-		{
-			if (avantPlan.visible)
-				fenetre->draw(avantPlan.sprite);
-		}
-		fenetre->draw(sprites->joueur);
-		fenetre->draw(sprites->ecranNoir);
-		for (auto& hud : sprites->hud)
-		{
-			fenetre->draw(hud);
-		}
-		fenetre->display();
+		//sf::Clock minuterie;
+		//while (threadsActifs)
+		//{
+			fenetre->clear(sprites->couleur);
+			fenetre->setView(sprites->camera);
+			for (auto& arrierePlan : sprites->arrierePlan)
+			{
+				fenetre->draw(arrierePlan);
+			}
+			for (auto& avantPlan : sprites->avantPlan)
+			{
+				if (avantPlan.visible)
+					fenetre->draw(avantPlan.sprite);
+			}
+			fenetre->draw(sprites->joueur);
+			fenetre->draw(sprites->ecranNoir);
+			for (auto& hud : sprites->hud)
+			{
+				fenetre->draw(hud);
+			}
+			fenetre->display();
+			//std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - minuterie.restart().asMicroseconds()));
+		//}
 	}
 
 	Langue traductionSymboleLangue(const std::string& langue)
@@ -380,11 +385,9 @@ public:
 		std::function<std::string(const int&)> ptrFcn{};
 
 		std::unique_ptr<sf::Event> evenementFenetre{ new (std::nothrow) sf::Event };
-		/*std::unique_ptr<std::thread> detecTouches{new (std::nothrow) std::thread {
-			detectionEvenement, std::ref(*evenementFenetre),
-			std::ref(threadsActifs), std::ref(deplacementActif) , std::ref(touchesActionnees),
-			std::ref(touches), std::ref(*fenetre), std::ref(toucheNonRepetables)
-		}}*/;
+		//std::unique_ptr<std::thread> dessinEcran{new (std::nothrow) std::thread {
+		//	[this]() {rendu(); }
+		//}};
 		std::unique_ptr<std::thread> mouvementMenu{ new (std::nothrow) std::thread
 		{deplacementAChoisir, std::ref(touchesActionnees), std::ref(indexMenus),
 			std::ref(indexMaxMenu) , std::ref(deplacementActif),
@@ -413,6 +416,7 @@ public:
 		//PLOGD << "Fil des mouvements: " << mouvementMenu->get_id();
 
 		sf::Clock debutCycle;
+		//dessinEcran->detach();
 		while (!touchesActionnees[7])
 		{
 			//Remplacer par la fonction detectionEvenement
@@ -430,7 +434,7 @@ public:
 		//delete evenementFenetre;
 		//delete mouvementMenu;
 		//delete detecTouches;
-		std::this_thread::sleep_for(std::chrono::seconds(2));
+		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		return 0;
 	}
 };

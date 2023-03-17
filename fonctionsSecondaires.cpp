@@ -178,7 +178,7 @@ void creationLimiteCamera(Moteur& moteur)
 	switch (moteur.niveau)
 	{
 	case 1:
-		moteur.minCameraY = -100;
+		moteur.minCameraY = -500;
 		moteur.maxCameraX = 3000;
 		moteur.maxCameraY = 2000;
 		break;
@@ -697,7 +697,7 @@ void deplacementMenus(touchesActives& touchesActionnees, int& index, int& indexM
 
 void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables)
 {
-	if (pFenetre.pollEvent(evenementJeu))
+	while (pFenetre.pollEvent(evenementJeu))
 	{
 		switch (evenementJeu.type)
 		{
