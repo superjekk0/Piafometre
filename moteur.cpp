@@ -19,6 +19,7 @@ float getWidth(const sf::Texture& texture)
 }
 float getWidth(const sf::Sprite& sprite)
 {
+	//return sprite.getLocalBounds().width;
 	return sprite.getTextureRect().width * sprite.getScale().x;
 }
 float getHeight(const sf::Texture& texture)
@@ -27,6 +28,7 @@ float getHeight(const sf::Texture& texture)
 }
 float getHeight(const sf::Sprite& sprite)
 {
+	//return sprite.getGlobalBounds().height;
 	return sprite.getTextureRect().height * sprite.getScale().y;
 }
 bool procheBordGauche(const sf::Sprite& joueur, const sf::Sprite& bloc)
