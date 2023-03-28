@@ -276,6 +276,8 @@ void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
 		if (plateforme.touche)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(3));
+			if (!(&plateforme))
+				return;
 			plateforme.touche = false;
 		}
 		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage));
@@ -293,9 +295,7 @@ void animationCheckpoint(const Checkpoint& checkpoint, const bool& threadsActifs
 			spriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*spriteCheckpoint.getTexture()) / 3 + getWidth(*spriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*spriteCheckpoint.getTexture()) / 3, getHeight(*spriteCheckpoint.getTexture())));
 			++frame;
 		}
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10 
-			//- minuterie.restart().asMicroseconds()
-		));
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
 	}
 }
 
@@ -309,7 +309,7 @@ void animationCheckpoint(const Checkpoint& checkpoint, const bool& threadsActifs
 void animationJoueur(sf::Sprite& joueur, const bool& threadsActifs, const sf::Vector2f& mouvementsJoueur, const bool& gauche)
 {
 	sf::Clock minuterie;
-	long frameAnimation{ 0 };
+	int frameAnimation{ 0 };
 	while (threadsActifs)
 	{
 		if (mouvementsJoueur.y < 0)
@@ -335,7 +335,12 @@ void animationJoueur(sf::Sprite& joueur, const bool& threadsActifs, const sf::Ve
 				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
 			++frameAnimation;
 		}
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 5 - minuterie.restart().asMicroseconds()));
+		else
+		{
+			joueur.setTextureRect(sf::IntRect(0, ((gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
+				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
+		}
+		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 5));
 	}
 }
 
@@ -350,188 +355,227 @@ int indexCheckpoint(const int niveau)
 	}
 }
 
-void deplacement(const touchesActives& touchesActionnees, ObjetADessiner& spritesEtFond, bool& peutDeplacer, const bool& threadActifs, Moteur& moteur, std::bitset<3>& touchesNonRepetables)
-{
-	sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
-	//Le bit 0 correspond à si le joueur peut sauter
-	//Le bit 1 correspond à si le joueur peut faire un autre saut
-	//Le bit 2 correspond à si un saut est en cours.
-	std::bitset<3> autorisationsSaut{ 0b000 };
-	const int nbVieDebut{ moteur.nbVie };
-	std::unique_ptr<int> tempsDixiemeSeconde{ new (std::nothrow) int{ 0 } };
-	std::unique_ptr<std::thread> sautEffectif{ new (std::nothrow) std::thread{ desactiverSaut, std::ref(autorisationsSaut), std::ref(tempsDixiemeSeconde), std::ref(peutDeplacer), std::ref(threadActifs) } };
-	std::unique_ptr<std::thread> reglerVisible{ new (std::nothrow) std::thread {doitAfficher, std::ref(spritesEtFond.camera), std::ref(spritesEtFond.avantPlan), std::ref(threadActifs) } };
-	unsigned long long frameAnimation{ 0 };
-	bool gauche{ false }; //Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
-	std::vector<std::thread> minuterieObjetsTouches;
-	std::thread animationDrapeau{animationCheckpoint, std::ref(moteur.checkpoint), std::ref(threadActifs), std::ref(spritesEtFond.avantPlan[indexCheckpoint(moteur.niveau)].sprite)};
-	std::thread animerJoueur{ animationJoueur, std::ref(spritesEtFond.joueur), std::ref(threadActifs), std::ref(deplacementVectoriel), std::ref(gauche)};
-	//for (int i{ 0 }; i < spritesEtFond.avantPlan.size(); ++i)
-	for (auto& plateforme : spritesEtFond.avantPlan)
-		if (plateforme.comportement == TypePlateforme::objet)
-			minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(threadActifs)));
+class MoteurPhysique {
+private:
+	const touchesActives& m_touchesActionnees; 
+	ObjetADessiner& m_sprites; //Structure permettant de dessiner les sprites à l'écran
+	bool& m_peutDeplacer; //Lorsque vrai, ça active le moteur physique
+	const bool& m_threadsActifs;
+	Moteur& m_moteur;
+	std::bitset<3>& m_touchesNonRepetables;
+	MoteurMenu& m_menus;
 
-	for (auto& minuterie : minuterieObjetsTouches)
-		minuterie.detach();
-	
-	reglerVisible->detach();
-	animationDrapeau.detach();
-	animerJoueur.detach();
-	sf::Clock debutCycle{};
-	while (peutDeplacer)
+public:
+	MoteurPhysique(const touchesActives& pTouchesActionnees, ObjetADessiner& pSprites,
+		bool& pPeutDeplacer, const bool& pThreadsActifs, Moteur& pMoteur,
+		std::bitset<3>& m_touchesNonRepetables, MoteurMenu& pMenus) : m_touchesActionnees{pTouchesActionnees},
+		m_sprites{pSprites}, m_peutDeplacer{pPeutDeplacer}, m_threadsActifs{pThreadsActifs},
+		m_moteur{pMoteur},m_touchesNonRepetables{m_touchesNonRepetables}, m_menus{pMenus}
+	{}
+
+	void deplacement()
 	{
-		deplacementVectoriel.x = 0;
-		deplacementVectoriel.y = 0;
-		if ((touchesActionnees[0] && spritesEtFond.joueur.getPosition().x > moteur.minCameraX))
-		{
-			switch (touchePlateformeGauche(spritesEtFond.joueur, spritesEtFond.avantPlan, moteur, spritesEtFond.camera))
-			{
-			case Collision::aucune:
-				deplacementVectoriel.x -= utilitaire::deplacement;
-				break;
-			case Collision::checkpoint:
-				deplacementVectoriel.x -= utilitaire::deplacement;
-				moteur.checkpoint.miseAJourCheckpoint(spritesEtFond.camera.getCenter(),
-					spritesEtFond.joueur.getPosition(),
-					spritesEtFond.arrierePlan);
-				break;
-			default:
-				break;
-			}
-		}
-		if (touchesActionnees[1] && spritesEtFond.joueur.getPosition().x + getWidth(spritesEtFond.joueur) < moteur.maxCameraX)
-		{
-			switch (touchePlateformeDroite(spritesEtFond.joueur, spritesEtFond.avantPlan, moteur, spritesEtFond.camera))
-			{
-			case Collision::aucune:
-				deplacementVectoriel.x += utilitaire::deplacement;
-				break;
-			case Collision::checkpoint:
-				deplacementVectoriel.x += utilitaire::deplacement;
-				if (!moteur.checkpoint.checkpointActif()) moteur.checkpoint.miseAJourCheckpoint(spritesEtFond.camera.getCenter(), spritesEtFond.joueur.getPosition(), spritesEtFond.arrierePlan);
-				break;
-			case Collision::objet:
-				deplacementVectoriel.x += utilitaire::deplacement;
-				break;
-			default:
-				break;
-			}
-		}
-		if ((autorisationsSaut.test(2)) && (spritesEtFond.joueur.getPosition().y > moteur.minCameraY - spritesEtFond.camera.getSize().y / 2))
-		{
-			switch (touchePlateformeHaut(spritesEtFond.joueur, spritesEtFond.avantPlan, *tempsDixiemeSeconde, spritesEtFond.camera))
-			{
-			case Collision::aucune:
-				deplacementVectoriel.y -= utilitaire::deplacement;
-				break;
-			case Collision::checkpoint:
-				deplacementVectoriel.y -= utilitaire::deplacement;
-				moteur.checkpoint.miseAJourCheckpoint(spritesEtFond.camera.getCenter(), spritesEtFond.joueur.getPosition(), spritesEtFond.arrierePlan);
-				break;
-			default:
-				break;
-			}
-		}
-		if (!autorisationsSaut.test(2))
-		{
-			switch (touchePlateformeBas(spritesEtFond.joueur, spritesEtFond.avantPlan, moteur, spritesEtFond.camera))
-			{
-			case Collision::aucune:
-				deplacementVectoriel.y += utilitaire::deplacement;
-				break;
-			case Collision::pics:
-				spritesEtFond.hud.resize(2);
-				*tempsDixiemeSeconde = finTempsSaut;
-				peutDeplacer = !peutDeplacer;
-				ecranChargement(spritesEtFond, moteur, peutDeplacer);
-				if (moteur.checkpoint.checkpointActif())
-				{
-					spritesEtFond.joueur.setPosition(moteur.checkpoint.coordonneesJoueur());
-					spritesEtFond.camera.setCenter(moteur.checkpoint.coordonneesCamera());
+		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
+		//Le bit 0 correspond à si le joueur peut sauter
+		//Le bit 1 correspond à si le joueur peut faire un autre saut
+		//Le bit 2 correspond à si un saut est en cours.
+		std::bitset<3> autorisationsSaut{ 0b000 };
+		const int nbVieDebut{ m_moteur.nbVie };
+		std::unique_ptr<int> tempsDixiemeSeconde{ new (std::nothrow) int{ 0 } };
+		std::unique_ptr<std::thread> sautEffectif{ new (std::nothrow) std::thread{ desactiverSaut, std::ref(autorisationsSaut), std::ref(tempsDixiemeSeconde), std::ref(m_peutDeplacer), std::ref(m_threadsActifs) } };
+		std::unique_ptr<std::thread> reglerVisible{ new (std::nothrow) std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs) } };
+		unsigned long long frameAnimation{ 0 };
+		bool gauche{ false }; //Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
+		std::vector<std::thread> minuterieObjetsTouches;
+		std::thread animationDrapeau{ animationCheckpoint, std::ref(m_moteur.checkpoint), std::ref(m_threadsActifs), std::ref(m_sprites.avantPlan[indexCheckpoint(m_moteur.niveau)].sprite) };
+		std::thread animerJoueur{ animationJoueur, std::ref(m_sprites.joueur), std::ref(m_threadsActifs), std::ref(deplacementVectoriel), std::ref(gauche) };
+		//for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
+		for (auto& plateforme : m_sprites.avantPlan)
+			if (plateforme.comportement == TypePlateforme::objet)
+				minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(m_threadsActifs)));
 
-					for (int i{ 0 }; i < spritesEtFond.arrierePlan.size(); ++i)
+		for (auto& minuterie : minuterieObjetsTouches)
+			minuterie.detach();
+
+		reglerVisible->detach();
+		animationDrapeau.detach();
+		animerJoueur.detach();
+		sf::Clock debutCycle{};
+		while (m_peutDeplacer)
+		{
+			deplacementVectoriel.x = 0;
+			deplacementVectoriel.y = 0;
+			if ((m_touchesActionnees[0] && m_sprites.joueur.getPosition().x > m_moteur.minCameraX))
+			{
+				switch (touchePlateformeGauche(m_sprites.joueur, m_sprites.avantPlan, m_moteur, m_sprites.camera))
+				{
+				case Collision::aucune:
+					deplacementVectoriel.x -= utilitaire::deplacement;
+					break;
+				case Collision::checkpoint:
+					deplacementVectoriel.x -= utilitaire::deplacement;
+					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+						m_sprites.joueur.getPosition(),
+						m_sprites.arrierePlan);
+					break;
+				default:
+					break;
+				}
+			}
+			if (m_touchesActionnees[1] && m_sprites.joueur.getPosition().x + getWidth(m_sprites.joueur) < m_moteur.maxCameraX)
+			{
+				switch (touchePlateformeDroite(m_sprites.joueur, m_sprites.avantPlan, m_moteur, m_sprites.camera))
+				{
+				case Collision::aucune:
+					deplacementVectoriel.x += utilitaire::deplacement;
+					break;
+				case Collision::checkpoint:
+					deplacementVectoriel.x += utilitaire::deplacement;
+					if (!m_moteur.checkpoint.checkpointActif()) m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
+					break;
+				case Collision::objet:
+					deplacementVectoriel.x += utilitaire::deplacement;
+					break;
+				default:
+					break;
+				}
+			}
+			if ((autorisationsSaut.test(2)) && (m_sprites.joueur.getPosition().y > m_moteur.minCameraY - m_sprites.camera.getSize().y / 2))
+			{
+				switch (touchePlateformeHaut(m_sprites.joueur, m_sprites.avantPlan, *tempsDixiemeSeconde, m_sprites.camera))
+				{
+				case Collision::aucune:
+					deplacementVectoriel.y -= utilitaire::deplacement;
+					break;
+				case Collision::checkpoint:
+					deplacementVectoriel.y -= utilitaire::deplacement;
+					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
+					break;
+				default:
+					break;
+				}
+			}
+			if (!autorisationsSaut.test(2))
+			{
+				switch (touchePlateformeBas(m_sprites.joueur, m_sprites.avantPlan, m_moteur, m_sprites.camera))
+				{
+				case Collision::aucune:
+					deplacementVectoriel.y += utilitaire::deplacement;
+					break;
+				case Collision::pics:
+					m_sprites.hud.resize(2);
+					*tempsDixiemeSeconde = finTempsSaut;
+					m_peutDeplacer = !m_peutDeplacer;
+					m_menus.ecranChargement();
+					if (m_moteur.checkpoint.checkpointActif())
 					{
-						spritesEtFond.arrierePlan[i].setPosition(moteur.checkpoint.coordonneesArrierePlan()[i]);
+						m_sprites.joueur.setPosition(m_moteur.checkpoint.coordonneesJoueur());
+						m_sprites.camera.setCenter(m_moteur.checkpoint.coordonneesCamera());
+
+						for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
+						{
+							m_sprites.arrierePlan[i].setPosition(m_moteur.checkpoint.coordonneesArrierePlan()[i]);
+						}
+					}
+					m_sprites.hud.resize(0);
+					return;
+					break;
+				case Collision::checkpoint:
+					deplacementVectoriel.y += utilitaire::deplacement;
+					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
+					break;
+				default:
+					break;
+				}
+				//deplacementVectoriel.y += utilitaire::deplacement;
+			}
+			if (m_touchesActionnees[5] && !m_touchesNonRepetables.test(2))
+			{
+				//PLOGD << L"A commencé à sauter";
+				m_touchesNonRepetables.set(2);
+				autorisationsSaut.set(2);
+				if (sautEffectif->joinable())
+					sautEffectif->detach();
+				else
+					*tempsDixiemeSeconde = 0;
+			}
+			if (deplacementVectoriel.x > vecteurNul)
+			{
+				gauche = false;
+				if (cameraPeutContinuerDroite(m_sprites.joueur, m_sprites.camera, m_moteur))
+				{
+					m_sprites.camera.move(deplacementVectoriel.x, 0);
+					for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
+					{
+						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75, 0);
+					}
+
+				}
+			}
+			else if (deplacementVectoriel.x < vecteurNul)
+			{
+				gauche = true;
+				if (cameraPeutContinuerGauche(m_sprites.joueur, m_sprites.camera, m_moteur))
+				{
+					m_sprites.camera.move(deplacementVectoriel.x, 0);
+					for (auto& arrierePlan : m_sprites.arrierePlan)
+					{
+						arrierePlan.move(deplacementVectoriel.x * .75, 0);
 					}
 				}
-				spritesEtFond.hud.resize(0);
-				return;
-				break;
-			case Collision::checkpoint:
-				deplacementVectoriel.y += utilitaire::deplacement;
-				moteur.checkpoint.miseAJourCheckpoint(spritesEtFond.camera.getCenter(), spritesEtFond.joueur.getPosition(), spritesEtFond.arrierePlan);
-				break;
-			default:
-				break;
 			}
-			//deplacementVectoriel.y += utilitaire::deplacement;
-		}
-		if (touchesActionnees[5] && !touchesNonRepetables.test(2))
-		{
-			//PLOGD << L"A commencé à sauter";
-			touchesNonRepetables.set(2);
-			autorisationsSaut.set(2);
-			if (sautEffectif->joinable())
-				sautEffectif->detach();
-			else
-				*tempsDixiemeSeconde = 0;
-		}
-		if (deplacementVectoriel.x > vecteurNul)
-		{
-			gauche = false;
-			if (cameraPeutContinuerDroite(spritesEtFond.joueur, spritesEtFond.camera, moteur))
+			//PLOGD << L"Déplacement vertical: " << deplacementVectoriel.y;
+			if (deplacementVectoriel.y < vecteurNul)
 			{
-				spritesEtFond.camera.move(deplacementVectoriel.x, 0);
-				for (int i{ 0 }; i < spritesEtFond.arrierePlan.size(); ++i)
+				if (cameraPeutContinuerHaut(m_sprites.joueur, m_sprites.camera, m_moteur))
 				{
-					spritesEtFond.arrierePlan[i].move(deplacementVectoriel.x * .75, 0);
+					m_sprites.camera.move(0, deplacementVectoriel.y);
+					for (auto& arrierePlan : m_sprites.arrierePlan)
+					{
+						arrierePlan.move(0, deplacementVectoriel.y * .75);
+					}
 				}
+			}
+			else if (deplacementVectoriel.y > vecteurNul)
+			{
+				if (cameraPeutContinuerBas(m_sprites.joueur, m_sprites.camera, m_moteur))
+				{
+					m_sprites.camera.move(0, deplacementVectoriel.y);
+					for (auto& arrierePlan : m_sprites.arrierePlan)
+					{
+						arrierePlan.move(0, deplacementVectoriel.y * .75);
+					}
+				}
+			}
+			m_sprites.joueur.move(deplacementVectoriel);
 
-			}
+			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 		}
-		else if (deplacementVectoriel.x < vecteurNul)
-		{
-			gauche = true;
-			if (cameraPeutContinuerGauche(spritesEtFond.joueur, spritesEtFond.camera, moteur))
-			{
-				spritesEtFond.camera.move(deplacementVectoriel.x, 0);
-				for (auto& arrierePlan : spritesEtFond.arrierePlan)
-				{
-					arrierePlan.move(deplacementVectoriel.x * .75, 0);
-				}
-			}
-		}
-		//PLOGD << L"Déplacement vertical: " << deplacementVectoriel.y;
-		if (deplacementVectoriel.y < vecteurNul)
-		{
-			if (cameraPeutContinuerHaut(spritesEtFond.joueur, spritesEtFond.camera, moteur))
-			{
-				spritesEtFond.camera.move(0, deplacementVectoriel.y);
-				for (auto& arrierePlan : spritesEtFond.arrierePlan)
-				{
-					arrierePlan.move(0, deplacementVectoriel.y * .75);
-				}
-			}
-		}
-		else if (deplacementVectoriel.y > vecteurNul)
-		{
-			if (cameraPeutContinuerBas(spritesEtFond.joueur, spritesEtFond.camera, moteur))
-			{
-				spritesEtFond.camera.move(0, deplacementVectoriel.y);
-				for (auto& arrierePlan : spritesEtFond.arrierePlan)
-				{
-					arrierePlan.move(0, deplacementVectoriel.y * .75);
-				}
-			}
-		}
-		spritesEtFond.joueur.move(deplacementVectoriel);
-
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
+		//std::this_thread::sleep_for(std::chrono::seconds(1));
+		*tempsDixiemeSeconde = 31;
+		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+		//tempsDixiemeSeconde.release();
+		reglerVisible.release();
+		sautEffectif.release();
 	}
-	//std::this_thread::sleep_for(std::chrono::seconds(1));
-	*tempsDixiemeSeconde = 31;
-	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-	//tempsDixiemeSeconde.release();
-	reglerVisible.release();
-	sautEffectif.release();
+
+};
+
+void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables)
+{
+	std::unique_ptr<MoteurMenu> moteurMenu{ new (std::nothrow) MoteurMenu{touchesActionnees,index,indexMax,peutDeplacer,spritesEtFond,pTouches,moteur,touchesNonRepetables,threadsActifs,pEvenement} };
+	std::unique_ptr<MoteurPhysique> moteurJeu{ new (std::nothrow) MoteurPhysique{touchesActionnees,spritesEtFond,peutDeplacer,threadsActifs,moteur,touchesNonRepetables,*moteurMenu} };
+	while (threadsActifs)
+	{
+		if (peutDeplacer)
+		{
+			moteurJeu->deplacement();
+		}
+		else
+		{
+			moteurMenu->deplacementMenus();
+			//deplacementMenus(touchesActionnees, index, indexMax, peutDeplacer, spritesEtFond, ptrFcnFichier, pTouches, threadsActifs, pEvenement, moteur, touchesNonRepetables);
+		}
+	}
 }
+
