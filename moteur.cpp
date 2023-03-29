@@ -565,6 +565,16 @@ void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& ind
 {
 	std::unique_ptr<MoteurMenu> moteurMenu{ new (std::nothrow) MoteurMenu{touchesActionnees,index,indexMax,peutDeplacer,spritesEtFond,pTouches,moteur,touchesNonRepetables,threadsActifs,pEvenement} };
 	std::unique_ptr<MoteurPhysique> moteurJeu{ new (std::nothrow) MoteurPhysique{touchesActionnees,spritesEtFond,peutDeplacer,threadsActifs,moteur,touchesNonRepetables,*moteurMenu} };
+	if (!moteurMenu)
+	{
+		PLOGE << "User interface object is null";
+		std::abort();
+	}
+	if (!moteurJeu)
+	{
+		PLOGE << "Graphic engine object is null";
+		std::abort();
+	}
 	while (threadsActifs)
 	{
 		if (peutDeplacer)

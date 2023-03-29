@@ -187,9 +187,9 @@ void resetTouches(ensembleTouches& pTouches);
 //void surveillanceFPS(bool& pThreadsActifs, sf::Text& pMoniteurFPS, const sf::CircleShape& cercle);
 void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
 void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
-std::string nomDossierJeu(const PositionJeu& positionDansJeu, fonctionsRessources& fncFichiersTexte, const bool& pImageTouche);
-std::wstring nomFichierImageTouches(const Clv::Key& pTouche, const Langue& langue);
-std::string chargementTextures(const std::string& langue, const PositionJeu& position);
+//std::string nomDossierJeu(const PositionJeu positionDansJeu, const bool pImageTouche);
+std::wstring nomFichierImageTouches(const Clv::Key pTouche, const Langue langue);
+std::string chargementTextures(const std::string& langue, const PositionJeu position);
 float getWidth(const sf::Texture& texture);
 float getWidth(const sf::Sprite& sprite);
 float getHeight(const sf::Texture& texture);
@@ -199,6 +199,7 @@ void verifFichierExiste(const std::string& chemin);
 sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keyboard::Key& toucheExclue, sf::Clock& cycle);
 bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle);
 
+#pragma region JEU
 
 class Jeu {
 private:
@@ -436,21 +437,29 @@ public:
 	}
 };
 
+
+#pragma endregion
+
+#pragma region MOTEUR_MENU
+
 class MoteurMenu {
 private:
 #pragma region PROPRIETES
 
-	touchesActives& m_touchesActionnees;
-	int m_index;
-	int m_indexMax;
-	bool& m_peutDeplacer;
-	bool& m_threadsActifs;
-	ObjetADessiner& m_sprites;
-	ensembleTouches& m_touches;
-	Moteur& m_moteur;
-	std::bitset<3>& m_touchesNonRepetables;
-	sf::Event& m_evenements;
-	std::vector<std::wstring> m_textesHUD;
+	touchesActives& m_touchesActionnees;	// Ensemble des touches actionnées par le clavier
+	int m_index;							// Index actuel du HUD
+	int m_indexMax;							// Index maximal du HUD selon un contexte donné
+	bool& m_peutDeplacer;					// Indique si le joueur peut bouger. Lorsque faux, le HUD est actif
+	bool& m_threadsActifs;					// Sémaphore permettant de désactiver tous les fils d'exécution
+	ObjetADessiner& m_sprites;				// Ensemble des éléments graphiques
+	ensembleTouches& m_touches;				// Ensemble des touches pouvant activer les touches actionnées
+	Moteur& m_moteur;						// Ensemble de règles régissant le moteur de jeu
+	// Touches ne devant pas être actionnées en même temps.
+	//Les touches non répétables correspondent à l'index 4 (Entrée), l'index 6 (Echap) et l'index 5 (Espace)
+	std::bitset<3>& m_touchesNonRepetables;	
+	sf::Event& m_evenements;				// Objet permettant de détecter les événements
+	std::vector<std::wstring> m_textesHUD;	// Ensemble des textes composant le HUD actuel
+	std::vector<std::wstring> m_descriptionsNiveau;
 
 #pragma endregion
 
@@ -459,7 +468,7 @@ private:
 	void chargementTexteHUD()
 	{
 		std::string chemin{ chargementTextures(Jeu::symboleLangue(m_sprites.langue), m_sprites.positionDansJeu) };
-		if (m_sprites.positionDansJeu != PositionJeu::chargement) verifFichierExiste(chemin);
+		verifFichierExiste(chemin);
 		std::wfstream fichier{ chemin };
 		std::wstring texteActuel;
 
@@ -522,6 +531,18 @@ private:
 				m_textesHUD[0] = texteActuel;
 				m_sprites.hud[0].setString(m_textesHUD[0]);
 			}
+		case PositionJeu::chargement:
+			m_textesHUD[0] = m_textesHUD[0].empty();
+			for (std::wstring& texte : m_descriptionsNiveau)
+			{
+				auto indexNiveau{ texte.find(L"- " + std::to_wstring(m_moteur.niveau)) };
+				if (indexNiveau != texte.npos)
+				{
+					m_textesHUD[0] += texte.substr(0, indexNiveau - 1) + L'\n';
+				}
+			}
+			m_sprites.hud[0].setString(m_textesHUD[0]);
+			break;
 		default:
 			break;
 		}
@@ -564,14 +585,10 @@ private:
 		}
 	}
 
-	/// <summary>
+/// <summary>
 /// Permet d'afficher le menu présentement sélectionné.
 /// </summary>
-/// <param name="ensemble">Ensemble des sprites du HUD et des textures</param>
-/// <param name="textesHUD">Ensemble des textes du HUD</param>
-/// <param name="index">Indique quel texture doit être celle sélectionnée</param>
-/// <param name="menu">Indique dans quelle section du jeu on se trouve. Pourrait être le menu principal, les options, le menu de pause, etc.</param>
-	void verifMenu(ObjetADessiner& ensemble, int& index, std::vector<std::wstring>& textesHUD, const ensembleTouches& pTouches)
+	void affichageHUD()
 	{
 		//===================================
 		//
@@ -581,49 +598,53 @@ private:
 		//===================================
 
 		bool toucheImage{ false };
-		//std::wfstream chemin{ chargementTextures(Jeu::symboleLangue(ensemble.langue), ensemble.positionDansJeu) };
+		//std::wfstream chemin{ chargementTextures(Jeu::symboleLangue(m_sprites.langue), m_sprites.positionDansJeu) };
 		std::wstring ligneFinale{ L"" };
 
-		for (int i{ 0 }; i < ensemble.hud.size() && i < textesHUD.size(); ++i)
+		for (int i{ 0 }; i < m_sprites.hud.size() && i < m_textesHUD.size(); ++i)
 		{
-			ensemble.hud[i].setFont(ensemble.police);
-			switch (ensemble.positionDansJeu)
+			m_sprites.hud[i].setFont(m_sprites.police);
+			switch (m_sprites.positionDansJeu)
 			{
 			case PositionJeu::accueil:
-				ensemble.hud[i].setString(static_cast<std::wstring>(textesHUD[i]));
-				ensemble.hud[i].setCharacterSize(80);
-				if (index == i)
+				m_sprites.hud[i].setString(static_cast<std::wstring>(m_textesHUD[i]));
+				m_sprites.hud[i].setCharacterSize(80);
+				if (m_index == i)
 				{
-					ensemble.hud[i].setCharacterSize(ensemble.hud[i].getCharacterSize() * 1.15);
-					ensemble.hud[i].setFillColor(sf::Color(222, 215, 43));
-					ensemble.hud[i].setStyle(sf::Text::Style::Bold);
+					m_sprites.hud[i].setCharacterSize(m_sprites.hud[i].getCharacterSize() * 1.15);
+					m_sprites.hud[i].setFillColor(sf::Color(222, 215, 43));
+					m_sprites.hud[i].setStyle(sf::Text::Style::Bold);
 				}
 				else
 				{
-					ensemble.hud[i].setFillColor(sf::Color(210, 210, 210));
-					ensemble.hud[i].setStyle(sf::Text::Style::Regular);
+					m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
+					m_sprites.hud[i].setStyle(sf::Text::Style::Regular);
 				}
 				break;
 			case PositionJeu::options:
-				ensemble.hud[i].setCharacterSize(30);
-				if (index * 2 == i)
+				m_sprites.hud[i].setCharacterSize(30);
+				if (m_index * 2 == i)
 				{
-					ensemble.hud[i].setCharacterSize(ensemble.hud[i].getCharacterSize() * 1.15);
-					ensemble.hud[i].setFillColor(sf::Color(222, 215, 43));
-					ensemble.hud[i].setStyle(sf::Text::Style::Bold);
+					m_sprites.hud[i].setCharacterSize(m_sprites.hud[i].getCharacterSize() * 1.15);
+					m_sprites.hud[i].setFillColor(sf::Color(222, 215, 43));
+					m_sprites.hud[i].setStyle(sf::Text::Style::Bold);
 				}
 				else
 				{
-					ensemble.hud[i].setFillColor(sf::Color(210, 210, 210));
-					ensemble.hud[i].setStyle(sf::Text::Style::Regular);
+					m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
+					m_sprites.hud[i].setStyle(sf::Text::Style::Regular);
 				}
 				break;
 			case PositionJeu::credits:
-				ensemble.hud[i].setCharacterSize(45u);
+				m_sprites.hud[i].setCharacterSize(45u);
 				break;
 			case PositionJeu::remmapage:
-				ensemble.hud[i].setFillColor(sf::Color(210, 210, 210));
-				ensemble.hud[i].setCharacterSize(45u);
+				m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
+				m_sprites.hud[i].setCharacterSize(45u);
+				break;
+			case PositionJeu::chargement:
+				m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
+				m_sprites.hud[i].setCharacterSize(45u);
 				break;
 			}
 		}
@@ -632,24 +653,9 @@ private:
 
 	void chargementNiveau()
 	{
-		m_sprites.hud.resize(1);
-		std::string cheminNiveau{ "resources/texts/" + Jeu::symboleLangue(m_sprites.langue) + "/loading.txt" };
-		verifFichierExiste(cheminNiveau);
-		std::wfstream nomNiveau{ cheminNiveau }; //StreamReader nomNiveau = new StreamReader;
-		std::wstring contenuNomNiveau{};
-		std::wstring nomFinalNiveau{};
-
-		while (nomNiveau)
-		{
-			std::getline(nomNiveau, contenuNomNiveau);
-			auto indexNiveau{ contenuNomNiveau.find(L"- " + std::to_wstring(m_moteur.niveau)) };
-			if (indexNiveau != contenuNomNiveau.npos)
-			{
-				nomFinalNiveau += contenuNomNiveau.substr(0, indexNiveau - 1) + L'\n';
-			}
-		}
-		m_sprites.hud[0].setCharacterSize(45);
-		m_sprites.hud[0].setString(nomFinalNiveau);
+		//m_sprites.hud.resize(1);
+		//chargementTexteHUD();
+		//affichageHUD();
 
 		switch (m_moteur.niveau)
 		{
@@ -796,6 +802,14 @@ public:
 		m_evenements{ pEvenement }
 	{
 		m_textesHUD.reserve(4);
+		verifFichierExiste(chargementTextures(Jeu::symboleLangue(m_sprites.langue), PositionJeu::chargement));
+		std::wfstream lectureNomsNiveau{ chargementTextures( Jeu::symboleLangue(m_sprites.langue), PositionJeu::chargement) };
+		std::wstring temp;
+		while (lectureNomsNiveau)
+		{
+			std::getline(lectureNomsNiveau, temp);
+			m_descriptionsNiveau.push_back(temp);
+		}
 	}
 
 #pragma endregion
@@ -826,17 +840,17 @@ public:
 					switch (m_index)
 					{
 					case 0: //Entrer dans le jeu
-						//verifMenu(m_sprites, index, ptrFcnFichier, pTouches);
+						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
 						m_moteur.niveau = 1;
 						ecranChargement();
-						chargementTexteHUD();
+						//chargementTexteHUD();
 						return;
 						break;
 					case 1: //Entrer dans les options
-						//verifMenu(m_sprites, index, ptrFcnFichier, pTouches);
+						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 						m_sprites.ecranNoir.setFillColor(sf::Color::Color(0, 0, 0, 128));
 						m_sprites.hud.resize(15);
 						m_textesHUD.resize(15);
@@ -856,7 +870,7 @@ public:
 						return;
 						break;
 					case 3: //Entrer dans les crédits
-						//verifMenu(m_sprites, index, ptrFcnFichier, pTouches);
+						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 128));
 						m_sprites.positionDansJeu = PositionJeu::credits;
 						m_textesHUD.resize(1);
@@ -900,7 +914,7 @@ public:
 				switch (m_sprites.positionDansJeu)
 				{
 				case PositionJeu::options:
-					//verifMenu(m_sprites, index, ptrFcnFichier, pTouches);
+					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 					m_sprites.hud.resize(4);
 					m_textesHUD.resize(4);
@@ -913,7 +927,7 @@ public:
 					PLOGI << "Entering main menu";
 					break;
 				case PositionJeu::credits:
-					//verifMenu(m_sprites, index, ptrFcnFichier, pTouches);
+					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 					m_sprites.hud.resize(4);
 					m_textesHUD.resize(4);
@@ -934,7 +948,7 @@ public:
 			//0 ici représente le minimum de l'index
 			else if (m_index < 0)
 				m_index = 0;
-			verifMenu(m_sprites, m_index, m_textesHUD, m_touches);
+			affichageHUD();
 
 			std::this_thread::sleep_for(std::chrono::milliseconds(100 - debutCycle.restart().asMilliseconds()));
 		}
@@ -945,9 +959,11 @@ public:
 	void ecranChargement()
 	{
 		PLOGI << "Launching level " << m_moteur.niveau;
+		m_sprites.hud.resize(1);
 		m_sprites.positionDansJeu = PositionJeu::chargement;
 		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
-		placementObjets();
+		chargementTexteHUD();
+		affichageHUD();
 		chargementNiveau();
 		creationLimiteCamera(m_moteur);
 		std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -959,6 +975,9 @@ public:
 
 
 };
+
+
+#pragma endregion
 
 
 #endif 

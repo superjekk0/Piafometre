@@ -5,7 +5,7 @@ void verifFichierExiste(const std::string& chemin)
 	std::filesystem::directory_entry fichierNiveau{ chemin };
 	if (!fichierNiveau.exists())
 		PLOGE << chemin << "is not an existing file";
-	assert(fichierNiveau.exists(), "Le fichier " && cheminNiveau && " n'existe pas");
+	assert(fichierNiveau.exists() && "Le fichier specifie n'existe pas");
 	//Ça fonctionne très bien!
 }
 
