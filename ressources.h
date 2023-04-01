@@ -846,7 +846,6 @@ public:
 						//peutDeplacer = true;
 						m_moteur.niveau = 1;
 						ecranChargement();
-						//chargementTexteHUD();
 						return;
 						break;
 					case 1: //Entrer dans les options

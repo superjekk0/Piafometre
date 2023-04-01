@@ -107,144 +107,6 @@ bool collisionGauche(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y + getHeight(joueur) > bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
-Collision touchePlateformeBas(sf::Sprite& joueur, std::vector<Plateforme>& plateformes, Moteur& moteur, const sf::View& camera)
-{
-	for (auto& plateforme : plateformes)
-	{
-
-		if (collisionBas(joueur, plateforme))
-		{
-			switch (plateforme.comportement)
-			{
-			case TypePlateforme::solide:
-			case TypePlateforme::semiSolide:
-				if (procheSol(joueur, plateforme.sprite))
-					joueur.setPosition(joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(joueur));
-				return Collision::normale;
-				break;
-			case TypePlateforme::pics:
-				--moteur.nbVie;
-				return Collision::pics;
-				break;
-			case TypePlateforme::checkPoint:
-				//if (!moteur.checkpoint.checkpointActif())
-				//	moteur.checkpoint.miseAJourCheckpoint(camera.getCenter(),
-				//		sf::Vector2f(plateformes[i].sprite.getPosition().x, plateformes[i].sprite.getPosition().y + getHeight(plateformes[i].sprite) - getHeight(joueur)));
-				return Collision::checkpoint;
-				break;
-			case TypePlateforme::objet:
-				if (!plateforme.touche) plateforme.touche = true;
-				break;
-			default:
-				break;
-			}
-
-		}
-		//if (plateformes[i].comportement != TypePlateforme::objet)
-	}
-	return Collision::aucune;
-}
-Collision touchePlateformeGauche(sf::Sprite& joueur, std::vector<Plateforme>& plateformes, Moteur& moteur, const sf::View& camera)
-{
-	for (auto& plateforme : plateformes)
-	{
-		if (collisionGauche(joueur, plateforme))
-		{
-			switch (plateforme.comportement)
-			{
-			case TypePlateforme::solide:
-			case TypePlateforme::pics:
-				if (procheBordGauche(joueur, plateforme.sprite))
-					joueur.setPosition(plateforme.sprite.getPosition().x + getWidth(plateforme.sprite), joueur.getPosition().y);
-				return Collision::normale;
-				break;
-			case TypePlateforme::checkPoint:
-				return Collision::checkpoint;
-				break;
-			case TypePlateforme::objet:
-				if (!plateforme.touche) plateforme.touche = true;
-				break;
-			default:
-				break;
-			}
-
-		}
-	}
-	return Collision::aucune;
-}
-
-Collision touchePlateformeDroite(sf::Sprite& joueur, std::vector<Plateforme>& plateformes, Moteur& moteur, const sf::View& camera)
-{
-	for (auto& plateforme : plateformes)
-	{
-		if (collisionDroite(joueur, plateforme))
-		{
-			switch (plateforme.comportement)
-			{
-			case TypePlateforme::solide:
-			case TypePlateforme::pics:
-				if (procheBordDroite(joueur, plateforme.sprite))
-					joueur.setPosition(plateforme.sprite.getPosition().x - getWidth(joueur),
-						joueur.getPosition().y);
-				return Collision::normale;
-			case TypePlateforme::checkPoint:
-				return Collision::checkpoint;
-			case TypePlateforme::objet:
-				if (!plateforme.touche) plateforme.touche = true;
-				break;
-			default:
-				break;
-			}
-		}
-	}
-	return Collision::aucune;
-}
-
-Collision touchePlateformeHaut(sf::Sprite& joueur, std::vector<Plateforme>& plateformes, int& tempsDixiemeSeconde, const sf::View& camera)
-{
-	for (auto& plateforme : plateformes)
-	{
-		if (collisionHaut(joueur, plateforme))
-		{
-			switch (plateforme.comportement)
-			{
-			case TypePlateforme::solide:
-				tempsDixiemeSeconde = finTempsSaut;
-				if (prochePlafond(joueur, plateforme.sprite))
-					joueur.setPosition(joueur.getPosition().x, plateforme.sprite.getPosition().y + getHeight(plateforme.sprite));
-				return Collision::normale;
-			case TypePlateforme::pics:
-				return Collision::pics;
-			case TypePlateforme::objet:
-				if (!plateforme.touche) plateforme.touche = true;
-				break;
-			case TypePlateforme::checkPoint:
-				return Collision::checkpoint;
-			default:
-				break;
-			}
-		}
-	}
-	return Collision::aucune;
-}
-void desactiverSaut(std::bitset<3>& autorisationsSaut, std::unique_ptr<int>& tempsDixiemeSeconde, const bool& peutDeplacer, const bool& threadsActifs)
-{
-	sf::Clock cycle{};
-	while (peutDeplacer && threadsActifs && tempsDixiemeSeconde)
-	{
-		if (*tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
-		{
-			++(*tempsDixiemeSeconde);
-		}
-		else
-		{
-			//if (*tempsDixiemeSeconde == finTempsSaut) PLOGD << L"A arrêté de sauter";
-			*tempsDixiemeSeconde = 0;
-			autorisationsSaut.reset(2);
-		}
-		std::this_thread::sleep_for(std::chrono::milliseconds(100 - cycle.restart().asMilliseconds()));
-	}
-}
 
 bool dansEcran(const sf::View& camera, const sf::Sprite& plateforme)
 {
@@ -284,111 +146,256 @@ void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
 	}
 }
 
-void animationCheckpoint(const Checkpoint& checkpoint, const bool& threadsActifs, sf::Sprite& spriteCheckpoint)
-{
-	sf::Clock minuterie;
-	int frame{ 1 };
-	while (threadsActifs)
-	{
-		if (checkpoint.checkpointActif())
-		{
-			spriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*spriteCheckpoint.getTexture()) / 3 + getWidth(*spriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*spriteCheckpoint.getTexture()) / 3, getHeight(*spriteCheckpoint.getTexture())));
-			++frame;
-		}
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
-	}
-}
 
-/// <summary>
+class MoteurPhysique {
+private:
+	const touchesActives& m_touchesActionnees;
+	ObjetADessiner& m_sprites;							//Structure permettant de dessiner les sprites à l'écran
+	bool& m_peutDeplacer;								//Lorsque vrai, ça active le moteur physique
+	const bool& m_threadsActifs;						//Sémaphore pour indiquer si les fonctions doivent se désactiver
+	Moteur& m_moteur;									//Ensemble de règles pour le moteur de jeu
+	std::bitset<3>& m_touchesNonRepetables;				//Les touches qui ne peuvent pas être répétées
+	MoteurMenu& m_menus;								//Pour appeler l'écran de chargement
+	bool m_gauche{ false };								//Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
+	int m_tempsDixiemeSeconde{ 0 };						//Sert à mesurer le temps de saut de le faire achever plus vite
+	//Le bit 0 correspond à si le joueur peut sauter
+	//Le bit 1 correspond à si le joueur peut faire un autre saut
+	//Le bit 2 correspond à si un saut est en cours.
+	std::bitset<3> m_autorisationsSaut{ 0b000 };
+
+	Collision touchePlateformeBas()
+	{
+		for (auto& plateforme : m_sprites.avantPlan)
+		{
+
+			if (collisionBas(m_sprites.joueur, plateforme))
+			{
+				switch (plateforme.comportement)
+				{
+				case TypePlateforme::solide:
+				case TypePlateforme::semiSolide:
+					if (procheSol(m_sprites.joueur, plateforme.sprite))
+						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
+					return Collision::normale;
+					break;
+				case TypePlateforme::pics:
+					--m_moteur.nbVie;
+					return Collision::pics;
+					break;
+				case TypePlateforme::checkPoint:
+					return Collision::checkpoint;
+					break;
+				case TypePlateforme::objet:
+					if (!plateforme.touche) plateforme.touche = true;
+					break;
+				default:
+					break;
+				}
+
+			}
+			//if (plateformes[i].comportement != TypePlateforme::objet)
+		}
+		return Collision::aucune;
+	}
+
+	Collision touchePlateformeGauche()
+	{
+		for (auto& plateforme : m_sprites.avantPlan)
+		{
+			if (collisionGauche(m_sprites.joueur, plateforme))
+			{
+				switch (plateforme.comportement)
+				{
+				case TypePlateforme::solide:
+				case TypePlateforme::pics:
+					if (procheBordGauche(m_sprites.joueur, plateforme.sprite))
+						m_sprites.joueur.setPosition(plateforme.sprite.getPosition().x + getWidth(plateforme.sprite), m_sprites.joueur.getPosition().y);
+					return Collision::normale;
+					break;
+				case TypePlateforme::checkPoint:
+					return Collision::checkpoint;
+					break;
+				case TypePlateforme::objet:
+					if (!plateforme.touche) plateforme.touche = true;
+					break;
+				default:
+					break;
+				}
+
+			}
+		}
+		return Collision::aucune;
+	}
+
+	Collision touchePlateformeDroite()
+	{
+		for (auto& plateforme : m_sprites.avantPlan)
+		{
+			if (collisionDroite(m_sprites.joueur, plateforme))
+			{
+				switch (plateforme.comportement)
+				{
+				case TypePlateforme::solide:
+				case TypePlateforme::pics:
+					if (procheBordDroite(m_sprites.joueur, plateforme.sprite))
+						m_sprites.joueur.setPosition(plateforme.sprite.getPosition().x - getWidth(m_sprites.joueur),
+							m_sprites.joueur.getPosition().y);
+					return Collision::normale;
+				case TypePlateforme::checkPoint:
+					return Collision::checkpoint;
+				case TypePlateforme::objet:
+					if (!plateforme.touche) plateforme.touche = true;
+					break;
+				default:
+					break;
+				}
+			}
+		}
+		return Collision::aucune;
+	}
+
+	Collision touchePlateformeHaut()
+	{
+		for (auto& plateforme : m_sprites.avantPlan)
+		{
+			if (collisionHaut(m_sprites.joueur, plateforme))
+			{
+				switch (plateforme.comportement)
+				{
+				case TypePlateforme::solide:
+					m_tempsDixiemeSeconde = finTempsSaut + 1;
+					if (prochePlafond(m_sprites.joueur, plateforme.sprite))
+						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y + getHeight(plateforme.sprite));
+					return Collision::normale;
+				case TypePlateforme::pics:
+					return Collision::pics;
+				case TypePlateforme::objet:
+					if (!plateforme.touche) plateforme.touche = true;
+					break;
+				case TypePlateforme::checkPoint:
+					return Collision::checkpoint;
+				default:
+					break;
+				}
+			}
+		}
+		return Collision::aucune;
+	}
+
+	void desactiverSaut()
+	{
+		sf::Clock cycle{};
+		while (m_peutDeplacer && m_threadsActifs)
+		{
+			if (m_tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
+			{
+				++m_tempsDixiemeSeconde;
+			}
+			else
+			{
+				//if (*tempsDixiemeSeconde == finTempsSaut) PLOGD << L"A arrêté de sauter";
+				m_tempsDixiemeSeconde = 0;
+				m_autorisationsSaut.reset(2);
+			}
+			std::this_thread::sleep_for(std::chrono::milliseconds(100 - cycle.restart().asMilliseconds()));
+		}
+	}
+
+	/// <summary>
 /// 
 /// </summary>
 /// <param name="joueur">Sprite du joueur</param>
 /// <param name="threadsActifs">Sémaphore pour le fil d'exécution</param>
 /// <param name="mouvementsJoueur">Mouvements vectoriels du joueur</param>
 /// <param name="gauche">Indique si la direction de l'oiseau est à gauche</param>
-void animationJoueur(sf::Sprite& joueur, const bool& threadsActifs, const sf::Vector2f& mouvementsJoueur, const bool& gauche)
-{
-	sf::Clock minuterie;
-	int frameAnimation{ 0 };
-	while (threadsActifs)
+	void animationJoueur(const sf::Vector2f& mouvementsJoueur)
 	{
-		if (mouvementsJoueur.y < 0)
+		sf::Clock minuterie;
+		int frameAnimation{ 0 };
+		while (m_threadsActifs)
 		{
-			//Pourquoi je divise la taille de la texture par 3? Il y a 3 frames d'animation
-			joueur.setTextureRect(sf::IntRect(frameAnimation % 3 * getWidth(*joueur.getTexture()) / 3,
-				((gauche) ? Oiseau::vole_gauche : Oiseau::vole_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
-				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
-			++frameAnimation;
+			if (mouvementsJoueur.y < 0)
+			{
+				//Pourquoi je divise la taille de la texture par 3? Il y a 3 frames d'animation
+				m_sprites.joueur.setTextureRect(sf::IntRect(frameAnimation % 3 * getWidth(*m_sprites.joueur.getTexture()) / 3,
+					((m_gauche) ? Oiseau::vole_gauche : Oiseau::vole_droite) * getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max,
+					getWidth(*m_sprites.joueur.getTexture()) / 3, getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max));
+				++frameAnimation;
+			}
+			else if (mouvementsJoueur.y >= 0 && touchePlateformeBas() == Collision::aucune)
+			{
+				//Puisque l'image de l'oiseau où il plane est à la position 1, il est inutile de faire le modulo
+				m_sprites.joueur.setTextureRect(sf::IntRect(getWidth(*m_sprites.joueur.getTexture()) / 3,
+					((m_gauche) ? Oiseau::vole_gauche : Oiseau::vole_droite) * getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max,
+					getWidth(*m_sprites.joueur.getTexture()) / 3, getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max));
+				//++frameAnimation;
+			}
+			else if (mouvementsJoueur.x != vecteurNul)
+			{
+				m_sprites.joueur.setTextureRect(sf::IntRect(frameAnimation % 3 * getWidth(*m_sprites.joueur.getTexture()) / 3,
+					((m_gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max,
+					getWidth(*m_sprites.joueur.getTexture()) / 3, getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max));
+				++frameAnimation;
+			}
+			else
+			{
+				m_sprites.joueur.setTextureRect(sf::IntRect(0, ((m_gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max,
+					getWidth(*m_sprites.joueur.getTexture()) / 3, getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max));
+			}
+			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 5));
 		}
-		else if (mouvementsJoueur.y > 0)
-		{
-			//Puisque l'image de l'oiseau où il plane est à la position 1, il est inutile de faire le modulo
-			joueur.setTextureRect(sf::IntRect(getWidth(*joueur.getTexture()) / 3,
-				((gauche) ? Oiseau::vole_gauche : Oiseau::vole_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
-				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
-			//++frameAnimation;
-		}
-		else if (mouvementsJoueur.x != vecteurNul)
-		{
-			joueur.setTextureRect(sf::IntRect(frameAnimation % 3 * getWidth(*joueur.getTexture()) / 3,
-				((gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
-				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
-			++frameAnimation;
-		}
-		else
-		{
-			joueur.setTextureRect(sf::IntRect(0, ((gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*joueur.getTexture()) / Oiseau::max,
-				getWidth(*joueur.getTexture()) / 3, getHeight(*joueur.getTexture()) / Oiseau::max));
-		}
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 5));
 	}
-}
 
-int indexCheckpoint(const int niveau)
-{
-	switch (niveau)
+	void animationCheckpoint(sf::Sprite& spriteCheckpoint)
 	{
-	case 1:
-		return 7;
-	default:
-		break;
+		sf::Clock minuterie;
+		int frame{ 1 };
+		while (m_threadsActifs)
+		{
+			if (m_moteur.checkpoint.checkpointActif())
+			{
+				spriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*spriteCheckpoint.getTexture()) / 3 + getWidth(*spriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*spriteCheckpoint.getTexture()) / 3, getHeight(*spriteCheckpoint.getTexture())));
+				++frame;
+			}
+			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
+		}
 	}
-}
 
-class MoteurPhysique {
-private:
-	const touchesActives& m_touchesActionnees; 
-	ObjetADessiner& m_sprites; //Structure permettant de dessiner les sprites à l'écran
-	bool& m_peutDeplacer; //Lorsque vrai, ça active le moteur physique
-	const bool& m_threadsActifs;
-	Moteur& m_moteur;
-	std::bitset<3>& m_touchesNonRepetables;
-	MoteurMenu& m_menus;
+	int indexCheckpoint()
+	{
+		//Il regarde quel objet a le comportement Checkpoint. Puis, une fois qu'il l'a trouvé, il vérifie quel est l'index de la texture correspondante au checkpoint
+		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
+		{
+			if (m_sprites.avantPlan[i].comportement == TypePlateforme::checkPoint)
+			{
+				return i;
+			}
+		}
+		return -1;
+	}
 
 public:
+#pragma region CONSTRUCTEUR
 	MoteurPhysique(const touchesActives& pTouchesActionnees, ObjetADessiner& pSprites,
 		bool& pPeutDeplacer, const bool& pThreadsActifs, Moteur& pMoteur,
-		std::bitset<3>& m_touchesNonRepetables, MoteurMenu& pMenus) : m_touchesActionnees{pTouchesActionnees},
-		m_sprites{pSprites}, m_peutDeplacer{pPeutDeplacer}, m_threadsActifs{pThreadsActifs},
-		m_moteur{pMoteur},m_touchesNonRepetables{m_touchesNonRepetables}, m_menus{pMenus}
+		std::bitset<3>& m_touchesNonRepetables, MoteurMenu& pMenus) : m_touchesActionnees{ pTouchesActionnees },
+		m_sprites{ pSprites }, m_peutDeplacer{ pPeutDeplacer }, m_threadsActifs{ pThreadsActifs },
+		m_moteur{ pMoteur }, m_touchesNonRepetables{ m_touchesNonRepetables }, m_menus{ pMenus }, m_tempsDixiemeSeconde{0}
 	{}
+
+#pragma endregion
+
 
 	void deplacement()
 	{
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
-		//Le bit 0 correspond à si le joueur peut sauter
-		//Le bit 1 correspond à si le joueur peut faire un autre saut
-		//Le bit 2 correspond à si un saut est en cours.
-		std::bitset<3> autorisationsSaut{ 0b000 };
 		const int nbVieDebut{ m_moteur.nbVie };
-		std::unique_ptr<int> tempsDixiemeSeconde{ new (std::nothrow) int{ 0 } };
-		std::unique_ptr<std::thread> sautEffectif{ new (std::nothrow) std::thread{ desactiverSaut, std::ref(autorisationsSaut), std::ref(tempsDixiemeSeconde), std::ref(m_peutDeplacer), std::ref(m_threadsActifs) } };
+		std::unique_ptr<std::thread> sautEffectif{ new (std::nothrow) std::thread{ [&]() { desactiverSaut(); }} };
 		std::unique_ptr<std::thread> reglerVisible{ new (std::nothrow) std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs) } };
 		unsigned long long frameAnimation{ 0 };
-		bool gauche{ false }; //Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
 		std::vector<std::thread> minuterieObjetsTouches;
-		std::thread animationDrapeau{ animationCheckpoint, std::ref(m_moteur.checkpoint), std::ref(m_threadsActifs), std::ref(m_sprites.avantPlan[indexCheckpoint(m_moteur.niveau)].sprite) };
-		std::thread animerJoueur{ animationJoueur, std::ref(m_sprites.joueur), std::ref(m_threadsActifs), std::ref(deplacementVectoriel), std::ref(gauche) };
+		std::thread animationDrapeau{ [&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); } };
+		std::thread animerJoueur{ [&]() {animationJoueur(deplacementVectoriel); } };
 		//for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		for (auto& plateforme : m_sprites.avantPlan)
 			if (plateforme.comportement == TypePlateforme::objet)
@@ -403,11 +410,11 @@ public:
 		sf::Clock debutCycle{};
 		while (m_peutDeplacer)
 		{
-			deplacementVectoriel.x = 0;
-			deplacementVectoriel.y = 0;
+			deplacementVectoriel.x = 0.f;
+			deplacementVectoriel.y = 0.f;
 			if ((m_touchesActionnees[0] && m_sprites.joueur.getPosition().x > m_moteur.minCameraX))
 			{
-				switch (touchePlateformeGauche(m_sprites.joueur, m_sprites.avantPlan, m_moteur, m_sprites.camera))
+				switch (touchePlateformeGauche())
 				{
 				case Collision::aucune:
 					deplacementVectoriel.x -= utilitaire::deplacement;
@@ -424,7 +431,7 @@ public:
 			}
 			if (m_touchesActionnees[1] && m_sprites.joueur.getPosition().x + getWidth(m_sprites.joueur) < m_moteur.maxCameraX)
 			{
-				switch (touchePlateformeDroite(m_sprites.joueur, m_sprites.avantPlan, m_moteur, m_sprites.camera))
+				switch (touchePlateformeDroite())
 				{
 				case Collision::aucune:
 					deplacementVectoriel.x += utilitaire::deplacement;
@@ -440,9 +447,9 @@ public:
 					break;
 				}
 			}
-			if ((autorisationsSaut.test(2)) && (m_sprites.joueur.getPosition().y > m_moteur.minCameraY - m_sprites.camera.getSize().y / 2))
+			if ((m_autorisationsSaut.test(2)) && (m_sprites.joueur.getPosition().y > m_moteur.minCameraY - m_sprites.camera.getSize().y / 2))
 			{
-				switch (touchePlateformeHaut(m_sprites.joueur, m_sprites.avantPlan, *tempsDixiemeSeconde, m_sprites.camera))
+				switch (touchePlateformeHaut())
 				{
 				case Collision::aucune:
 					deplacementVectoriel.y -= utilitaire::deplacement;
@@ -455,16 +462,16 @@ public:
 					break;
 				}
 			}
-			if (!autorisationsSaut.test(2))
+			if (!m_autorisationsSaut.test(2))
 			{
-				switch (touchePlateformeBas(m_sprites.joueur, m_sprites.avantPlan, m_moteur, m_sprites.camera))
+				switch (touchePlateformeBas())
 				{
 				case Collision::aucune:
 					deplacementVectoriel.y += utilitaire::deplacement;
 					break;
 				case Collision::pics:
 					m_sprites.hud.resize(2);
-					*tempsDixiemeSeconde = finTempsSaut;
+					m_tempsDixiemeSeconde = finTempsSaut;
 					m_peutDeplacer = !m_peutDeplacer;
 					m_menus.ecranChargement();
 					if (m_moteur.checkpoint.checkpointActif())
@@ -493,15 +500,15 @@ public:
 			{
 				//PLOGD << L"A commencé à sauter";
 				m_touchesNonRepetables.set(2);
-				autorisationsSaut.set(2);
+				m_autorisationsSaut.set(2);
 				if (sautEffectif->joinable())
 					sautEffectif->detach();
 				else
-					*tempsDixiemeSeconde = 0;
+					m_tempsDixiemeSeconde = 0;
 			}
 			if (deplacementVectoriel.x > vecteurNul)
 			{
-				gauche = false;
+				m_gauche = false;
 				if (cameraPeutContinuerDroite(m_sprites.joueur, m_sprites.camera, m_moteur))
 				{
 					m_sprites.camera.move(deplacementVectoriel.x, 0);
@@ -514,7 +521,7 @@ public:
 			}
 			else if (deplacementVectoriel.x < vecteurNul)
 			{
-				gauche = true;
+				m_gauche = true;
 				if (cameraPeutContinuerGauche(m_sprites.joueur, m_sprites.camera, m_moteur))
 				{
 					m_sprites.camera.move(deplacementVectoriel.x, 0);
@@ -552,7 +559,7 @@ public:
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 		}
 		//std::this_thread::sleep_for(std::chrono::seconds(1));
-		*tempsDixiemeSeconde = 31;
+		m_tempsDixiemeSeconde = 31;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
 		//tempsDixiemeSeconde.release();
 		reglerVisible.release();
