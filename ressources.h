@@ -174,7 +174,7 @@ using ensembleTouches = std::array<sf::Keyboard::Key, 7>;
 using fonctionsRessources = std::function<std::string(const int&)>;
 using touchesActives = std::vector<bool>;
 
-constexpr int vecteurNul{ 0 };
+constexpr float vecteurNul{ 0.f };
 
 	constexpr int tempsParImage{ 1000000 / 60 };				//Temps en microsecondes
 namespace utilitaire {
@@ -532,7 +532,7 @@ private:
 				m_sprites.hud[0].setString(m_textesHUD[0]);
 			}
 		case PositionJeu::chargement:
-			m_textesHUD[0] = m_textesHUD[0].empty();
+			m_textesHUD[0] = L"";
 			for (std::wstring& texte : m_descriptionsNiveau)
 			{
 				auto indexNiveau{ texte.find(L"- " + std::to_wstring(m_moteur.niveau)) };
