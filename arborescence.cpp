@@ -1,6 +1,6 @@
 #include "ressources.h"
 
-std::wstring toucheMultiNoms(const Clv::Key& pTouche, const Langue& langue)
+std::wstring toucheMultiNoms(const Clv::Key pTouche, const Langue langue)
 {
 	switch (langue)
 	{
@@ -112,7 +112,7 @@ std::wstring toucheMultiNoms(const Clv::Key& pTouche, const Langue& langue)
 /// </summary>
 /// <param name="pTouche">Sert pour retourner le bon nom</param>
 /// <returns></returns>
-std::wstring nomFichierImageTouches(const Clv::Key& pTouche, const Langue& langue)
+std::wstring nomFichierImageTouches(const Clv::Key pTouche, const Langue langue)
 {
 	//switch (langue)
 	//{
@@ -298,7 +298,7 @@ std::wstring nomFichierImageTouches(const Clv::Key& pTouche, const Langue& langu
 	}
 }
 
-std::string chargementTextures(const std::string& langue, const PositionJeu& position)
+std::string chargementTextures(const std::string& langue, const PositionJeu position)
 {
 	switch (position)
 	{
@@ -312,7 +312,10 @@ std::string chargementTextures(const std::string& langue, const PositionJeu& pos
 		return "resources/texts/" + langue + "/remapping.txt";
 		break;
 	case PositionJeu::credits:
-		return  "resources/texts/" + langue + "/credits.txt";
+		return "resources/texts/" + langue + "/credits.txt";
+		break;
+	case PositionJeu::chargement:
+		return "resources/texts/" + langue + "/loading.txt";
 		break;
 	default:
 		return "";
@@ -343,24 +346,24 @@ std::string chargementTextures(const std::string& langue, const PositionJeu& pos
 //	}
 //}
 
-std::string numRemmapage(const int& index)
-{
-	switch (index)
-	{
-	case 0:
-	case 1:
-	case 2:
-	case 3:
-	case 4:
-	case 5:
-	case 6:
-		return "remapping.png";
-	default:
-		return "reset.png";
-		break;
-	}
-}
-
+//std::string numRemmapage(const int index)
+//{
+//	switch (index)
+//	{
+//	case 0:
+//	case 1:
+//	case 2:
+//	case 3:
+//	case 4:
+//	case 5:
+//	case 6:
+//		return "remapping.png";
+//	default:
+//		return "reset.png";
+//		break;
+//	}
+//}
+//
 //std::string numCaseReglages(const int& indexReglages)
 //{
 //	switch (indexReglages)
@@ -393,36 +396,33 @@ std::string numRemmapage(const int& index)
 /// <param name="positionDansJeu"></param>
 /// <param name="fncFichiersTexte">Indique la méthode qui sera pointée lors de l'affichage du HUD</param>
 /// <returns></returns>
-std::string nomDossierJeu(const PositionJeu& positionDansJeu, fonctionsRessources& fncFichiersTexte, const bool& pImageTouche)
-{
-	switch (positionDansJeu)
-	{
-	case PositionJeu::accueil:
-		//fncFichiersTexte = numCaseAccueil;
-		return "home";
-		break;
-	case PositionJeu::credits:
-		return "credits";
-		break;
-	case PositionJeu::options:
-		//fncFichiersTexte = numCaseReglages;
-		if (pImageTouche)
-			return "keyboards";
-		else
-			return "settings";
-		break;
-	case PositionJeu::remmapage:
-		fncFichiersTexte = numRemmapage;
-		return "remapping";
-		break;
-	case PositionJeu::jeu:
-		return "main";
-		break;
-	case PositionJeu::pause:
-		return "pause";
-		break;
-	default:
-		return "";
-		break;
-	}
-}
+//std::string nomDossierJeu(const PositionJeu positionDansJeu, const bool pImageTouche)
+//{
+//	switch (positionDansJeu)
+//	{
+//	case PositionJeu::accueil:
+//		return "home";
+//		break;
+//	case PositionJeu::credits:
+//		return "credits";
+//		break;
+//	case PositionJeu::options:
+//		if (pImageTouche)
+//			return "keyboards";
+//		else
+//			return "settings";
+//		break;
+//	case PositionJeu::remmapage:
+//		return "remapping";
+//		break;
+//	case PositionJeu::jeu:
+//		return "main";
+//		break;
+//	case PositionJeu::pause:
+//		return "pause";
+//		break;
+//	default:
+//		return "";
+//		break;
+//	}
+//}
