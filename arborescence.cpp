@@ -317,6 +317,9 @@ std::string chargementTextures(const std::string& langue, const PositionJeu posi
 	case PositionJeu::chargement:
 		return "resources/texts/" + langue + "/loading.txt";
 		break;
+	case PositionJeu::pause:
+		return "resources/texts/" + langue + "/pause.txt";
+		break;
 	default:
 		return "";
 		break;

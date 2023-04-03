@@ -118,10 +118,10 @@ bool dansEcran(const sf::View& camera, const sf::Sprite& plateforme)
 		&& (plateforme.getPosition().y + getHeight(plateforme) > camera.getCenter().y - camera.getSize().y / 2 - longueurSecurite));
 }
 
-void doitAfficher(const sf::View& camera, std::vector<Plateforme>& plateformes, const bool& threadsActifs)
+void doitAfficher(const sf::View& camera, std::vector<Plateforme>& plateformes, const bool& threadsActifs, const bool& pPeutDeplacer)
 {
 	sf::Clock cycle{};
-	while (threadsActifs)
+	while (threadsActifs && pPeutDeplacer)
 	{
 		for (auto& plateforme : plateformes)
 		{
@@ -131,10 +131,10 @@ void doitAfficher(const sf::View& camera, std::vector<Plateforme>& plateformes, 
 	}
 }
 
-void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
+void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs, const bool& pPeutDeplacer)
 {
 	sf::Clock minuterie;
-	while (threadsActifs)
+	while (threadsActifs && pPeutDeplacer)
 	{
 		if (plateforme.touche)
 		{
@@ -150,12 +150,22 @@ void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs)
 
 class MoteurPhysique {
 private:
+	//index 0: touche pour le bouton de gauche
+	//index 1: touche pour le bouton de droite
+	//index 2: touche pour le bouton de haut
+	//index 3: touche pour le bouton du bas
+	//index 4: touche pour le bouton de confirmation
+	//index 5: touche pour le bouton de saut
+	//index 6: touche pour le bouton de pause
+	//index 7: indique lorsque le programme doit arrêter
 	const touchesActives& m_touchesActionnees;
 	ObjetADessiner& m_sprites;							//Structure permettant de dessiner les sprites à l'écran
 	bool& m_peutDeplacer;								//Lorsque vrai, ça active le moteur physique
 	const bool& m_threadsActifs;						//Sémaphore pour indiquer si les fonctions doivent se désactiver
 	Moteur& m_moteur;									//Ensemble de règles pour le moteur de jeu
-	std::bitset<3>& m_touchesNonRepetables;				//Les touches qui ne peuvent pas être répétées
+	//Touches ne devant pas être actionnées en même temps.
+	//Les touches non répétables correspondent à l'index 4 (Entrée), l'index 6 (Echap) et l'index 5 (Espace)
+	std::bitset<3>& m_touchesNonRepetables;
 	MoteurMenu& m_menus;								//Pour appeler l'écran de chargement
 	bool m_gauche{ false };								//Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
 	int m_tempsDixiemeSeconde{ 0 };						//Sert à mesurer le temps de saut de le faire achever plus vite
@@ -164,7 +174,7 @@ private:
 	//Le bit 2 correspond à si un saut est en cours.
 	//Le bit 3 correspond à si un saut est possible en appuyant sur le bouton saut
 	std::bitset<4> m_autorisationsSaut{ 0b0000 };
-	int m_DixiemeSecondePeutSauter{ 0 };
+	int m_DixiemeSecondePeutSauter{ 0 };				//Sert à vérifier quand le joueur peut sauter
 
 #pragma region COLLISIONS
 	Collision touchePlateformeBas()
@@ -190,7 +200,7 @@ private:
 					return Collision::checkpoint;
 					break;
 				case TypePlateforme::objet:
-					if (!plateforme.touche) 
+					if (!plateforme.touche)
 					{
 						m_autorisationsSaut.set(3);
 						m_autorisationsSaut.set(1);
@@ -338,11 +348,11 @@ private:
 /// <param name="threadsActifs">Sémaphore pour le fil d'exécution</param>
 /// <param name="mouvementsJoueur">Mouvements vectoriels du joueur</param>
 /// <param name="gauche">Indique si la direction de l'oiseau est à gauche</param>
-	void animationJoueur(const sf::Vector2f& mouvementsJoueur)
+	void animationJoueur(const sf::Vector2f& mouvementsJoueur, long pFrameAnimation)
 	{
-		sf::Clock minuterie;
-		int frameAnimation{ 0 };
-		while (m_threadsActifs)
+		static int frameAnimation{ 0 };
+		//L'animation du joueur est changée à chaque 1/10 de seconde
+		if (pFrameAnimation % 8 == 0)
 		{
 			if (mouvementsJoueur.y < 0)
 			{
@@ -371,29 +381,25 @@ private:
 				m_sprites.joueur.setTextureRect(sf::IntRect(0, ((m_gauche) ? Oiseau::marche_gauche : Oiseau::marche_droite) * getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max,
 					getWidth(*m_sprites.joueur.getTexture()) / 3, getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max));
 			}
-			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 6 - minuterie.restart().asMicroseconds()));
 		}
 	}
 
-	void animationCheckpoint(sf::Sprite& spriteCheckpoint)
+	void animationCheckpoint(sf::Sprite& pSpriteCheckpoint, long pFrameAnimation)
 	{
-		sf::Clock minuterie;
-		int frame{ 1 };
-		while (m_threadsActifs)
-		{
+		//À chaque 1/6 d'image, on change de frame
+		static int frame{ 0 };
+		if (pFrameAnimation % 15 == 0)
 			if (m_moteur.checkpoint.checkpointActif())
 			{
-				spriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*spriteCheckpoint.getTexture()) / 3 + getWidth(*spriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*spriteCheckpoint.getTexture()) / 3, getHeight(*spriteCheckpoint.getTexture())));
+				pSpriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*pSpriteCheckpoint.getTexture()) / 3 + getWidth(*pSpriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*pSpriteCheckpoint.getTexture()) / 3, getHeight(*pSpriteCheckpoint.getTexture())));
 				++frame;
 			}
-			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
-		}
 	}
 
 	void peutSauter()
 	{
 		sf::Clock minuterie;
-		while (m_threadsActifs)
+		while (m_threadsActifs && m_peutDeplacer)
 		{
 			if (m_autorisationsSaut.test(3) && m_DixiemeSecondePeutSauter < finPeutSauter)
 			{
@@ -432,7 +438,7 @@ public:
 		bool& pPeutDeplacer, const bool& pThreadsActifs, Moteur& pMoteur,
 		std::bitset<3>& m_touchesNonRepetables, MoteurMenu& pMenus) : m_touchesActionnees{ pTouchesActionnees },
 		m_sprites{ pSprites }, m_peutDeplacer{ pPeutDeplacer }, m_threadsActifs{ pThreadsActifs },
-		m_moteur{ pMoteur }, m_touchesNonRepetables{ m_touchesNonRepetables }, m_menus{ pMenus }, m_tempsDixiemeSeconde{0}
+		m_moteur{ pMoteur }, m_touchesNonRepetables{ m_touchesNonRepetables }, m_menus{ pMenus }, m_tempsDixiemeSeconde{ 0 }
 	{}
 
 #pragma endregion
@@ -442,24 +448,25 @@ public:
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
 		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); }} };
-		std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs) } };
+		std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)}};
 		std::vector<std::thread> minuterieObjetsTouches;
-		std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
-		std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
+		//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
+		//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
 		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{[&]() {peutSauter(); }} };
 		//for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		for (auto& plateforme : m_sprites.avantPlan)
 			if (plateforme.comportement == TypePlateforme::objet)
-				minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(m_threadsActifs)));
+				minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
 
 		for (auto& minuterie : minuterieObjetsTouches)
 			minuterie.detach();
 
 		reglerVisible->detach();
-		animationDrapeau->detach();
-		animerJoueur->detach();
+		//animationDrapeau->detach();
+		//animerJoueur->detach();
 		joueurPeutSauter->detach();
 		sf::Clock debutCycle{};
+		long frameAnimation{ 0 };
 		while (m_peutDeplacer)
 		{
 			deplacementVectoriel.x = 0.f;
@@ -546,6 +553,7 @@ public:
 					break;
 				case Collision::normale:
 					m_autorisationsSaut.set(0);
+					m_autorisationsSaut.set(1);
 				default:
 					break;
 				}
@@ -562,6 +570,16 @@ public:
 				else
 					m_tempsDixiemeSeconde = 0;
 			}
+			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
+			{
+				m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 127));
+				m_peutDeplacer = !m_peutDeplacer;
+				m_sprites.positionDansJeu = PositionJeu::pause;
+				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
+				sautEffectif.release();
+				m_sprites.hud.resize(2);
+				return;
+			}
 			if (deplacementVectoriel.x > vecteurNul)
 			{
 				m_gauche = false;
@@ -572,7 +590,6 @@ public:
 					{
 						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75, 0);
 					}
-
 				}
 			}
 			else if (deplacementVectoriel.x < vecteurNul)
@@ -611,7 +628,10 @@ public:
 				}
 			}
 			m_sprites.joueur.move(deplacementVectoriel);
-
+			m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter().x - m_sprites.camera.getSize().x / 2.f, m_sprites.camera.getCenter().y - m_sprites.camera.getSize().y / 2.f);
+			animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite, frameAnimation);
+			animationJoueur(deplacementVectoriel,frameAnimation);
+			++frameAnimation;
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 		}
 		//std::this_thread::sleep_for(std::chrono::seconds(1));

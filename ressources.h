@@ -184,10 +184,8 @@ namespace utilitaire {
 
 bool verifTouches(const ensembleTouches& pTouches);
 void resetTouches(ensembleTouches& pTouches);
-//void surveillanceFPS(bool& pThreadsActifs, sf::Text& pMoniteurFPS, const sf::CircleShape& cercle);
 void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
 void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
-//std::string nomDossierJeu(const PositionJeu positionDansJeu, const bool pImageTouche);
 std::wstring nomFichierImageTouches(const Clv::Key pTouche, const Langue langue);
 std::string chargementTextures(const std::string& langue, const PositionJeu position);
 float getWidth(const sf::Texture& texture);
@@ -235,9 +233,6 @@ private:
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
 	void rendu()
 	{
-		//sf::Clock minuterie;
-		//while (threadsActifs)
-		//{
 			fenetre->clear(sprites->couleur);
 			fenetre->setView(sprites->camera);
 			for (auto& arrierePlan : sprites->arrierePlan)
@@ -256,8 +251,6 @@ private:
 				fenetre->draw(hud);
 			}
 			fenetre->display();
-			//std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - minuterie.restart().asMicroseconds()));
-		//}
 	}
 
 	Langue traductionSymboleLangue(const std::string& langue)
@@ -378,14 +371,10 @@ public:
 
 	int principal()
 	{
-		//bool evenementValide{};
 		sprites->positionDansJeu = PositionJeu::accueil;
 		std::function<std::string(const int&)> ptrFcn{};
 
 		std::unique_ptr<sf::Event> evenementFenetre{ new (std::nothrow) sf::Event };
-		//std::unique_ptr<std::thread> dessinEcran{new (std::nothrow) std::thread {
-		//	[this]() {rendu(); }
-		//}};
 		std::unique_ptr<std::thread> mouvementMenu{ new (std::nothrow) std::thread
 		{deplacementAChoisir, std::ref(touchesActionnees), std::ref(indexMenus),
 			std::ref(indexMaxMenu) , std::ref(deplacementActif),
@@ -410,15 +399,10 @@ public:
 			//fenetre->pollEvent(*evenementFenetre);
 		//detecTouches->detach();
 		mouvementMenu->detach();
-		//PLOGD << L"Fil de détection des touches: " << detecTouches->;
-		//PLOGD << "Fil des mouvements: " << mouvementMenu->get_id();
 
 		sf::Clock debutCycle;
-		//dessinEcran->detach();
 		while (!touchesActionnees[7])
 		{
-			//Remplacer par la fonction detectionEvenement
-			//fenetre->pollEvent(*evenementFenetre);
 			detectionEvenement(*evenementFenetre, threadsActifs, deplacementActif,
 				touchesActionnees, touches, *fenetre, toucheNonRepetables);
 			rendu();
@@ -426,12 +410,6 @@ public:
 		}
 
 		fenetre->close();
-		//delete moteurJeu;
-		//delete fenetre;
-
-		//delete evenementFenetre;
-		//delete mouvementMenu;
-		//delete detecTouches;
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		return 0;
 	}
@@ -454,7 +432,7 @@ private:
 	ObjetADessiner& m_sprites;				// Ensemble des éléments graphiques
 	ensembleTouches& m_touches;				// Ensemble des touches pouvant activer les touches actionnées
 	Moteur& m_moteur;						// Ensemble de règles régissant le moteur de jeu
-	// Touches ne devant pas être actionnées en même temps.
+	//Touches ne devant pas être actionnées en même temps.
 	//Les touches non répétables correspondent à l'index 4 (Entrée), l'index 6 (Echap) et l'index 5 (Espace)
 	std::bitset<3>& m_touchesNonRepetables;	
 	sf::Event& m_evenements;				// Objet permettant de détecter les événements
@@ -543,6 +521,14 @@ private:
 			}
 			m_sprites.hud[0].setString(m_textesHUD[0]);
 			break;
+		case PositionJeu::pause:
+			for (int i{ 0 }; i < m_textesHUD.size() && fichier; ++i)
+			{
+				std::wstring ligneTemp;
+				std::getline(fichier, ligneTemp);
+				m_textesHUD[i] = ligneTemp;
+			}
+			break;
 		default:
 			break;
 		}
@@ -551,7 +537,7 @@ private:
 	// Placement des objets du HUD en dehors du moteur de jeu
 	void placementObjets()
 	{
-		m_sprites.camera.setCenter(m_sprites.camera.getSize().x / 2, m_sprites.camera.getSize().y / 2);
+		//m_sprites.camera.setCenter(m_sprites.camera.getSize().x / 2, m_sprites.camera.getSize().y / 2);
 		switch (m_sprites.positionDansJeu)
 		{
 		case PositionJeu::accueil:
@@ -581,6 +567,9 @@ private:
 			break;
 		case PositionJeu::credits:
 			m_sprites.hud[0].setPosition(280, 200);
+			break;
+		case PositionJeu::pause:
+			m_sprites.hud[0].setPosition(400, 200);
 			break;
 		}
 	}
@@ -643,6 +632,10 @@ private:
 				m_sprites.hud[i].setCharacterSize(45u);
 				break;
 			case PositionJeu::chargement:
+				m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
+				m_sprites.hud[i].setCharacterSize(45u);
+				break;
+			case PositionJeu::pause:
 				m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
 				m_sprites.hud[i].setCharacterSize(45u);
 				break;
@@ -938,6 +931,10 @@ public:
 					PLOGI << "Exiting credits";
 					PLOGI << "Entering main menu";
 					break;
+				case PositionJeu::pause:
+					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+					m_peutDeplacer = !m_peutDeplacer;
+					break;
 				}
 			}
 
@@ -969,7 +966,7 @@ public:
 		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 		m_peutDeplacer = true;
 		m_sprites.hud.resize(0);
-
+		m_sprites.positionDansJeu = PositionJeu::jeu;
 	}
 
 
