@@ -1,4 +1,4 @@
-#include "ressources.h"
+#include "Jeu.h"
 
 int WinMain()
 {

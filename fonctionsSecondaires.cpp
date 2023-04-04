@@ -1,4 +1,5 @@
 #include "ressources.h"
+#include "Jeu.h"
 
 void verifFichierExiste(const std::string& chemin)
 {
