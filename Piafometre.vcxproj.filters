@@ -32,5 +32,14 @@
     <ClInclude Include="ressources.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+    <ClInclude Include="moteur.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="Jeu.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
+    <ClInclude Include="MoteurMenu.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
