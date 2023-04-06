@@ -1,5 +1,5 @@
-#ifndef RESSOURCES
-#define RESSOURCES
+#ifndef RESSOURCES_H
+#define RESSOURCES_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>

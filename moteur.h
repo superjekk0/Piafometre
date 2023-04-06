@@ -451,8 +451,6 @@ public:
 		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); }} };
 		std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)} };
 		std::vector<std::thread> minuterieObjetsTouches;
-		//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
-		//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
 		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{[&]() {peutSauter(); }} };
 		//for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		for (auto& plateforme : m_sprites.avantPlan)
@@ -463,8 +461,6 @@ public:
 			minuterie.detach();
 
 		reglerVisible->detach();
-		//animationDrapeau->detach();
-		//animerJoueur->detach();
 		joueurPeutSauter->detach();
 		sf::Clock debutCycle{};
 		long frameAnimation{ 0 };

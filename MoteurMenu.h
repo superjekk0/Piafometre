@@ -106,11 +106,12 @@ private:
 			m_sprites.hud[0].setString(m_textesHUD[0]);
 			break;
 		case PositionJeu::pause:
-			for (int i{ 0 }; i < m_textesHUD.size() && fichier; ++i)
+			for (int i{ 0 }; i < m_textesHUD.size() && i < m_sprites.hud.size() && fichier; ++i)
 			{
 				std::wstring ligneTemp;
 				std::getline(fichier, ligneTemp);
 				m_textesHUD[i] = ligneTemp;
+				m_sprites.hud[i].setString(m_textesHUD[i]);
 			}
 			break;
 		default:
@@ -153,7 +154,8 @@ private:
 			m_sprites.hud[0].setPosition(280, 200);
 			break;
 		case PositionJeu::pause:
-			m_sprites.hud[0].setPosition(400, 200);
+			m_sprites.hud[0].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-200, -50));
+			m_sprites.hud[1].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-160, 50));
 			break;
 		}
 	}
@@ -170,9 +172,7 @@ private:
 		//
 		//===================================
 
-		bool toucheImage{ false };
 		//std::wfstream chemin{ chargementTextures(Jeu::symboleLangue(m_sprites.langue), m_sprites.positionDansJeu) };
-		std::wstring ligneFinale{ L"" };
 
 		for (int i{ 0 }; i < m_sprites.hud.size() && i < m_textesHUD.size(); ++i)
 		{
@@ -220,6 +220,7 @@ private:
 				m_sprites.hud[i].setCharacterSize(45u);
 				break;
 			case PositionJeu::pause:
+				m_sprites.hud[i].setString(m_textesHUD[i]);
 				m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
 				m_sprites.hud[i].setCharacterSize(45u);
 				break;
@@ -518,7 +519,8 @@ public:
 				case PositionJeu::pause:
 					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 					m_peutDeplacer = !m_peutDeplacer;
-					break;
+					m_sprites.hud.resize(0);
+					return;
 				}
 			}
 
@@ -542,6 +544,7 @@ public:
 		m_sprites.hud.resize(1);
 		m_sprites.positionDansJeu = PositionJeu::chargement;
 		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
+		m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 		chargementTexteHUD();
 		affichageHUD();
 		chargementNiveau();
