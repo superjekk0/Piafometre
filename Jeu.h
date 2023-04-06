@@ -47,7 +47,8 @@ private:
 			if (avantPlan.visible)
 				fenetre->draw(avantPlan.sprite);
 		}
-		fenetre->draw(sprites->joueur);
+		if (deplacementActif)
+			fenetre->draw(sprites->joueur);
 		fenetre->draw(sprites->ecranNoir);
 		for (auto& hud : sprites->hud)
 		{
@@ -134,7 +135,7 @@ public:
 		sprites->langue = traductionSymboleLangue(temp);
 		sprites->ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 		sprites->ecranNoir.setSize(static_cast<sf::Vector2f>(fenetre->getSize()));
-		sprites->camera.setCenter(fenetre->getSize().x / 2, fenetre->getSize().y / 2);
+		sprites->camera.setCenter(sprites->ecranNoir.getSize() / 2.f);
 		sprites->camera.setSize(fenetre->getSize().x, fenetre->getSize().y);
 
 		sprites->textures.resize(2);
@@ -175,13 +176,12 @@ public:
 	int principal()
 	{
 		sprites->positionDansJeu = PositionJeu::accueil;
-		std::function<std::string(const int&)> ptrFcn{};
 
 		std::unique_ptr<sf::Event> evenementFenetre{ new (std::nothrow) sf::Event };
 		std::unique_ptr<std::thread> mouvementMenu{ new (std::nothrow) std::thread
 		{deplacementAChoisir, std::ref(touchesActionnees), std::ref(indexMenus),
 			std::ref(indexMaxMenu) , std::ref(deplacementActif),
-			std::ref(*sprites), std::ref(ptrFcn),
+			std::ref(*sprites),
 			std::ref(touches), std::ref(threadsActifs),
 			std::ref(*evenementFenetre), std::ref(*moteurJeu), std::ref(toucheNonRepetables)} };
 		//Permet de changer entre les deux types de déplacement

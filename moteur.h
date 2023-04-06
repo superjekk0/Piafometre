@@ -576,6 +576,7 @@ public:
 				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
 				sautEffectif.release();
 				m_sprites.hud.resize(2);
+				m_menus.pause();
 				return;
 			}
 			if (deplacementVectoriel.x > vecteurNul)

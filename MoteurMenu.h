@@ -7,8 +7,16 @@
 class MoteurMenu {
 private:
 #pragma region PROPRIETES
-
-	touchesActives& m_touchesActionnees;	// Ensemble des touches actionnées par le clavier
+	//Ensemble des touches actionnées par le clavier
+	//index 0: touche pour le bouton de gauche
+	//index 1: touche pour le bouton de droite
+	//index 2: touche pour le bouton de haut
+	//index 3: touche pour le bouton du bas
+	//index 4: touche pour le bouton de confirmation
+	//index 5: touche pour le bouton de saut
+	//index 6: touche pour le bouton de pause
+	//index 7: indique lorsque le programme doit arrêter
+	touchesActives& m_touchesActionnees;	
 	int m_index;							// Index actuel du HUD
 	int m_indexMax;							// Index maximal du HUD selon un contexte donné
 	bool& m_peutDeplacer;					// Indique si le joueur peut bouger. Lorsque faux, le HUD est actif
@@ -128,34 +136,38 @@ private:
 		case PositionJeu::accueil:
 			for (int i{ 0 }; i < m_sprites.hud.size(); ++i)
 			{
-				m_sprites.hud[i].setPosition(800, 100 + i * 100);
+				m_sprites.hud[i].setPosition(800.f, 100.f + i * 100.f);
 			}
 			break;
 		case PositionJeu::options:
 			for (int i{ 0 }; i < m_sprites.hud.size(); i += 2)
 			{
-				m_sprites.hud[i].setPosition(sf::Vector2f(250, 50 + 40 * i));
+				m_sprites.hud[i].setPosition(sf::Vector2f(250.f, 50.f + 40.f * i));
 			}
 			for (int i{ 1 }; i < m_sprites.hud.size(); i += 2)
 			{
-				m_sprites.hud[i].setPosition(sf::Vector2f(900, m_sprites.hud[i - 1].getPosition().y));
+				m_sprites.hud[i].setPosition(sf::Vector2f(900.f, m_sprites.hud[i - 1].getPosition().y));
 			}
 			break;
 		case PositionJeu::remmapage:
 			m_sprites.hud[0].setFillColor(sf::Color());
-			m_sprites.hud[0].setPosition(400, 300);
+			m_sprites.hud[0].setPosition(400.f, 300.f);
 			//if (spritesEtTextures.hud.size() >= 2) spritesEtTextures.hud[1].setPosition(850, 580);
 			break;
 		case PositionJeu::chargement:
-			m_sprites.hud[0].setPosition(400, 400);
+			m_sprites.hud[0].setPosition(400.f, 400.f);
 			//spritesEtTextures.hud[1].setPosition(600, 400);
 			break;
 		case PositionJeu::credits:
-			m_sprites.hud[0].setPosition(280, 200);
+			m_sprites.hud[0].setPosition(280.f, 200.f);
 			break;
 		case PositionJeu::pause:
-			m_sprites.hud[0].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-200, -50));
-			m_sprites.hud[1].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-160, 50));
+			m_sprites.hud[0].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-200.f, -50.f));
+			m_sprites.hud[1].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-160.f, 50.f));
+			break;
+		case PositionJeu::quitter_pause:
+			m_sprites.hud[0].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(-250.f, 0.f));
+			m_sprites.hud[1].setPosition(m_sprites.camera.getCenter() + sf::Vector2f(250.f, 0.f));
 			break;
 		}
 	}
@@ -172,16 +184,14 @@ private:
 		//
 		//===================================
 
-		//std::wfstream chemin{ chargementTextures(Jeu::symboleLangue(m_sprites.langue), m_sprites.positionDansJeu) };
-
 		for (int i{ 0 }; i < m_sprites.hud.size() && i < m_textesHUD.size(); ++i)
 		{
 			m_sprites.hud[i].setFont(m_sprites.police);
 			switch (m_sprites.positionDansJeu)
 			{
 			case PositionJeu::accueil:
-				m_sprites.hud[i].setString(static_cast<std::wstring>(m_textesHUD[i]));
-				m_sprites.hud[i].setCharacterSize(80);
+				m_sprites.hud[i].setString(m_textesHUD[i]);
+				m_sprites.hud[i].setCharacterSize(80u);
 				if (m_index == i)
 				{
 					m_sprites.hud[i].setCharacterSize(m_sprites.hud[i].getCharacterSize() * 1.15);
@@ -195,7 +205,7 @@ private:
 				}
 				break;
 			case PositionJeu::options:
-				m_sprites.hud[i].setCharacterSize(30);
+				m_sprites.hud[i].setCharacterSize(30u);
 				if (m_index * 2 == i)
 				{
 					m_sprites.hud[i].setCharacterSize(m_sprites.hud[i].getCharacterSize() * 1.15);
@@ -220,9 +230,20 @@ private:
 				m_sprites.hud[i].setCharacterSize(45u);
 				break;
 			case PositionJeu::pause:
+			case PositionJeu::quitter_pause:
 				m_sprites.hud[i].setString(m_textesHUD[i]);
-				m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
-				m_sprites.hud[i].setCharacterSize(45u);
+				m_sprites.hud[i].setCharacterSize(60u);
+				if (m_index == i)
+				{
+					m_sprites.hud[i].setCharacterSize(m_sprites.hud[i].getCharacterSize() * 1.15);
+					m_sprites.hud[i].setFillColor(sf::Color(222, 215, 43));
+					m_sprites.hud[i].setStyle(sf::Text::Style::Bold);
+				}
+				else
+				{
+					m_sprites.hud[i].setFillColor(sf::Color(210, 210, 210));
+					m_sprites.hud[i].setStyle(sf::Text::Style::Regular);
+				}
 				break;
 			}
 		}
@@ -404,9 +425,13 @@ public:
 		{
 			sf::Clock debutCycle; //TRÈS IMPORTANT! NE PAS DÉPLACER
 			//static bool imageClavier{ false };
-			if (m_touchesActionnees[2])
+			if (m_touchesActionnees[0] && m_sprites.positionDansJeu == PositionJeu::quitter_pause)
 				--m_index;
-			if (m_touchesActionnees[3])
+			if (m_touchesActionnees[1] && m_sprites.positionDansJeu == PositionJeu::quitter_pause)
+				++m_index;
+			if (m_touchesActionnees[2] && m_sprites.positionDansJeu != PositionJeu::quitter_pause)
+				--m_index;
+			if (m_touchesActionnees[3] && m_sprites.positionDansJeu != PositionJeu::quitter_pause)
 				++m_index;
 			if (m_touchesActionnees[4] && !m_touchesNonRepetables.test(0))
 			{
@@ -483,8 +508,44 @@ public:
 					m_sprites.hud.resize(15);
 					chargementTexteHUD();
 					//m_sprites.textures.resize(9);
+				case PositionJeu::pause:
+					switch (m_index)
+					{
+					case 0:
+						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+						m_peutDeplacer = !m_peutDeplacer;
+						m_sprites.hud.resize(0);
+						return;
+					case 1:
+						m_sprites.positionDansJeu = PositionJeu::quitter_pause; 
+						chargementTexteHUD();
+						break;
+					}
+					break;
+				case PositionJeu::quitter_pause:
+					switch (m_index)
+					{
+					case 0:
+						m_sprites.arrierePlan.resize(0);
+						m_sprites.avantPlan.resize(0);
+						m_sprites.textures.resize(0);
+						m_textesHUD.resize(4);
+						m_sprites.hud.resize(4);
+						m_sprites.positionDansJeu = PositionJeu::accueil;
+						m_sprites.couleur = couleur;
+						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+						m_indexMax = 3;
+						chargementTexteHUD();
+						break;
+					case 1:
+						m_sprites.positionDansJeu = PositionJeu::pause;
+						chargementTexteHUD();
+						m_index = 0;
+						break;
+					}
 				}
-			}
+				
+			}			
 			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 			{
 				m_touchesNonRepetables.set(1);
@@ -519,8 +580,14 @@ public:
 				case PositionJeu::pause:
 					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 					m_peutDeplacer = !m_peutDeplacer;
+					m_index = 1;
 					m_sprites.hud.resize(0);
 					return;
+				case PositionJeu::quitter_pause:
+					m_sprites.positionDansJeu = PositionJeu::pause;
+					chargementTexteHUD();
+					m_index = 0;
+					break;
 				}
 			}
 
@@ -543,8 +610,9 @@ public:
 		PLOGI << "Launching level " << m_moteur.niveau;
 		m_sprites.hud.resize(1);
 		m_sprites.positionDansJeu = PositionJeu::chargement;
-		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
 		m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
+		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
+		m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
 		chargementTexteHUD();
 		affichageHUD();
 		chargementNiveau();
@@ -556,7 +624,11 @@ public:
 		m_sprites.positionDansJeu = PositionJeu::jeu;
 	}
 
-
+	void pause()
+	{
+		m_index = 0;
+		m_indexMax = 1;
+	}
 };
 
 
