@@ -328,6 +328,7 @@ private:
 		sf::Clock cycle{};
 		while (m_peutDeplacer && m_threadsActifs)
 		{
+			PLOGD << m_tempsDixiemeSeconde;
 			if (m_tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
 			{
 				++m_tempsDixiemeSeconde;
@@ -430,7 +431,7 @@ private:
 
 	bool personnagePeutSauter()
 	{
-		return m_autorisationsSaut.test(3) && (m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1));
+		return m_autorisationsSaut.test(3) && ((m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1)));
 	}
 public:
 

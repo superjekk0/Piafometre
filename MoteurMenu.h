@@ -114,6 +114,7 @@ private:
 			m_sprites.hud[0].setString(m_textesHUD[0]);
 			break;
 		case PositionJeu::pause:
+		case PositionJeu::quitter_pause:
 			for (int i{ 0 }; i < m_textesHUD.size() && i < m_sprites.hud.size() && fichier; ++i)
 			{
 				std::wstring ligneTemp;
@@ -535,6 +536,7 @@ public:
 						m_sprites.couleur = couleur;
 						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 						m_indexMax = 3;
+						m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 						chargementTexteHUD();
 						break;
 					case 1:
