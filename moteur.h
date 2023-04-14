@@ -328,7 +328,6 @@ private:
 		sf::Clock cycle{};
 		while (m_peutDeplacer && m_threadsActifs)
 		{
-			PLOGD << m_tempsDixiemeSeconde;
 			if (m_tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
 			{
 				++m_tempsDixiemeSeconde;
@@ -431,7 +430,7 @@ private:
 
 	bool personnagePeutSauter()
 	{
-		return m_autorisationsSaut.test(3) && ((m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1)));
+		return m_autorisationsSaut.test(3) && (m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1));
 	}
 public:
 
@@ -452,6 +451,8 @@ public:
 		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); }} };
 		std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)} };
 		std::vector<std::thread> minuterieObjetsTouches;
+		//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
+		//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
 		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{[&]() {peutSauter(); }} };
 		//for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		for (auto& plateforme : m_sprites.avantPlan)
@@ -462,7 +463,10 @@ public:
 			minuterie.detach();
 
 		reglerVisible->detach();
+		//animationDrapeau->detach();
+		//animerJoueur->detach();
 		joueurPeutSauter->detach();
+		sautEffectif->detach();
 		sf::Clock debutCycle{};
 		long frameAnimation{ 0 };
 		while (m_peutDeplacer)
@@ -564,10 +568,10 @@ public:
 				m_touchesNonRepetables.set(2);
 				(m_autorisationsSaut.test(0)) ? m_autorisationsSaut.reset(0) : m_autorisationsSaut.reset(1);
 				m_autorisationsSaut.set(2);
-				if (sautEffectif->joinable())
-					sautEffectif->detach();
-				else
-					m_tempsDixiemeSeconde = 0;
+				//if (sautEffectif->joinable())
+				//	sautEffectif->detach();
+				//else
+				m_tempsDixiemeSeconde = 0;
 			}
 			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 			{
