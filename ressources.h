@@ -112,23 +112,6 @@ public:
 	TypePlateforme comportement;
 };
 
-//class FilExecution {
-//private:
-//	std::thread m_filExecution;
-//
-//public:
-//	FilExecution(const std::thread& pFilExecution)
-//	{
-//		m_filExecution = pFilExecution;
-//	}
-//
-//	~FilExecution()
-//	{
-//		if (m_filExecution.joinable())
-//			m_filExecution.join();
-//	}
-//};
-//
 enum Oiseau {
 	vole_gauche = 0,
 	vole_droite = 1,

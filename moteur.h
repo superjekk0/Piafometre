@@ -12,6 +12,7 @@ enum class Collision {
 	checkpoint,
 	objet,
 	normale,
+	fin,
 	max
 };
 
@@ -209,6 +210,9 @@ private:
 						plateforme.touche = true;
 					}
 					break;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
+					break;
 				default:
 					break;
 				}
@@ -245,6 +249,9 @@ private:
 						plateforme.touche = true;
 					}
 					break;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
+					break;
 				default:
 					break;
 				}
@@ -278,6 +285,9 @@ private:
 						m_DixiemeSecondePeutSauter = 0;
 						plateforme.touche = true;
 					}
+					break;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
 					break;
 				default:
 					break;
@@ -313,6 +323,9 @@ private:
 					break;
 				case TypePlateforme::checkPoint:
 					return Collision::checkpoint;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
+					break;
 				default:
 					break;
 				}
@@ -487,6 +500,12 @@ public:
 						m_sprites.joueur.getPosition(),
 						m_sprites.arrierePlan);
 					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
+					break;
 				default:
 					break;
 				}
@@ -505,6 +524,11 @@ public:
 				case Collision::objet:
 					deplacementVectoriel.x += utilitaire::deplacement;
 					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
 				default:
 					break;
 				}
@@ -520,6 +544,11 @@ public:
 					deplacementVectoriel.y -= utilitaire::deplacement;
 					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
 					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
 				default:
 					break;
 				}
@@ -558,6 +587,12 @@ public:
 				case Collision::normale:
 					m_autorisationsSaut.set(0);
 					m_autorisationsSaut.set(1);
+					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
 				default:
 					break;
 				}

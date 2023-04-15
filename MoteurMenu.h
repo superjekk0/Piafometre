@@ -323,6 +323,11 @@ private:
 				m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[9].sprite));
 			m_sprites.avantPlan[9].comportement = TypePlateforme::objet;
 
+			m_sprites.avantPlan[10].sprite.setTexture(m_sprites.textures[8]);
+			m_sprites.avantPlan[10].sprite.setPosition(
+				m_sprites.avantPlan[4].sprite.getPosition() - sf::Vector2f(0.f, getHeight(m_sprites.textures[8])));
+			m_sprites.avantPlan[10].comportement = TypePlateforme::finTableau;
+
 			m_sprites.joueur.setTexture(m_sprites.textures[1]);
 			m_sprites.joueur.setTextureRect(sf::IntRect(0,
 				marche_droite * getHeight(m_sprites.textures[1]) / max,
@@ -342,6 +347,7 @@ private:
 
 			break;
 		default:
+			assert(m_moteur.niveau == 1 && L"Pas encore implémenté");
 			break;
 		}
 	}
