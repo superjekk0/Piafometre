@@ -170,7 +170,7 @@ public:
 		pThreadsActifs = false;
 		pDeplacementActif = !pDeplacementActif;
 		std::this_thread::sleep_for(std::chrono::milliseconds(1000));
-		pLogicielContinue[7] = true;
+		//pLogicielContinue[7] = true;
 	}
 
 	int principal()
@@ -204,7 +204,7 @@ public:
 		mouvementMenu->detach();
 
 		sf::Clock debutCycle;
-		while (!touchesActionnees[7])
+		while (threadsActifs)
 		{
 			detectionEvenement(*evenementFenetre, threadsActifs, deplacementActif,
 				touchesActionnees, touches, *fenetre, toucheNonRepetables);
