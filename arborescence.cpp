@@ -320,6 +320,8 @@ std::string chargementTextures(const std::string& langue, const PositionJeu posi
 	case PositionJeu::pause:
 		return "resources/texts/" + langue + "/pause.txt";
 		break;
+	case PositionJeu::quitter_pause:
+		return "resources/texts/" + langue + "/leave.txt";
 	default:
 		return "";
 		break;

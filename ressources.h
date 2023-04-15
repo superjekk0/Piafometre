@@ -1,5 +1,5 @@
-#ifndef RESSOURCES
-#define RESSOURCES
+#ifndef RESSOURCES_H
+#define RESSOURCES_H
 
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
@@ -90,6 +90,7 @@ enum class PositionJeu {
 	jeu,
 	chargement,
 	pause,
+	quitter_pause,
 	max
 };
 
@@ -111,23 +112,6 @@ public:
 	TypePlateforme comportement;
 };
 
-//class FilExecution {
-//private:
-//	std::thread m_filExecution;
-//
-//public:
-//	FilExecution(const std::thread& pFilExecution)
-//	{
-//		m_filExecution = pFilExecution;
-//	}
-//
-//	~FilExecution()
-//	{
-//		if (m_filExecution.joinable())
-//			m_filExecution.join();
-//	}
-//};
-//
 enum Oiseau {
 	vole_gauche = 0,
 	vole_droite = 1,
@@ -175,7 +159,7 @@ using fonctionsRessources = std::function<std::string(const int&)>;
 using touchesActives = std::vector<bool>;
 
 constexpr float vecteurNul{ 0.f };
-
+const sf::Color couleur{ sf::Color(128, 128, 128) };
 	constexpr int tempsParImage{ 1000000 / 60 };				//Temps en microsecondes
 namespace utilitaire {
 	constexpr unsigned int limiteFramerate{ 60 };
@@ -184,7 +168,7 @@ namespace utilitaire {
 
 bool verifTouches(const ensembleTouches& pTouches);
 void resetTouches(ensembleTouches& pTouches);
-void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
+void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
 void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
 std::wstring nomFichierImageTouches(const Clv::Key pTouche, const Langue langue);
 std::string chargementTextures(const std::string& langue, const PositionJeu position);

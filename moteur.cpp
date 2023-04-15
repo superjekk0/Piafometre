@@ -2,7 +2,7 @@
 #include "moteur.h"
 #include "MoteurMenu.h"
 
-void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, fonctionsRessources& ptrFcnFichier, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables)
+void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables)
 {
 	std::unique_ptr<MoteurMenu> moteurMenu{ new (std::nothrow) MoteurMenu{touchesActionnees,index,indexMax,peutDeplacer,spritesEtFond,pTouches,moteur,touchesNonRepetables,threadsActifs,pEvenement} };
 	std::unique_ptr<MoteurPhysique> moteurJeu{ new (std::nothrow) MoteurPhysique{touchesActionnees,spritesEtFond,peutDeplacer,threadsActifs,moteur,touchesNonRepetables,*moteurMenu} };

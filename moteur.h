@@ -12,6 +12,7 @@ enum class Collision {
 	checkpoint,
 	objet,
 	normale,
+	fin,
 	max
 };
 
@@ -209,6 +210,9 @@ private:
 						plateforme.touche = true;
 					}
 					break;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
+					break;
 				default:
 					break;
 				}
@@ -245,6 +249,9 @@ private:
 						plateforme.touche = true;
 					}
 					break;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
+					break;
 				default:
 					break;
 				}
@@ -278,6 +285,9 @@ private:
 						m_DixiemeSecondePeutSauter = 0;
 						plateforme.touche = true;
 					}
+					break;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
 					break;
 				default:
 					break;
@@ -313,6 +323,9 @@ private:
 					break;
 				case TypePlateforme::checkPoint:
 					return Collision::checkpoint;
+				case TypePlateforme::finTableau:
+					return Collision::fin;
+					break;
 				default:
 					break;
 				}
@@ -446,6 +459,7 @@ public:
 
 	void deplacement()
 	{
+		int positionTableauCheckpoint{ indexCheckpoint() };
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
 		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); }} };
@@ -466,6 +480,7 @@ public:
 		//animationDrapeau->detach();
 		//animerJoueur->detach();
 		joueurPeutSauter->detach();
+		sautEffectif->detach();
 		sf::Clock debutCycle{};
 		long frameAnimation{ 0 };
 		while (m_peutDeplacer)
@@ -485,6 +500,12 @@ public:
 						m_sprites.joueur.getPosition(),
 						m_sprites.arrierePlan);
 					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
+					break;
 				default:
 					break;
 				}
@@ -503,6 +524,11 @@ public:
 				case Collision::objet:
 					deplacementVectoriel.x += utilitaire::deplacement;
 					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
 				default:
 					break;
 				}
@@ -518,6 +544,11 @@ public:
 					deplacementVectoriel.y -= utilitaire::deplacement;
 					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
 					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
 				default:
 					break;
 				}
@@ -556,6 +587,12 @@ public:
 				case Collision::normale:
 					m_autorisationsSaut.set(0);
 					m_autorisationsSaut.set(1);
+					break;
+				case Collision::fin:
+					++m_moteur.niveau;
+					m_moteur.checkpoint.reinitialiser();
+					m_menus.ecranChargement();
+					return;
 				default:
 					break;
 				}
@@ -567,10 +604,10 @@ public:
 				m_touchesNonRepetables.set(2);
 				(m_autorisationsSaut.test(0)) ? m_autorisationsSaut.reset(0) : m_autorisationsSaut.reset(1);
 				m_autorisationsSaut.set(2);
-				if (sautEffectif->joinable())
-					sautEffectif->detach();
-				else
-					m_tempsDixiemeSeconde = 0;
+				//if (sautEffectif->joinable())
+				//	sautEffectif->detach();
+				//else
+				m_tempsDixiemeSeconde = 0;
 			}
 			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 			{
@@ -580,6 +617,7 @@ public:
 				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
 				sautEffectif.release();
 				m_sprites.hud.resize(2);
+				m_menus.pause();
 				return;
 			}
 			if (deplacementVectoriel.x > vecteurNul)
@@ -631,7 +669,7 @@ public:
 			}
 			m_sprites.joueur.move(deplacementVectoriel);
 			m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
-			animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite, frameAnimation);
+			animationCheckpoint(m_sprites.avantPlan[positionTableauCheckpoint].sprite, frameAnimation);
 			animationJoueur(deplacementVectoriel, frameAnimation);
 			++frameAnimation;
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
