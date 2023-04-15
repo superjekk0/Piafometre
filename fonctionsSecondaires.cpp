@@ -24,20 +24,6 @@ void creationLimiteCamera(Moteur& moteur)
 	}
 }
 
-//Grandeur du texte du HUD
-//int grandeurImage(const PositionJeu& menu)
-//{
-//	switch (menu)
-//	{
-//	case PositionJeu::accueil:
-//		return 70;
-//	case PositionJeu::options:
-//		return 50;
-//	default:
-//		return 0;
-//	}
-//}
-
 Clv::Key tradToucheCode(Clv::Key pTouche)
 {
 	switch (pTouche)
