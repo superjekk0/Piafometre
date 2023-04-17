@@ -34,25 +34,26 @@ private:
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
 	std::unique_ptr<ObjetADessiner> sprites{ new (std::nothrow) ObjetADessiner };
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
+	
 	void rendu()
 	{
 		fenetre->clear(sprites->couleur);
 		fenetre->setView(sprites->camera);
-		for (auto& arrierePlan : sprites->arrierePlan)
+		for (int i{0}; i < sprites->arrierePlan.size(); ++i)
 		{
-			fenetre->draw(arrierePlan);
+			fenetre->draw(sprites->arrierePlan[i]);
 		}
-		for (auto& avantPlan : sprites->avantPlan)
+		for (int i{0}; i < sprites->avantPlan.size(); ++i)
 		{
-			if (avantPlan.visible)
-				fenetre->draw(avantPlan.sprite);
+			if (sprites->avantPlan[i].visible)
+				fenetre->draw(sprites->avantPlan[i].sprite);
 		}
 		if (deplacementActif)
 			fenetre->draw(sprites->joueur);
 		fenetre->draw(sprites->ecranNoir);
-		for (auto& hud : sprites->hud)
+		for (int i{ 0 }; i < sprites->hud.size(); ++i)
 		{
-			fenetre->draw(hud);
+			fenetre->draw(sprites->hud[i]);
 		}
 		fenetre->display();
 	}

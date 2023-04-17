@@ -346,8 +346,11 @@ private:
 			m_sprites.arrierePlan[1].setPosition(0, -150);
 
 			break;
+		case 2:
+			m_sprites.couleur = sf::Color(0x2D100DFF);
+			break;
 		default:
-			assert(m_moteur.niveau == 1 && L"Pas encore implémenté");
+			assert(false && "Niveau non disponible");
 			break;
 		}
 	}
@@ -386,6 +389,9 @@ private:
 				PLOGE << "Unable to load resources/textures/sky.png";
 			if (!m_sprites.textures[10].loadFromFile("resources/textures/mountain.png"))
 				PLOGE << "Unable to load resources/textures/mountain.png";
+		case 2:
+			
+			break;
 		default:
 			break;
 		}
@@ -460,7 +466,7 @@ public:
 						break;
 					case 1: //Entrer dans les options
 						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-						m_sprites.ecranNoir.setFillColor(sf::Color::Color(0, 0, 0, 128));
+						m_sprites.ecranNoir.setFillColor(sf::Color::Color(0x00000080));
 						m_sprites.hud.resize(15);
 						m_textesHUD.resize(15);
 						m_sprites.textures.resize(9);
@@ -480,7 +486,7 @@ public:
 						break;
 					case 3: //Entrer dans les crédits
 						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 128));
+						m_sprites.ecranNoir.setFillColor(sf::Color(0x00000080));
 						m_sprites.positionDansJeu = PositionJeu::credits;
 						m_textesHUD.resize(1);
 						m_sprites.hud.resize(1);
@@ -519,7 +525,7 @@ public:
 					switch (m_index)
 					{
 					case 0:
-						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+						m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 						m_peutDeplacer = !m_peutDeplacer;
 						m_sprites.hud.resize(0);
 						return;
@@ -561,7 +567,7 @@ public:
 				{
 				case PositionJeu::options:
 					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+					m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 					m_sprites.hud.resize(4);
 					m_textesHUD.resize(4);
 					//m_sprites.textures.resize(2);
@@ -574,7 +580,7 @@ public:
 					break;
 				case PositionJeu::credits:
 					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+					m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 					m_sprites.hud.resize(4);
 					m_textesHUD.resize(4);
 					//m_sprites.textures.resize(2);
@@ -586,7 +592,7 @@ public:
 					PLOGI << "Entering main menu";
 					break;
 				case PositionJeu::pause:
-					m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+					m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 					m_peutDeplacer = !m_peutDeplacer;
 					m_index = 1;
 					m_sprites.hud.resize(0);

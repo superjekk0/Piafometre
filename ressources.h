@@ -181,5 +181,4 @@ void verifFichierExiste(const std::string& chemin);
 sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keyboard::Key& toucheExclue, sf::Clock& cycle);
 bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle);
 
-
 #endif 
