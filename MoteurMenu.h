@@ -266,88 +266,89 @@ private:
 			m_sprites.arrierePlan.resize(2);
 			chargementTexturesNiveau();
 
-			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[2]);
 			m_sprites.avantPlan[0].sprite.setScale(0.75f, 0.75f);
-			m_sprites.avantPlan[0].sprite.setPosition(0, 720 - m_sprites.textures[3].getSize().y);
-			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 3000, m_sprites.textures[3].getSize().y));
+			m_sprites.avantPlan[0].sprite.setPosition(0, 720 - m_sprites.textures[2].getSize().y);
+			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 3000, m_sprites.textures[2].getSize().y));
 
-			m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[2]);
-			m_sprites.avantPlan[1].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[2]), getHeight(m_sprites.textures[2]) * 2.5));
+			m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[1]);
+			m_sprites.avantPlan[1].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[1]), getHeight(m_sprites.textures[1]) * 2.5));
 			m_sprites.avantPlan[1].sprite.setScale(0.75f, 0.75f);
-			m_sprites.avantPlan[1].sprite.setPosition(3 * getWidth(m_sprites.textures[3]),
+			m_sprites.avantPlan[1].sprite.setPosition(3 * getWidth(m_sprites.textures[2]),
 				m_sprites.avantPlan[0].sprite.getPosition().y + getHeight(m_sprites.avantPlan[0].sprite) - getHeight(m_sprites.avantPlan[1].sprite));
 
-			m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[4]);
-			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[4]) * 4, getHeight(m_sprites.textures[4])));
+			m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[3]) * 4, getHeight(m_sprites.textures[3])));
 			m_sprites.avantPlan[2].sprite.setPosition(m_sprites.avantPlan[1].sprite.getPosition().x + getWidth(m_sprites.avantPlan[1].sprite),
 				m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.avantPlan[2].sprite));
 			m_sprites.avantPlan[2].comportement = TypePlateforme::pics;
 
-			m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[2]);
+			m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[1]);
 			m_sprites.avantPlan[3].sprite.setScale(0.75f, .75f);
-			m_sprites.avantPlan[3].sprite.setTextureRect(sf::IntRect(0, 0, m_sprites.avantPlan[0].sprite.getTextureRect().width, getHeight(m_sprites.textures[2]) * 3));
+			m_sprites.avantPlan[3].sprite.setTextureRect(sf::IntRect(0, 0, m_sprites.avantPlan[0].sprite.getTextureRect().width, getHeight(m_sprites.textures[1]) * 3));
 			m_sprites.avantPlan[3].sprite.setPosition(m_sprites.avantPlan[0].sprite.getPosition().x,
 				m_sprites.avantPlan[0].sprite.getPosition().y + getHeight(m_sprites.avantPlan[0].sprite));
 
-			m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[3]);
-			m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 3000, getHeight(m_sprites.textures[3])));
+			m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[2]);
+			m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 3000, getHeight(m_sprites.textures[2])));
 			m_sprites.avantPlan[4].sprite.setPosition(0,
 				m_sprites.avantPlan[3].sprite.getPosition().y + getHeight(m_sprites.avantPlan[3].sprite) + 500);
 
-			m_sprites.avantPlan[5].sprite.setTexture(m_sprites.textures[4]);
-			m_sprites.avantPlan[5].sprite.setTextureRect(sf::IntRect(0, 0, m_sprites.textures[4].getSize().x, m_sprites.textures[4].getSize().y));
+			m_sprites.avantPlan[5].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[5].sprite.setTextureRect(sf::IntRect(0, 0, m_sprites.textures[3].getSize().x, m_sprites.textures[3].getSize().y));
 			m_sprites.avantPlan[5].sprite.setPosition(1500,
 				m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[5].sprite));
 			m_sprites.avantPlan[5].comportement = TypePlateforme::pics;
 
-			m_sprites.avantPlan[6].sprite.setTexture(m_sprites.textures[4]);
+			m_sprites.avantPlan[6].sprite.setTexture(m_sprites.textures[3]);
 			m_sprites.avantPlan[6].sprite.setTextureRect(m_sprites.avantPlan[5].sprite.getTextureRect());
 			m_sprites.avantPlan[6].sprite.setPosition(m_sprites.avantPlan[5].sprite.getPosition().x - 750,
 				m_sprites.avantPlan[5].sprite.getPosition().y);
 			m_sprites.avantPlan[6].comportement = TypePlateforme::pics;
 
-			m_sprites.avantPlan[7].sprite.setTexture(m_sprites.textures[6]);
-			m_sprites.avantPlan[7].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[6]) / 3, getHeight(m_sprites.textures[6])));
+			m_sprites.avantPlan[7].sprite.setTexture(m_sprites.textures[5]);
+			m_sprites.avantPlan[7].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[5]) / 3, getHeight(m_sprites.textures[5])));
 			m_sprites.avantPlan[7].sprite.setScale(2, 2);
 			m_sprites.avantPlan[7].sprite.setPosition(m_sprites.avantPlan[5].sprite.getPosition().x + 500,
 				m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[7].sprite));
 			m_sprites.avantPlan[7].comportement = TypePlateforme::checkPoint;
 
-			m_sprites.avantPlan[8].sprite.setTexture(m_sprites.textures[7]);
+			m_sprites.avantPlan[8].sprite.setTexture(m_sprites.textures[6]);
 			m_sprites.avantPlan[8].sprite.setPosition(m_sprites.avantPlan[1].sprite.getPosition().x - 100 - getWidth(m_sprites.avantPlan[8].sprite),
 				m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.avantPlan[8].sprite));
 			m_sprites.avantPlan[8].comportement = TypePlateforme::objet;
 
-			m_sprites.avantPlan[9].sprite.setTexture(m_sprites.textures[7]);
+			m_sprites.avantPlan[9].sprite.setTexture(m_sprites.textures[6]);
 			m_sprites.avantPlan[9].sprite.setPosition(m_sprites.avantPlan[7].sprite.getPosition().x - getWidth(m_sprites.avantPlan[9].sprite) - 40,
 				m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[9].sprite));
 			m_sprites.avantPlan[9].comportement = TypePlateforme::objet;
 
-			m_sprites.avantPlan[10].sprite.setTexture(m_sprites.textures[8]);
+			m_sprites.avantPlan[10].sprite.setTexture(m_sprites.textures[4]);
 			m_sprites.avantPlan[10].sprite.setPosition(
-				m_sprites.avantPlan[4].sprite.getPosition() - sf::Vector2f(0.f, getHeight(m_sprites.textures[8])));
+				m_sprites.avantPlan[4].sprite.getPosition() - sf::Vector2f(0.f, getHeight(m_sprites.textures[4])));
 			m_sprites.avantPlan[10].comportement = TypePlateforme::finTableau;
 
-			m_sprites.joueur.setTexture(m_sprites.textures[1]);
+			m_sprites.joueur.setTexture(m_sprites.textures[0]);
 			m_sprites.joueur.setTextureRect(sf::IntRect(0,
-				marche_droite * getHeight(m_sprites.textures[1]) / max,
-				getWidth(m_sprites.textures[1]) / 3,
-				getHeight(m_sprites.textures[1]) / max));
+				marche_droite * getHeight(m_sprites.textures[0]) / max,
+				getWidth(m_sprites.textures[0]) / 3,
+				getHeight(m_sprites.textures[0]) / max));
 			m_sprites.joueur.setScale(3, 3);
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].sprite.getPosition().x,
 				m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.joueur));
 
-			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[9]);
+			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[7]);
 			m_sprites.arrierePlan[0].setScale(7, 7);
 			m_sprites.arrierePlan[0].setPosition(0, -200);
 
-			m_sprites.arrierePlan[1].setTexture(m_sprites.textures[10]);
+			m_sprites.arrierePlan[1].setTexture(m_sprites.textures[8]);
 			m_sprites.arrierePlan[1].setScale(7, 7);
 			m_sprites.arrierePlan[1].setPosition(0, -150);
 
 			break;
 		case 2:
 			m_sprites.couleur = sf::Color(0x2D100DFF);
+
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -355,42 +356,63 @@ private:
 		}
 	}
 
+	void verifFichierDisponible(const std::string& chemin, int index)
+	{
+		if (!m_sprites.textures[index].loadFromFile(chemin))
+			PLOGE << "Unable to load " << chemin;
+	}
+
 	void chargementTexturesNiveau()
 	{
 		//if (!m_sprites.textures.at(0).loadFromFile("resources/texts/" + langue + "/keyboards/" + std::to_string(niveau) + ".png"))
 		//	PLOGE << "Unable to load resources/texts/" << langue << "/keyboards/" << std::to_string(niveau) << ".png";
-		if (!m_sprites.textures.at(1).loadFromFile("resources/sprites/player.png"))
-			PLOGE << "Unable to load resources/sprites/player.png";
+		//if (!m_sprites.textures.at(1).loadFromFile("resources/sprites/player.png"))
+		//	PLOGE << "Unable to load resources/sprites/player.png";
+		verifFichierDisponible("resources/sprites/player.png", 0);
 		//à l'index 0 et 1 sont réservés pour l'écran de chargement
 		switch (m_moteur.niveau)
 		{
 		case 1:
 			//avant-plan
-			if (!m_sprites.textures[2].loadFromFile("resources/textures/dirt.png"))
-				PLOGE << "Unable to load resources/textures/dirt.png";
-			if (!m_sprites.textures[3].loadFromFile("resources/textures/grass.png"))
-				PLOGE << "Unable to load resources/textures/grass.png";
-			if (!m_sprites.textures[4].loadFromFile("resources/textures/spikes.png"))
-				PLOGE << "Unable to load resources/textures/spikes.png";
-			if (!m_sprites.textures[5].loadFromFile("resources/textures/caveEntry.png"))
-				PLOGE << "Unable to load resources/textures/caveEntry.png";
-			if (!m_sprites.textures[6].loadFromFile("resources/sprites/checkpoint.png"))
-				PLOGE << "Unable to load resources/sprites/checkpoint.png";
-			if (!m_sprites.textures[7].loadFromFile("resources/sprites/powerUp.png"))
-				PLOGE << "Unable to load resources/sprites/powerUp.png";
-			if (!m_sprites.textures[8].loadFromFile("resources/sprites/caveEntry.png"))
-				PLOGE << "Unable to load resources/sprites/caveEntry.png";
+			//if (!m_sprites.textures[2].loadFromFile("resources/textures/dirt.png"))
+			//	PLOGE << "Unable to load resources/textures/dirt.png";
+			verifFichierDisponible("resources/textures/dirt.png", 1);
+			//if (!m_sprites.textures[3].loadFromFile("resources/textures/grass.png"))
+			//	PLOGE << "Unable to load resources/textures/grass.png";
+			verifFichierDisponible("resources/textures/grass.png", 2);
+			//if (!m_sprites.textures[4].loadFromFile("resources/textures/spikes.png"))
+			//	PLOGE << "Unable to load resources/textures/spikes.png";
+			verifFichierDisponible("resources/textures/spikes.png", 3);
+			//if (!m_sprites.textures[5].loadFromFile("resources/textures/caveEntry.png"))
+			//	PLOGE << "Unable to load resources/textures/caveEntry.png";
+			verifFichierDisponible("resources/textures/caveEntry.png", 4);
+			//if (!m_sprites.textures[6].loadFromFile("resources/sprites/checkpoint.png"))
+			//	PLOGE << "Unable to load resources/sprites/checkpoint.png";
+			verifFichierDisponible("resources/sprites/checkpoint.png", 5);
+			//if (!m_sprites.textures[7].loadFromFile("resources/sprites/powerUp.png"))
+			//	PLOGE << "Unable to load resources/sprites/powerUp.png";
+			verifFichierDisponible("resources/sprites/powerUp.png", 6);
+			//if (!m_sprites.textures[8].loadFromFile("resources/sprites/caveEntry.png"))
+			//	PLOGE << "Unable to load resources/sprites/caveEntry.png";
 
+			m_sprites.textures[1].setRepeated(true);
 			m_sprites.textures[2].setRepeated(true);
 			m_sprites.textures[3].setRepeated(true);
-			m_sprites.textures[4].setRepeated(true);
 			//arrière-plan
-			if (!m_sprites.textures[9].loadFromFile("resources/textures/sky.png"))
-				PLOGE << "Unable to load resources/textures/sky.png";
-			if (!m_sprites.textures[10].loadFromFile("resources/textures/mountain.png"))
-				PLOGE << "Unable to load resources/textures/mountain.png";
+			//if (!m_sprites.textures[9].loadFromFile("resources/textures/sky.png"))
+			//	PLOGE << "Unable to load resources/textures/sky.png";
+			verifFichierDisponible("resources/textures/sky.png", 7);
+			//if (!m_sprites.textures[10].loadFromFile("resources/textures/mountain.png"))
+			//	PLOGE << "Unable to load resources/textures/mountain.png";
+			verifFichierDisponible("resources/textures/mountain.png", 8);
+			break;
 		case 2:
-			
+			if (!m_sprites.textures[2].loadFromFile("resources/textures/caveGround.png"))
+				PLOGE << "Unable to load resources/textures/caveGround.png";
+			if (!m_sprites.textures[3].loadFromFile("resources/textures/caveRoof.png"))
+				PLOGE << "Unable to load resources/textures/caveRoof.png";
+			if (!m_sprites.textures[4].loadFromFile("resources/textures/caveSoil.png"))
+				PLOGE << "Unable to load resources/textures/caveRoof.png";
 			break;
 		default:
 			break;
