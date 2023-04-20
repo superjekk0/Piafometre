@@ -364,55 +364,31 @@ private:
 
 	void chargementTexturesNiveau()
 	{
-		//if (!m_sprites.textures.at(0).loadFromFile("resources/texts/" + langue + "/keyboards/" + std::to_string(niveau) + ".png"))
-		//	PLOGE << "Unable to load resources/texts/" << langue << "/keyboards/" << std::to_string(niveau) << ".png";
-		//if (!m_sprites.textures.at(1).loadFromFile("resources/sprites/player.png"))
-		//	PLOGE << "Unable to load resources/sprites/player.png";
 		verifFichierDisponible("resources/sprites/player.png", 0);
-		//à l'index 0 et 1 sont réservés pour l'écran de chargement
+		//l'index 0 et 1 est réservé pour le sprite du joueur
 		switch (m_moteur.niveau)
 		{
 		case 1:
 			//avant-plan
-			//if (!m_sprites.textures[2].loadFromFile("resources/textures/dirt.png"))
-			//	PLOGE << "Unable to load resources/textures/dirt.png";
 			verifFichierDisponible("resources/textures/dirt.png", 1);
-			//if (!m_sprites.textures[3].loadFromFile("resources/textures/grass.png"))
-			//	PLOGE << "Unable to load resources/textures/grass.png";
 			verifFichierDisponible("resources/textures/grass.png", 2);
-			//if (!m_sprites.textures[4].loadFromFile("resources/textures/spikes.png"))
-			//	PLOGE << "Unable to load resources/textures/spikes.png";
 			verifFichierDisponible("resources/textures/spikes.png", 3);
-			//if (!m_sprites.textures[5].loadFromFile("resources/textures/caveEntry.png"))
-			//	PLOGE << "Unable to load resources/textures/caveEntry.png";
 			verifFichierDisponible("resources/textures/caveEntry.png", 4);
-			//if (!m_sprites.textures[6].loadFromFile("resources/sprites/checkpoint.png"))
-			//	PLOGE << "Unable to load resources/sprites/checkpoint.png";
 			verifFichierDisponible("resources/sprites/checkpoint.png", 5);
-			//if (!m_sprites.textures[7].loadFromFile("resources/sprites/powerUp.png"))
-			//	PLOGE << "Unable to load resources/sprites/powerUp.png";
 			verifFichierDisponible("resources/sprites/powerUp.png", 6);
-			//if (!m_sprites.textures[8].loadFromFile("resources/sprites/caveEntry.png"))
-			//	PLOGE << "Unable to load resources/sprites/caveEntry.png";
 
 			m_sprites.textures[1].setRepeated(true);
 			m_sprites.textures[2].setRepeated(true);
 			m_sprites.textures[3].setRepeated(true);
 			//arrière-plan
-			//if (!m_sprites.textures[9].loadFromFile("resources/textures/sky.png"))
-			//	PLOGE << "Unable to load resources/textures/sky.png";
 			verifFichierDisponible("resources/textures/sky.png", 7);
-			//if (!m_sprites.textures[10].loadFromFile("resources/textures/mountain.png"))
-			//	PLOGE << "Unable to load resources/textures/mountain.png";
 			verifFichierDisponible("resources/textures/mountain.png", 8);
 			break;
 		case 2:
-			if (!m_sprites.textures[2].loadFromFile("resources/textures/caveGround.png"))
-				PLOGE << "Unable to load resources/textures/caveGround.png";
-			if (!m_sprites.textures[3].loadFromFile("resources/textures/caveRoof.png"))
-				PLOGE << "Unable to load resources/textures/caveRoof.png";
-			if (!m_sprites.textures[4].loadFromFile("resources/textures/caveSoil.png"))
-				PLOGE << "Unable to load resources/textures/caveRoof.png";
+			//avant-plan
+			verifFichierDisponible("resources/textures/caveGround.png", 2);
+			verifFichierDisponible("resources/textures/caveRoof.png", 3);
+			verifFichierDisponible("resources/textures/caveSoil.png", 4);
 			break;
 		default:
 			break;
