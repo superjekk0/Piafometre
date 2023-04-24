@@ -104,14 +104,6 @@ enum class TypePlateforme {
 	max
 };
 
-class Plateforme {
-public:
-	bool touche;
-	bool visible;
-	sf::Sprite sprite;
-	TypePlateforme comportement;
-};
-
 enum Oiseau {
 	vole_gauche = 0,
 	vole_droite = 1,
@@ -126,19 +118,6 @@ enum FrameDrapeau {
 	frame2 = 1
 };
 
-struct ObjetADessiner {
-	std::vector <sf::Sprite> arrierePlan;
-	std::vector <Plateforme> avantPlan;
-	sf::Sprite joueur;
-	std::vector <sf::Text> hud;
-	Langue langue;
-	sf::Color couleur;
-	sf::RectangleShape ecranNoir;
-	std::vector<sf::Texture> textures;
-	sf::View camera;
-	sf::Font police;
-	PositionJeu positionDansJeu;
-};
 
 struct Moteur {
 	int positionJoueurX;
@@ -168,7 +147,6 @@ namespace utilitaire {
 
 bool verifTouches(const ensembleTouches& pTouches);
 void resetTouches(ensembleTouches& pTouches);
-void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
 void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
 std::wstring nomFichierImageTouches(const Clv::Key pTouche, const Langue langue);
 std::string chargementTextures(const std::string& langue, const PositionJeu position);

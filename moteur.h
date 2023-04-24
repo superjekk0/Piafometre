@@ -3,6 +3,7 @@
 
 #include "ressources.h"
 #include "MoteurMenu.h"
+#include "Plateforme.h"
 constexpr int finTempsSaut{ 30 }; //30 dixièmes de secondes (3 secondes)
 constexpr int finPeutSauter{ 150 };//150 dixièmes de seconde (15 secondes)
 

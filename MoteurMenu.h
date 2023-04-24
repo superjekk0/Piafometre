@@ -253,9 +253,6 @@ private:
 
 	void chargementNiveau()
 	{
-		//m_sprites.hud.resize(1);
-		//chargementTexteHUD();
-		//affichageHUD();
 
 		switch (m_moteur.niveau)
 		{
@@ -348,7 +345,25 @@ private:
 			break;
 		case 2:
 			m_sprites.couleur = sf::Color(0x2D100DFF);
+			
+			m_sprites.textures.resize(11);
+			m_sprites.avantPlan.resize(13);
+			m_sprites.arrierePlan.resize(1);
+			chargementTexturesNiveau();
 
+			m_sprites.avantPlan[0].sprite.setPosition(sf::Vector2f(0.f, 400.f));
+			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1]);
+			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 500, getHeight(m_sprites.textures[2])));
+
+			m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[1].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(*m_sprites.avantPlan[1].sprite.getTexture()), 400));
+			m_sprites.avantPlan[1].sprite.setPosition(
+				sf::Vector2f(getWidth(m_sprites.avantPlan[0].sprite), m_sprites.avantPlan[0].sprite.getPosition().y)
+				+ sf::Vector2f(-getWidth(m_sprites.avantPlan[1].sprite), -getHeight(m_sprites.avantPlan[1].sprite))
+			);
+
+			m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[4]);
+			m_sprites.avantPlan[2].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[0].coinSpriteDroitHaut()));
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -386,9 +401,14 @@ private:
 			break;
 		case 2:
 			//avant-plan
-			verifFichierDisponible("resources/textures/caveGround.png", 2);
-			verifFichierDisponible("resources/textures/caveRoof.png", 3);
-			verifFichierDisponible("resources/textures/caveSoil.png", 4);
+			verifFichierDisponible("resources/textures/caveGround.png", 1);
+			verifFichierDisponible("resources/textures/caveRoof.png", 2);
+			verifFichierDisponible("resources/textures/caveSoil.png", 3);
+			verifFichierDisponible("resources/texures/spikes.png", 4);
+			verifFichierDisponible("resources/sprites/powerUp.png", 5);
+			verifFichierDisponible("resources/sprites/caveExit.png", 6);
+
+			m_sprites.textures[4].setRepeated(true);
 			break;
 		default:
 			break;
