@@ -10,6 +10,24 @@ void verifFichierExiste(const std::string& chemin)
 	//Ça fonctionne très bien!
 }
 
+/// <summary>
+/// Retourne une liste de chaînes de caractère après une filtration
+/// </summary>
+/// <param name="str">Chaîne de caractère de base</param>
+/// <param name="separator">Caractère servant à séparer</param>
+std::vector<std::string> splitString(std::string str, const char separator)
+{
+	std::vector<std::string> listStrings{};
+	for (size_t indexSeparateur{ str.find(separator) }; indexSeparateur != str.npos; indexSeparateur = str.find(separator))
+	{
+		listStrings.push_back(str.substr(0, indexSeparateur));
+		str = str.substr(indexSeparateur + 1, str.size() - indexSeparateur);
+	}
+	if (str != "")
+		listStrings.push_back(str);
+	return listStrings;
+}
+
 void creationLimiteCamera(Moteur& moteur)
 {
 	switch (moteur.niveau)
@@ -20,6 +38,7 @@ void creationLimiteCamera(Moteur& moteur)
 		moteur.maxCameraY = 2000;
 		break;
 	default:
+		assert(false && L"Règle de niveau non créée");
 		break;
 	}
 }
