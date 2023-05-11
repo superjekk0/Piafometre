@@ -11,10 +11,10 @@ void verifFichierExiste(const std::string& chemin)
 }
 
 /// <summary>
-/// Retourne une liste de cha�nes de caract�re apr�s une filtration
+/// Retourne une liste de chaînes de caractères après une filtration
 /// </summary>
-/// <param name="str">Cha�ne de caract�re de base</param>
-/// <param name="separator">Caract�re servant � s�parer</param>
+/// <param name="str">Chaîne de caractères de base</param>
+/// <param name="separator">Caractère servant � séparer</param>
 std::vector<std::string> splitString(std::string str, const char separator)
 {
 	std::vector<std::string> listStrings{};
@@ -250,12 +250,12 @@ sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keybo
 				//	break;
 			case 8:
 				return static_cast<Clv::Key>(pEvenement.key.code + 51);
-			case 13: //Touche entr�e
+			case 13: //Touche entrée
 			case 14:
 			case 15:
 				return static_cast<sf::Keyboard::Key>(pEvenement.key.code + 45);
 			case 27:
-				//Touche �chap
+				//Touche Échap
 				return static_cast<Clv::Key>(pEvenement.key.code + 9);
 				//case 42:
 			case 44:
@@ -317,7 +317,7 @@ sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keybo
 				//La touche � ou /
 				return static_cast<Clv::Key>(pEvenement.key.code - 181);
 			default:
-				//Touches mapables � trier...
+				//Touches mapables à trier...
 				for (int i{ 0 }; i < sf::Keyboard::KeyCount; ++i)
 				{
 					if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(i)))
@@ -340,9 +340,9 @@ bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle)
 	while (true)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
-			return false; //Correspond � la touche N sur le clavier
+			return false; //Correspond à la touche N sur le clavier
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
-			return true; //Correspond � la touche Y sur le clavier
+			return true; //Correspond à la touche Y sur le clavier
 		std::this_thread::sleep_for(std::chrono::milliseconds(50 - cycle.restart().asMilliseconds()));
 	}
 }
