@@ -7,14 +7,14 @@ void verifFichierExiste(const std::string& chemin)
 	if (!fichierNiveau.exists())
 		PLOGE << chemin << "is not an existing file";
 	assert(fichierNiveau.exists() && "Le fichier specifie n'existe pas");
-	//Ça fonctionne très bien!
+	//ï¿½a fonctionne trï¿½s bien!
 }
 
 /// <summary>
-/// Retourne une liste de chaînes de caractère après une filtration
+/// Retourne une liste de chaï¿½nes de caractï¿½re aprï¿½s une filtration
 /// </summary>
-/// <param name="str">Chaîne de caractère de base</param>
-/// <param name="separator">Caractère servant à séparer</param>
+/// <param name="str">Chaï¿½ne de caractï¿½re de base</param>
+/// <param name="separator">Caractï¿½re servant ï¿½ sï¿½parer</param>
 std::vector<std::string> splitString(std::string str, const char separator)
 {
 	std::vector<std::string> listStrings{};
@@ -39,7 +39,7 @@ void creationLimiteCamera(Moteur& moteur)
 		moteur.maxCameraY = 2000;
 		break;
 	default:
-		assert(false && L"Règle de niveau non créée");
+		assert(false && L"Rï¿½gle de niveau non crï¿½ï¿½e");
 		break;
 	}
 }
@@ -250,12 +250,12 @@ sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keybo
 				//	break;
 			case 8:
 				return static_cast<Clv::Key>(pEvenement.key.code + 51);
-			case 13: //Touche entrée
+			case 13: //Touche entrï¿½e
 			case 14:
 			case 15:
 				return static_cast<sf::Keyboard::Key>(pEvenement.key.code + 45);
 			case 27:
-				//Touche Échap
+				//Touche ï¿½chap
 				return static_cast<Clv::Key>(pEvenement.key.code + 9);
 				//case 42:
 			case 44:
@@ -265,7 +265,7 @@ sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keybo
 				return static_cast<sf::Keyboard::Key>(pEvenement.key.code + 11);
 			case 46:
 				return static_cast<Clv::Key>(pEvenement.key.code + 4);
-				//Les touches numériques de base
+				//Les touches numï¿½riques de base
 			case 48:
 			case 49:
 			case 50:
@@ -314,10 +314,10 @@ sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keybo
 			case 123:
 				return static_cast<sf::Keyboard::Key>(pEvenement.key.code - 97);
 			case 233:
-				//La touche É ou /
+				//La touche ï¿½ ou /
 				return static_cast<Clv::Key>(pEvenement.key.code - 181);
 			default:
-				//Touches mapables à trier...
+				//Touches mapables ï¿½ trier...
 				for (int i{ 0 }; i < sf::Keyboard::KeyCount; ++i)
 				{
 					if (sf::Keyboard::isKeyPressed(static_cast<sf::Keyboard::Key>(i)))
@@ -340,9 +340,9 @@ bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle)
 	while (true)
 	{
 		if (sf::Keyboard::isKeyPressed(sf::Keyboard::N))
-			return false; //Correspond à la touche N sur le clavier
+			return false; //Correspond ï¿½ la touche N sur le clavier
 		else if (sf::Keyboard::isKeyPressed(sf::Keyboard::Y))
-			return true; //Correspond à la touche Y sur le clavier
+			return true; //Correspond ï¿½ la touche Y sur le clavier
 		std::this_thread::sleep_for(std::chrono::milliseconds(50 - cycle.restart().asMilliseconds()));
 	}
 }
