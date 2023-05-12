@@ -364,6 +364,9 @@ private:
 
 			m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[4]);
 			m_sprites.avantPlan[2].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[0].coinSpriteDroitHaut()));
+			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, 400, (int)getWidth(m_sprites.avantPlan[2].sprite)));
+			
+
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -408,6 +411,9 @@ private:
 			verifFichierDisponible("resources/sprites/powerUp.png", 5);
 			verifFichierDisponible("resources/sprites/caveExit.png", 6);
 
+			m_sprites.textures[1].setRepeated(true);
+			m_sprites.textures[2].setRepeated(true);
+			m_sprites.textures[3].setRepeated(true);
 			m_sprites.textures[4].setRepeated(true);
 			break;
 		default:
@@ -478,7 +484,7 @@ public:
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
-						m_moteur.niveau = 1;
+						m_moteur.niveau = 2; //Dès que la construction des niveaux est terminée, remettre à 1
 						ecranChargement();
 						return;
 						break;

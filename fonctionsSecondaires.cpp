@@ -38,8 +38,13 @@ void creationLimiteCamera(Moteur& moteur)
 		moteur.maxCameraX = 3000;
 		moteur.maxCameraY = 2000;
 		break;
+	case 2:
+		moteur.minCameraY = -600;
+		moteur.maxCameraY = 200;
+		moteur.maxCameraX = 3000;
+		break;
 	default:
-		assert(false && L"R�gle de niveau non cr��e");
+		assert(false && L"Règle de niveau non créée");
 		break;
 	}
 }
