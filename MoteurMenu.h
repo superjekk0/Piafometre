@@ -354,6 +354,7 @@ private:
 			m_sprites.avantPlan[0].sprite.setPosition(sf::Vector2f(0.f, 400.f));
 			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1]);
 			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 500, getHeight(m_sprites.textures[2])));
+			m_sprites.avantPlan[0].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[3]);
 			m_sprites.avantPlan[1].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(*m_sprites.avantPlan[1].sprite.getTexture()), 400));
@@ -361,12 +362,40 @@ private:
 				sf::Vector2f(getWidth(m_sprites.avantPlan[0].sprite), m_sprites.avantPlan[0].sprite.getPosition().y)
 				+ sf::Vector2f(-getWidth(m_sprites.avantPlan[1].sprite), -getHeight(m_sprites.avantPlan[1].sprite))
 			);
+			m_sprites.avantPlan[1].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[4]);
 			m_sprites.avantPlan[2].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[0].coinSpriteDroitHaut()));
-			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, 400, (int)getWidth(m_sprites.avantPlan[2].sprite)));
-			
+			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, 400, (int)getHeight(m_sprites.avantPlan[2].sprite)));
+			m_sprites.avantPlan[2].comportement = TypePlateforme::pics;
 
+			m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[1]);
+			m_sprites.avantPlan[3].sprite.setPosition(m_sprites.avantPlan[2].coinSpriteGaucheBas());
+			m_sprites.avantPlan[3].sprite.setTextureRect(sf::IntRect(0, 0, 400, 200));
+			m_sprites.avantPlan[3].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[4]);
+			m_sprites.avantPlan[4].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[0].coinSpriteDroitHaut()) + sf::Vector2f(600.f,0.f));
+			m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 400, (int)getHeight(m_sprites.avantPlan[2].sprite)));
+			m_sprites.avantPlan[4].comportement = TypePlateforme::pics;
+
+			m_sprites.avantPlan[5].sprite.setTexture(m_sprites.textures[1]);
+			m_sprites.avantPlan[5].sprite.setPosition(m_sprites.avantPlan[4].coinSpriteGaucheBas());
+			m_sprites.avantPlan[5].sprite.setTextureRect(sf::IntRect(0, 0, 400, 200));
+			m_sprites.avantPlan[5].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[6].sprite.setTexture(m_sprites.textures[4]);
+			m_sprites.avantPlan[6].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[4].coinSpriteDroitHaut() + sf::Vector2f(600.f, 0.f)));
+			m_sprites.avantPlan[6].sprite.setTextureRect(sf::IntRect(0, 0, 400, (int)getHeight(m_sprites.avantPlan[2].sprite)));
+			m_sprites.avantPlan[6].comportement = TypePlateforme::pics;
+
+			m_sprites.avantPlan[7].sprite.setTexture(m_sprites.textures[1]);
+			m_sprites.avantPlan[7].sprite.setPosition(m_sprites.avantPlan[2].coinSpriteGaucheBas());
+			m_sprites.avantPlan[7].sprite.setTextureRect(sf::IntRect(0, 0, 400, 200));
+			m_sprites.avantPlan[7].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[8].sprite.setTexture(m_sprites.textures[5]);
+			m_sprites.avantPlan[8].sprite.setPosition(sf::Vector2f((m_sprites.avantPlan[2].coinSpriteDroitHaut().x + m_sprites.avantPlan[4].coinSpriteGaucheHaut().x) / 2.f, 250.f));
 			break;
 		default:
 			assert(false && "Niveau non disponible");

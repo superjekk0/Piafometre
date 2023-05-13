@@ -12,19 +12,29 @@ public:
 
 	Plateforme() = default;
 
-	sf::Vector2f positionSprite()
+	sf::Vector2f positionSprite() const
 	{
 		return sprite.getPosition();
 	}
 
-	sf::Vector2f coinSpriteDroitHaut()
+	sf::Vector2f coinSpriteDroitHaut() const
 	{
 		return sprite.getPosition() + sf::Vector2f(getWidth(sprite), 0.f);
 	}
 
-	sf::Vector2f coinSpriteGaucheBas()
+	sf::Vector2f coinSpriteGaucheBas() const
 	{
 		return sprite.getPosition() + sf::Vector2f(0.f, getHeight(sprite));
+	}
+
+	sf::Vector2f coinSpriteGaucheHaut() const 
+	{
+		return sprite.getPosition();
+	}
+
+	sf::Vector2f coinSpriteDroitBas() const
+	{
+		return sprite.getPosition() + sf::Vector2f(getWidth(sprite), getHeight(sprite));
 	}
 };
 
