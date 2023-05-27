@@ -253,7 +253,11 @@ private:
 
 	void chargementNiveau()
 	{
-
+		m_sprites.joueur.setTexture(m_sprites.textures[0]);
+		m_sprites.joueur.setTextureRect(sf::IntRect(0,
+			marche_droite * getHeight(m_sprites.textures[0]) / max,
+			getWidth(m_sprites.textures[0]) / 3,
+			getHeight(m_sprites.textures[0]) / max));
 		switch (m_moteur.niveau)
 		{
 		case 1:
@@ -325,11 +329,6 @@ private:
 				m_sprites.avantPlan[4].sprite.getPosition() - sf::Vector2f(0.f, getHeight(m_sprites.textures[4])));
 			m_sprites.avantPlan[10].comportement = TypePlateforme::finTableau;
 
-			m_sprites.joueur.setTexture(m_sprites.textures[0]);
-			m_sprites.joueur.setTextureRect(sf::IntRect(0,
-				marche_droite * getHeight(m_sprites.textures[0]) / max,
-				getWidth(m_sprites.textures[0]) / 3,
-				getHeight(m_sprites.textures[0]) / max));
 			m_sprites.joueur.setScale(3, 3);
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].sprite.getPosition().x,
 				m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.joueur));
@@ -396,6 +395,16 @@ private:
 
 			m_sprites.avantPlan[8].sprite.setTexture(m_sprites.textures[5]);
 			m_sprites.avantPlan[8].sprite.setPosition(sf::Vector2f((m_sprites.avantPlan[2].coinSpriteDroitHaut().x + m_sprites.avantPlan[4].coinSpriteGaucheHaut().x) / 2.f, 250.f));
+			m_sprites.avantPlan[8].comportement = TypePlateforme::objet;
+
+			m_sprites.avantPlan[9].sprite.setTexture(m_sprites.textures[5]);
+			m_sprites.avantPlan[9].sprite.setPosition((m_sprites.avantPlan[4].coinSpriteDroitHaut().x + m_sprites.avantPlan[6].coinSpriteGaucheHaut().x) / 2.f, 250.f);
+			m_sprites.avantPlan[9].comportement = TypePlateforme::objet;
+
+			m_sprites.avantPlan[10].sprite.setTexture(m_sprites.textures[7]);
+			m_sprites.avantPlan[10].sprite.setPosition(m_sprites.avantPlan[6].coinSpriteDroitHaut());
+			m_sprites.avantPlan[10].comportement = TypePlateforme::checkPoint;
+			m_sprites.avantPlan[10].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[7]) / 3, getHeight(m_sprites.textures[7])));
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -437,9 +446,10 @@ private:
 			verifFichierDisponible("resources/textures/caveGround.png", 1);
 			verifFichierDisponible("resources/textures/caveRoof.png", 2);
 			verifFichierDisponible("resources/textures/caveSoil.png", 3);
-			verifFichierDisponible("resources/texures/spikes.png", 4);
+			verifFichierDisponible("resources/textures/spikes.png", 4);
 			verifFichierDisponible("resources/sprites/powerUp.png", 5);
 			verifFichierDisponible("resources/sprites/caveExit.png", 6);
+			verifFichierDisponible("resources/sprites/checkpoint.png", 7);
 
 			m_sprites.textures[1].setRepeated(true);
 			m_sprites.textures[2].setRepeated(true);
