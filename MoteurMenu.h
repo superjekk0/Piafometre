@@ -407,12 +407,13 @@ private:
 	{
 		if (!m_sprites.textures[index].loadFromFile(chemin))
 			PLOGE << "Unable to load " << chemin;
+		m_sprites.textures[index].setRepeated(false);
 	}
 
 	void chargementTexturesNiveau()
 	{
 		verifFichierDisponible("resources/sprites/player.png", 0);
-		//l'index 0 et 1 est réservé pour le sprite du joueur
+		//l'index 0 est réservé pour le sprite du joueur
 		switch (m_moteur.niveau)
 		{
 		case 1:
