@@ -253,11 +253,14 @@ private:
 
 	void chargementNiveau()
 	{
+		chargementTexturesNiveau();
 		m_sprites.joueur.setTexture(m_sprites.textures[0]);
 		m_sprites.joueur.setTextureRect(sf::IntRect(0,
 			marche_droite * getHeight(m_sprites.textures[0]) / max,
 			getWidth(m_sprites.textures[0]) / 3,
 			getHeight(m_sprites.textures[0]) / max));
+		m_sprites.joueur.setScale(3, 3);
+
 		switch (m_moteur.niveau)
 		{
 		case 1:
@@ -265,7 +268,6 @@ private:
 			m_sprites.textures.resize(11);
 			m_sprites.avantPlan.resize(13);
 			m_sprites.arrierePlan.resize(2);
-			chargementTexturesNiveau();
 
 			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[2]);
 			m_sprites.avantPlan[0].sprite.setScale(0.75f, 0.75f);
@@ -329,7 +331,6 @@ private:
 				m_sprites.avantPlan[4].sprite.getPosition() - sf::Vector2f(0.f, getHeight(m_sprites.textures[4])));
 			m_sprites.avantPlan[10].comportement = TypePlateforme::finTableau;
 
-			m_sprites.joueur.setScale(3, 3);
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].sprite.getPosition().x,
 				m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.joueur));
 
@@ -348,7 +349,6 @@ private:
 			m_sprites.textures.resize(11);
 			m_sprites.avantPlan.resize(13);
 			m_sprites.arrierePlan.resize(1);
-			chargementTexturesNiveau();
 
 			m_sprites.avantPlan[0].sprite.setPosition(sf::Vector2f(0.f, 400.f));
 			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1]);
@@ -405,6 +405,8 @@ private:
 			m_sprites.avantPlan[10].sprite.setPosition(m_sprites.avantPlan[6].coinSpriteDroitHaut());
 			m_sprites.avantPlan[10].comportement = TypePlateforme::checkPoint;
 			m_sprites.avantPlan[10].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[7]) / 3, getHeight(m_sprites.textures[7])));
+			
+			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -426,6 +428,7 @@ private:
 		switch (m_moteur.niveau)
 		{
 		case 1:
+			m_sprites.textures.resize(9);
 			//avant-plan
 			verifFichierDisponible("resources/textures/dirt.png", 1);
 			verifFichierDisponible("resources/textures/grass.png", 2);
@@ -443,6 +446,7 @@ private:
 			break;
 		case 2:
 			//avant-plan
+			m_sprites.textures.resize(12);
 			verifFichierDisponible("resources/textures/caveGround.png", 1);
 			verifFichierDisponible("resources/textures/caveRoof.png", 2);
 			verifFichierDisponible("resources/textures/caveSoil.png", 3);
@@ -462,7 +466,6 @@ private:
 	}
 
 #pragma endregion
-
 
 public:
 
