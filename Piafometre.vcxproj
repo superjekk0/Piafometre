@@ -150,6 +150,7 @@
     <ClInclude Include="moteur.h" />
     <ClInclude Include="MoteurMenu.h" />
     <ClInclude Include="Plateforme.h" />
+    <ClInclude Include="Plateformes.h" />
     <ClInclude Include="ressources.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

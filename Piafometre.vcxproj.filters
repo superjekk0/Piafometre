@@ -44,5 +44,8 @@
     <ClInclude Include="Plateforme.h">
       <Filter>Fichiers sources</Filter>
     </ClInclude>
+    <ClInclude Include="Plateformes.h">
+      <Filter>Fichiers sources</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
