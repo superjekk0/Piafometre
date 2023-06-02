@@ -122,10 +122,10 @@ enum FrameDrapeau {
 struct Moteur {
 	int positionJoueurX;
 	int positionJoueurY;
-	int maxCameraX;
-	int maxCameraY;
-	int minCameraX;
-	int minCameraY;
+	int maxCameraX; // Se situe par rapport à l'extrémité droite de l'écran
+	int maxCameraY; // Se situe par rapport à l'extrémité basse de l'écran
+	int minCameraX;	// Se situe par rapport à l'extrémité gauche de l'écran
+	int minCameraY; // Se situe par rapport à l'extrémité haute de l'écran
 	int niveau;
 	int nbVie;
 	Checkpoint checkpoint;
@@ -134,7 +134,7 @@ struct Moteur {
 
 using Clv = sf::Keyboard;									//La classe sf::Keyboard (Clavier), en somme
 using ensembleTouches = std::array<sf::Keyboard::Key, 7>;
-using fonctionsRessources = std::function<std::string(const int&)>;
+//using fonctionsRessources = std::function<std::string(const int&)>;
 using touchesActives = std::vector<bool>;
 
 constexpr float vecteurNul{ 0.f };

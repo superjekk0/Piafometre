@@ -209,6 +209,7 @@ public:
 		mouvementMenu->detach();
 
 		sf::Clock debutCycle;
+		/// TODO : Changer les fonctions pour enlever les boucles while dedans et changer "detach" par "join" dans les threads associés
 		while (threadsActifs)
 		{
 			detectionEvenement(*evenementFenetre, threadsActifs, deplacementActif,

@@ -40,7 +40,7 @@ void creationLimiteCamera(Moteur& moteur)
 		break;
 	case 2:
 		moteur.minCameraY = -600;
-		moteur.maxCameraY = 200;
+		moteur.maxCameraY = 720;
 		moteur.maxCameraX = 3000;
 		break;
 	default:
