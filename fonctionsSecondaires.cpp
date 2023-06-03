@@ -41,7 +41,7 @@ void creationLimiteCamera(Moteur& moteur)
 	case 2:
 		moteur.minCameraY = -600;
 		moteur.maxCameraY = 720;
-		moteur.maxCameraX = 3000;
+		moteur.maxCameraX = 5000;
 		break;
 	default:
 		assert(false && L"Règle de niveau non créée");

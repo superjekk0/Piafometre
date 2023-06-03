@@ -446,6 +446,27 @@ private:
 	{
 		return m_autorisationsSaut.test(3) && (m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1));
 	}
+
+	void mort(std::unique_ptr<std::thread>& sautEffectif)
+	{
+		m_sprites.hud.resize(2);
+		m_tempsDixiemeSeconde = finTempsSaut;
+		m_peutDeplacer = !m_peutDeplacer;
+		m_menus.ecranChargement();
+		if (m_moteur.checkpoint.checkpointActif())
+		{
+			m_sprites.joueur.setPosition(m_moteur.checkpoint.coordonneesJoueur());
+			m_sprites.camera.setCenter(m_moteur.checkpoint.coordonneesCamera());
+
+			std::vector<sf::Vector2f> coordoneesArriere{ m_moteur.checkpoint.coordonneesArrierePlan() };
+			for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
+			{
+				m_sprites.arrierePlan[i].setPosition(coordoneesArriere[i]);
+			}
+		}
+		m_sprites.hud.resize(0);
+		sautEffectif.release();
+	}
 public:
 
 #pragma region CONSTRUCTEUR
@@ -562,23 +583,7 @@ public:
 					deplacementVectoriel.y += utilitaire::deplacement;
 					break;
 				case Collision::pics:
-					m_sprites.hud.resize(2);
-					m_tempsDixiemeSeconde = finTempsSaut;
-					m_peutDeplacer = !m_peutDeplacer;
-					m_menus.ecranChargement();
-					if (m_moteur.checkpoint.checkpointActif())
-					{
-						m_sprites.joueur.setPosition(m_moteur.checkpoint.coordonneesJoueur());
-						m_sprites.camera.setCenter(m_moteur.checkpoint.coordonneesCamera());
-
-						std::vector<sf::Vector2f> coordoneesArriere{ m_moteur.checkpoint.coordonneesArrierePlan() };
-						for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
-						{
-							m_sprites.arrierePlan[i].setPosition(coordoneesArriere[i]);
-						}
-					}
-					m_sprites.hud.resize(0);
-					sautEffectif.release();
+					mort(sautEffectif);
 					return;
 					break;
 				case Collision::checkpoint:
@@ -666,6 +671,11 @@ public:
 					{
 						arrierePlan.move(0, deplacementVectoriel.y * .75);
 					}
+				}
+				else if (m_sprites.joueur.getPosition().y > m_moteur.maxCameraY)
+				{
+					mort(sautEffectif);
+					return;
 				}
 			}
 			m_sprites.joueur.move(deplacementVectoriel);
