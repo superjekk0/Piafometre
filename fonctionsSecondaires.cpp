@@ -29,25 +29,6 @@ std::vector<std::string> splitString(std::string str, const char separator)
 	return listStrings;
 }
 
-void creationLimiteCamera(Moteur& moteur)
-{
-	switch (moteur.niveau)
-	{
-	case 1:
-		moteur.minCameraY = -500;
-		moteur.maxCameraX = 3000;
-		moteur.maxCameraY = 2000;
-		break;
-	case 2:
-		moteur.minCameraY = -600;
-		moteur.maxCameraY = 720;
-		moteur.maxCameraX = 5000;
-		break;
-	default:
-		assert(false && L"Règle de niveau non créée");
-		break;
-	}
-}
 
 Clv::Key tradToucheCode(Clv::Key pTouche)
 {

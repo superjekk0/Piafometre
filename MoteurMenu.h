@@ -3,6 +3,7 @@
 
 #include "ressources.h"
 #include "Jeu.h"
+#include "Checkpoint.h"
 
 class MoteurMenu {
 private:
@@ -251,6 +252,26 @@ private:
 		placementObjets();
 	}
 
+	void creationLimiteCamera(Moteur& moteur)
+	{
+		switch (moteur.niveau)
+		{
+		case 1:
+			moteur.minCameraY = -500;
+			moteur.maxCameraX = 3000;
+			moteur.maxCameraY = 2000;
+			break;
+		case 2:
+			moteur.minCameraY = -600;
+			moteur.maxCameraY = 720;
+			moteur.maxCameraX = 5000;
+			break;
+		default:
+			assert(false && L"Règle de niveau non créée");
+			break;
+		}
+	}
+
 	void chargementNiveau()
 	{
 		chargementTexturesNiveau();
@@ -421,6 +442,10 @@ private:
 			m_sprites.avantPlan[13].sprite.setPosition(m_sprites.avantPlan[1].coinSpriteGaucheBas() + sf::Vector2f(-75.f, -getHeight(m_sprites.avantPlan[13].sprite)));
 			m_sprites.avantPlan[13].comportement = TypePlateforme::objet;
 
+			m_sprites.avantPlan[14].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[14].sprite.setTextureRect(sf::IntRect(0, 0, 3000, 500));
+			m_sprites.avantPlan[14].sprite.setPosition(sf::Vector2f(0.f, -500.f));
+			m_sprites.avantPlan[14].comportement = TypePlateforme::solide;
 
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 			break;

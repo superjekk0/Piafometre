@@ -146,6 +146,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Checkpoint.h" />
     <ClInclude Include="Jeu.h" />
     <ClInclude Include="moteur.h" />
     <ClInclude Include="MoteurMenu.h" />

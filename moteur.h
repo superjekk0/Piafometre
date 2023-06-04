@@ -4,6 +4,8 @@
 #include "ressources.h"
 #include "MoteurMenu.h"
 #include "Plateforme.h"
+#include "Checkpoint.h"
+
 constexpr int finTempsSaut{ 30 }; //30 dixièmes de secondes (3 secondes)
 constexpr int finPeutSauter{ 150 };//150 dixièmes de seconde (15 secondes)
 
@@ -519,8 +521,9 @@ public:
 				case Collision::checkpoint:
 					deplacementVectoriel.x -= utilitaire::deplacement;
 					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
-						m_sprites.joueur.getPosition(),
-						m_sprites.arrierePlan);
+						m_sprites.joueur,
+						m_sprites.arrierePlan,
+						m_sprites.avantPlan[positionTableauCheckpoint]);
 					break;
 				case Collision::fin:
 					++m_moteur.niveau;
@@ -541,7 +544,10 @@ public:
 					break;
 				case Collision::checkpoint:
 					deplacementVectoriel.x += utilitaire::deplacement;
-					if (!m_moteur.checkpoint.checkpointActif()) m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
+					if (!m_moteur.checkpoint.checkpointActif()) m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+						m_sprites.joueur,
+						m_sprites.arrierePlan,
+						m_sprites.avantPlan[positionTableauCheckpoint]);
 					break;
 				case Collision::objet:
 					deplacementVectoriel.x += utilitaire::deplacement;
@@ -564,7 +570,10 @@ public:
 					break;
 				case Collision::checkpoint:
 					deplacementVectoriel.y -= utilitaire::deplacement;
-					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
+					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+						m_sprites.joueur,
+						m_sprites.arrierePlan,
+						m_sprites.avantPlan[positionTableauCheckpoint]);
 					break;
 				case Collision::fin:
 					++m_moteur.niveau;
@@ -588,7 +597,10 @@ public:
 					break;
 				case Collision::checkpoint:
 					deplacementVectoriel.y += utilitaire::deplacement;
-					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(), m_sprites.joueur.getPosition(), m_sprites.arrierePlan);
+					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+						m_sprites.joueur,
+						m_sprites.arrierePlan,
+						m_sprites.avantPlan[positionTableauCheckpoint]);
 					break;
 				case Collision::normale:
 					m_autorisationsSaut.set(0);
