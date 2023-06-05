@@ -428,7 +428,7 @@ private:
 			m_sprites.avantPlan[10].comportement = TypePlateforme::objet;
 
 			m_sprites.avantPlan[11].sprite.setTexture(m_sprites.textures[1]);
-			m_sprites.avantPlan[11].sprite.setTextureRect(sf::IntRect(0, 0, 500, getHeight(m_sprites.textures[1])));
+			m_sprites.avantPlan[11].sprite.setTextureRect(sf::IntRect(0, 0, 700, getHeight(m_sprites.textures[1])));
 			m_sprites.avantPlan[11].sprite.setPosition(m_sprites.avantPlan[7].coinSpriteDroitHaut());
 			m_sprites.avantPlan[11].comportement = TypePlateforme::solide;
 
@@ -443,9 +443,19 @@ private:
 			m_sprites.avantPlan[13].comportement = TypePlateforme::objet;
 
 			m_sprites.avantPlan[14].sprite.setTexture(m_sprites.textures[3]);
-			m_sprites.avantPlan[14].sprite.setTextureRect(sf::IntRect(0, 0, 3000, 500));
+			m_sprites.avantPlan[14].sprite.setTextureRect(sf::IntRect(0, 0, 3000, 400));
 			m_sprites.avantPlan[14].sprite.setPosition(sf::Vector2f(0.f, -500.f));
 			m_sprites.avantPlan[14].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[15].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[15].sprite.setTextureRect(sf::IntRect(0, 0, 200, 1000));
+			m_sprites.avantPlan[15].sprite.setPosition(m_sprites.avantPlan[11].coinSpriteDroitHaut() + sf::Vector2f(-getWidth(m_sprites.avantPlan[15].sprite), -1200.f));
+			m_sprites.avantPlan[15].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[16].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[16].sprite.setTextureRect(sf::IntRect(0, 0, 300, 500));
+			m_sprites.avantPlan[16].sprite.setPosition(m_sprites.avantPlan[11].coinSpriteDroitHaut() + sf::Vector2f(500.f, -400.f));
+			m_sprites.avantPlan[16].comportement = TypePlateforme::solide;
 
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 			break;

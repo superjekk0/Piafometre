@@ -198,9 +198,13 @@ private:
 					return Collision::normale;
 					break;
 				case TypePlateforme::pics:
-					--m_moteur.nbVie;
-					return Collision::pics;
+					if (procheSol(m_sprites.joueur, plateforme.sprite))
+					{
+						--m_moteur.nbVie;
+						return Collision::pics;
+					}
 					break;
+
 				case TypePlateforme::checkPoint:
 					return Collision::checkpoint;
 					break;

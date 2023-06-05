@@ -77,7 +77,7 @@ const sf::Color couleur{ sf::Color(128, 128, 128) };
 	constexpr int tempsParImage{ 1000000 / 60 };				//Temps en microsecondes
 namespace utilitaire {
 	constexpr unsigned int limiteFramerate{ 60 };
-	constexpr int deplacement{ 3 };
+	constexpr float deplacement{ 3.f };
 }
 
 bool verifTouches(const ensembleTouches& pTouches);
