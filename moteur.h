@@ -187,7 +187,7 @@ private:
 		for (auto& plateforme : m_sprites.avantPlan)
 		{
 
-			if (collisionBas(m_sprites.joueur, plateforme))
+			if (collisionBas(m_sprites.joueur, plateforme) && procheSol(m_sprites.joueur, plateforme.sprite))
 			{
 				switch (plateforme.comportement)
 				{
@@ -198,11 +198,11 @@ private:
 					return Collision::normale;
 					break;
 				case TypePlateforme::pics:
-					if (procheSol(m_sprites.joueur, plateforme.sprite))
-					{
+					//if (procheSol(m_sprites.joueur, plateforme.sprite))
+					//{
 						--m_moteur.nbVie;
 						return Collision::pics;
-					}
+					//}
 					break;
 
 				case TypePlateforme::checkPoint:

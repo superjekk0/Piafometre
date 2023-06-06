@@ -264,7 +264,7 @@ private:
 		case 2:
 			moteur.minCameraY = -600;
 			moteur.maxCameraY = 720;
-			moteur.maxCameraX = 5000;
+			moteur.maxCameraX = 3800;
 			break;
 		default:
 			assert(false && L"Règle de niveau non créée");
@@ -286,7 +286,6 @@ private:
 		{
 		case 1:
 			m_sprites.couleur = sf::Color(119, 181, 254);
-			m_sprites.textures.resize(11);
 			m_sprites.avantPlan.resize(13);
 			m_sprites.arrierePlan.resize(2);
 
@@ -367,8 +366,7 @@ private:
 		case 2:
 			m_sprites.couleur = sf::Color(0x2D100DFF);
 			
-			m_sprites.textures.resize(11);
-			m_sprites.avantPlan.resize(20);
+			m_sprites.avantPlan.resize(22);
 			m_sprites.arrierePlan.resize(1);
 
 			m_sprites.avantPlan[0].sprite.setPosition(sf::Vector2f(0.f, 400.f));
@@ -453,11 +451,39 @@ private:
 			m_sprites.avantPlan[15].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[16].sprite.setTexture(m_sprites.textures[3]);
-			m_sprites.avantPlan[16].sprite.setTextureRect(sf::IntRect(0, 0, 300, 500));
+			m_sprites.avantPlan[16].sprite.setTextureRect(sf::IntRect(0, 0, 300, 700));
 			m_sprites.avantPlan[16].sprite.setPosition(m_sprites.avantPlan[11].coinSpriteDroitHaut() + sf::Vector2f(500.f, -400.f));
 			m_sprites.avantPlan[16].comportement = TypePlateforme::solide;
 
+			m_sprites.avantPlan[17].sprite.setTexture(m_sprites.textures[5]);
+			m_sprites.avantPlan[17].sprite.setPosition(m_sprites.avantPlan[11].coinSpriteDroitHaut() + sf::Vector2f(-200.f, -getHeight(m_sprites.avantPlan[17].sprite)));
+			m_sprites.avantPlan[17].comportement = TypePlateforme::objet;
+
+			m_sprites.avantPlan[18].sprite.setTexture(m_sprites.textures[5]);
+			m_sprites.avantPlan[18].sprite.setPosition((m_sprites.avantPlan[11].coinSpriteDroitHaut() + m_sprites.avantPlan[16].coinSpriteGaucheHaut()) / 2.f);
+			m_sprites.avantPlan[18].comportement = TypePlateforme::objet;
+
+			m_sprites.avantPlan[19].sprite.setTexture(m_sprites.textures[2]);
+			m_sprites.avantPlan[19].sprite.setTextureRect(sf::IntRect(0, 0, 1000, getHeight(m_sprites.textures[2])));
+			m_sprites.avantPlan[19].sprite.setPosition(m_sprites.avantPlan[15].coinSpriteDroitHaut() + sf::Vector2f(0.f, 300.f));
+			m_sprites.avantPlan[19].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[20].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[20].sprite.setTextureRect(sf::IntRect(0, 0, 1000, 500));
+			m_sprites.avantPlan[20].sprite.setPosition(m_sprites.avantPlan[19].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.avantPlan[20].sprite)));
+			m_sprites.avantPlan[20].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[21].sprite.setTexture(m_sprites.textures[6]);
+			m_sprites.avantPlan[21].sprite.setScale(1.5f, 1.5f);
+			m_sprites.avantPlan[21].sprite.setPosition(m_sprites.avantPlan[16].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.avantPlan[21].sprite)));
+			m_sprites.avantPlan[21].comportement = TypePlateforme::finTableau;
+
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
+
+			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[8]);
+			m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 8000, getHeight(m_sprites.textures[8])));
+			m_sprites.arrierePlan[0].setPosition(-100.f, -250.f);
+			m_sprites.arrierePlan[0].setScale(0.25f, 0.25f);
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -510,6 +536,11 @@ private:
 			m_sprites.textures[2].setRepeated(true);
 			m_sprites.textures[3].setRepeated(true);
 			m_sprites.textures[4].setRepeated(true);
+
+			//arrière-plan
+			verifFichierDisponible("resources/textures/cave.png", 8);
+
+			m_sprites.textures[8].setRepeated(true);
 			break;
 		default:
 			break;
