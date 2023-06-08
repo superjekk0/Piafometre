@@ -17,7 +17,7 @@ private:
 	//index 5: touche pour le bouton de saut
 	//index 6: touche pour le bouton de pause
 	//index 7: indique lorsque le programme doit arrêter
-	touchesActives& m_touchesActionnees;	
+	touchesActives& m_touchesActionnees;
 	int m_index;							// Index actuel du HUD
 	int m_indexMax;							// Index maximal du HUD selon un contexte donné
 	bool& m_peutDeplacer;					// Indique si le joueur peut bouger. Lorsque faux, le HUD est actif
@@ -266,7 +266,13 @@ private:
 			moteur.maxCameraY = 720;
 			moteur.maxCameraX = 3800;
 			break;
+		case 3:
+			moteur.minCameraY = -2000;
+			moteur.maxCameraY = 360;
+			moteur.maxCameraX = 1280;
+			break;
 		default:
+
 			assert(false && L"Règle de niveau non créée");
 			break;
 		}
@@ -365,7 +371,7 @@ private:
 			break;
 		case 2:
 			m_sprites.couleur = sf::Color(0x2D100DFF);
-			
+
 			m_sprites.avantPlan.resize(22);
 			m_sprites.arrierePlan.resize(1);
 
@@ -393,7 +399,7 @@ private:
 			m_sprites.avantPlan[3].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[4]);
-			m_sprites.avantPlan[4].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[0].coinSpriteDroitHaut()) + sf::Vector2f(600.f,0.f));
+			m_sprites.avantPlan[4].sprite.setPosition(sf::Vector2f(m_sprites.avantPlan[0].coinSpriteDroitHaut()) + sf::Vector2f(600.f, 0.f));
 			m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 400, (int)getHeight(m_sprites.avantPlan[2].sprite)));
 			m_sprites.avantPlan[4].comportement = TypePlateforme::pics;
 
@@ -484,6 +490,10 @@ private:
 			m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 8000, getHeight(m_sprites.textures[8])));
 			m_sprites.arrierePlan[0].setPosition(-100.f, -250.f);
 			m_sprites.arrierePlan[0].setScale(0.25f, 0.25f);
+			break;
+		case 3:
+			m_sprites.couleur = sf::Color(0xD4E7FFFF);
+
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -679,7 +689,7 @@ public:
 						m_sprites.hud.resize(0);
 						return;
 					case 1:
-						m_sprites.positionDansJeu = PositionJeu::quitter_pause; 
+						m_sprites.positionDansJeu = PositionJeu::quitter_pause;
 						chargementTexteHUD();
 						break;
 					}
@@ -707,8 +717,8 @@ public:
 						break;
 					}
 				}
-				
-			}			
+
+			}
 			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 			{
 				m_touchesNonRepetables.set(1);
