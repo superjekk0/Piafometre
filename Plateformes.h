@@ -6,7 +6,7 @@
 /// TODO : Ajouter l'héritage des classe SFML de base
 class Niveau {
 private:
-/// TODO : Membres privés à rajouter. Inclue le std::vector de plateformes et la texture globale
+/// TODO : Membres privés à rajouter. Inclue le std::vector de CaseOptimisee et la texture globale
 
 
 	public:
@@ -15,13 +15,21 @@ private:
 	///TODO : Surcharger la méthode draw avec la classe Niveau comme paramètre
 };
 
-/// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Ajouter l'héritage des classe SFML de base
+class CaseOptimisee {
+private:
+	///TODO : Inclure les membres privés tels que la texture globale, le carré de texture, les transformations appliquées à la texture, la taille désirée
+public:
+	/// TODO : Constructeur à trois paramètres. La texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la case.
+};
+
+/// TODO : Changer le nom de PlateformeOptimisee à Plateforme
+/// TODO : Hériter de CaseOptimisee
 class PlateformeOptimisee {
 private:
-/// TODO : Membres privés à rajouter. Inclue la texture globale, le carré de texture, les transformations appliquées à la texture, la taille désirée et le comportement
+/// TODO : Membres privés à rajouter. Le comportement
 public:
-	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide)
+	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide). Ça appellera la classe de base
 
 	/// TODO : Méthode pour changer la taille du carré de texture
 	/// TODO : Méthode pour changer la taille désirée de la plateforme

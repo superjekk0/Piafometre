@@ -696,7 +696,8 @@ public:
 			}
 			m_sprites.joueur.move(deplacementVectoriel);
 			m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
-			animationCheckpoint(m_sprites.avantPlan[positionTableauCheckpoint].sprite, frameAnimation);
+			if (positionTableauCheckpoint != -1)
+				animationCheckpoint(m_sprites.avantPlan[positionTableauCheckpoint].sprite, frameAnimation);
 			animationJoueur(deplacementVectoriel, frameAnimation);
 			++frameAnimation;
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));

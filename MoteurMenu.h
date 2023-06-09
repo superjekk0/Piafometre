@@ -268,7 +268,7 @@ private:
 			break;
 		case 3:
 			moteur.minCameraY = -2000;
-			moteur.maxCameraY = 360;
+			moteur.maxCameraY = 720;
 			moteur.maxCameraX = 1280;
 			break;
 		default:
@@ -494,6 +494,17 @@ private:
 		case 3:
 			m_sprites.couleur = sf::Color(0xD4E7FFFF);
 
+			m_sprites.arrierePlan.resize(1);
+			m_sprites.avantPlan.resize(20);
+
+			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1]);
+			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 1280, 200));
+			m_sprites.avantPlan[0].sprite.setPosition(0.f, 550.f);
+			m_sprites.avantPlan[0].comportement = TypePlateforme::solide;
+
+			m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[3]);
+			m_sprites.avantPlan[1].sprite.setPosition(m_sprites.avantPlan[0].coinSpriteDroitHaut() + sf::Vector2f(-getWidth(m_sprites.avantPlan[1].sprite) - 120.f, -getHeight(m_sprites.avantPlan[1].sprite)));
+			m_sprites.avantPlan[1].comportement = TypePlateforme::objet;
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -533,7 +544,7 @@ private:
 			break;
 		case 2:
 			//avant-plan
-			m_sprites.textures.resize(12);
+			m_sprites.textures.resize(9);
 			verifFichierDisponible("resources/textures/caveGround.png", 1);
 			verifFichierDisponible("resources/textures/caveRoof.png", 2);
 			verifFichierDisponible("resources/textures/caveSoil.png", 3);
@@ -551,6 +562,25 @@ private:
 			verifFichierDisponible("resources/textures/cave.png", 8);
 
 			m_sprites.textures[8].setRepeated(true);
+			break;
+		case 3:
+			m_sprites.textures.resize(7);
+			
+			//avant-plan
+			verifFichierDisponible("resources/textures/solMontagne.png", 1);
+			verifFichierDisponible("resources/textures/spikes.png", 2);
+			verifFichierDisponible("resources/sprites/powerUp.png", 3);
+			verifFichierDisponible("resources/textures/movingplatform.png", 4);
+			verifFichierDisponible("resources/textures/snowDirt.png", 5);
+
+			m_sprites.textures[1].setRepeated(true);
+			m_sprites.textures[2].setRepeated(true);
+			m_sprites.textures[5].setRepeated(true);
+
+			//arrière-plan
+			verifFichierDisponible("resources/textures/repeatedMountains.png", 6);
+
+			m_sprites.textures[6].setRepeated(true);
 			break;
 		default:
 			break;
@@ -619,7 +649,7 @@ public:
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
-						m_moteur.niveau = 2; //Dès que la construction des niveaux est terminée, remettre à 1
+						m_moteur.niveau = 3; //Dès que la construction des niveaux est terminée, remettre à 1
 						ecranChargement();
 						return;
 						break;
