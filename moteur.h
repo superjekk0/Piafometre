@@ -235,7 +235,7 @@ private:
 	std::bitset<3>& m_touchesNonRepetables;
 	MoteurMenu& m_menus;								//Pour appeler l'écran de chargement
 	bool m_gauche{ false };								//Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
-	int m_tempsDixiemeSeconde{ 0 };						//Sert à mesurer le temps de saut de le faire achever plus vite
+	int m_tempsDixiemeSeconde{ 0 };						//Indique combien de dixièmes de secondes se sont écoulées au saut
 	//Le bit 0 correspond à si le joueur peut sauter
 	//Le bit 1 correspond à si le joueur peut faire un autre saut
 	//Le bit 2 correspond à si un saut est en cours.
@@ -448,6 +448,7 @@ private:
 			if (m_tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
 			{
 				++m_tempsDixiemeSeconde;
+				if (m_moteur.niveau == 2) PLOGD << m_tempsDixiemeSeconde << L" dixièmes de secondes";
 			}
 			else
 			{
@@ -639,6 +640,8 @@ private:
 				break;
 			case Collision::fin:
 				++m_moteur.niveau;
+				m_peutDeplacer = !m_peutDeplacer;
+				pSautEffectif.release();
 				m_moteur.checkpoint.reinitialiser();
 				m_menus.ecranChargement();
 				return true;
@@ -661,6 +664,7 @@ public:
 
 	void deplacement()
 	{
+		m_tempsDixiemeSeconde = 0;
 		int positionTableauCheckpoint{ indexCheckpoint() };
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
@@ -804,6 +808,7 @@ public:
 				//	break;
 				//}
 			}
+			assert(m_collisions.size() <= m_sprites.avantPlan.size(), "Il ne peut pas y avoir plus de collisions que de plateformes");
 			if (gestionCollisions(positionTableauCheckpoint, sautEffectif, deplacementVectoriel))
 				return;
 			if (m_touchesActionnees[5] && !m_touchesNonRepetables.test(2) && personnagePeutSauter())

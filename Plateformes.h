@@ -10,9 +10,11 @@ private:
 
 
 	public:
-	///TODO : Constructeur à un paramètre prenant un chemin de fichier
+	/// TODO : Constructeur à un paramètre prenant un chemin de fichier
 
-	///TODO : Surcharger la méthode draw avec la classe Niveau comme paramètre
+	/// TODO : Surcharger la méthode draw avec la classe Niveau comme paramètre
+	/// TODO : Ajouter la surcharge de l'opérateur [] pour accéder à une case
+
 };
 
 /// TODO : Ajouter l'héritage des classe SFML de base
