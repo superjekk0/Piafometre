@@ -519,25 +519,33 @@ private:
 
 			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1], true);
 			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 1280, 200));
+			m_sprites.avantPlan[0].sprite.setScale(1.f, 1.f);
 			m_sprites.avantPlan[0].sprite.setPosition(0.f, 550.f);
 			m_sprites.avantPlan[0].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[3], true);
+			m_sprites.avantPlan[1].sprite.setScale(1.f, 1.f);
 			m_sprites.avantPlan[1].sprite.setPosition(m_sprites.avantPlan[0].coinSpriteDroitHaut() + sf::Vector2f(-getWidth(m_sprites.avantPlan[1].sprite) - 120.f, -getHeight(m_sprites.avantPlan[1].sprite)));
 			m_sprites.avantPlan[1].comportement = TypePlateforme::objet;
 
 			m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[1], true);
 			m_sprites.avantPlan[2].sprite.setColor(sf::Color(0xAAAAAAFF));
 			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, 300, 500));
+			m_sprites.avantPlan[2].sprite.setScale(1.f, 1.f);
 			m_sprites.avantPlan[2].sprite.setPosition((m_sprites.avantPlan[0].coinSpriteDroitHaut() + m_sprites.avantPlan[0].coinSpriteGaucheHaut()) / 2.f + sf::Vector2f(0.f, -getHeight(m_sprites.avantPlan[2].sprite)));
 			m_sprites.avantPlan[2].comportement = TypePlateforme::semiSolide;
 
 			m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[1], true);
 			m_sprites.avantPlan[3].sprite.setTextureRect(sf::IntRect(0, 0, 400, 150));
+			m_sprites.avantPlan[3].sprite.setScale(1.f, 1.f);
 			m_sprites.avantPlan[3].sprite.setPosition(m_sprites.avantPlan[2].coinSpriteDroitHaut());
 			m_sprites.avantPlan[3].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[1], true);
+			m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 600, 250));
+			m_sprites.avantPlan[4].sprite.setScale(1.f, 1.f);
+
+			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 			break;
 		default:
 			assert(false && "Niveau non disponible");
@@ -683,7 +691,7 @@ public:
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
-						m_moteur.niveau = 1; //Dès que la construction des niveaux est terminée, remettre à 1
+						m_moteur.niveau = 2; //Dès que la construction des niveaux est terminée, remettre à 1
 						ecranChargement();
 						return;
 						break;

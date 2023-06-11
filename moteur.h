@@ -583,6 +583,7 @@ private:
 		}
 		m_sprites.hud.resize(0);
 		sautEffectif.release();
+		m_autorisationsSaut.reset();
 	}
 
 	/// <summary>
@@ -641,6 +642,7 @@ private:
 			case Collision::fin:
 				++m_moteur.niveau;
 				m_peutDeplacer = !m_peutDeplacer;
+				m_autorisationsSaut.reset();
 				pSautEffectif.release();
 				m_moteur.checkpoint.reinitialiser();
 				m_menus.ecranChargement();
@@ -809,7 +811,7 @@ public:
 				//	break;
 				//}
 			}
-			assert(m_collisions.size() <= m_sprites.avantPlan.size(), "Il ne peut pas y avoir plus de collisions que de plateformes");
+			assert(m_collisions.size() <= m_sprites.avantPlan.size() && "Il ne peut pas y avoir plus de collisions que de plateformes");
 			if (gestionCollisions(positionTableauCheckpoint, sautEffectif, deplacementVectoriel))
 				return;
 			if (m_touchesActionnees[5] && !m_touchesNonRepetables.test(2) && personnagePeutSauter())
@@ -842,7 +844,7 @@ public:
 					m_sprites.camera.move(deplacementVectoriel.x, 0);
 					for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
 					{
-						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75, 0);
+						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75f, 0);
 					}
 				}
 			}
@@ -854,7 +856,7 @@ public:
 					m_sprites.camera.move(deplacementVectoriel.x, 0);
 					for (auto& arrierePlan : m_sprites.arrierePlan)
 					{
-						arrierePlan.move(deplacementVectoriel.x * .75, 0);
+						arrierePlan.move(deplacementVectoriel.x * .75f, 0);
 					}
 				}
 			}
@@ -866,7 +868,7 @@ public:
 					m_sprites.camera.move(0, deplacementVectoriel.y);
 					for (auto& arrierePlan : m_sprites.arrierePlan)
 					{
-						arrierePlan.move(0, deplacementVectoriel.y * .75);
+						arrierePlan.move(0, deplacementVectoriel.y * .75f);
 					}
 				}
 			}
@@ -877,7 +879,7 @@ public:
 					m_sprites.camera.move(0, deplacementVectoriel.y);
 					for (auto& arrierePlan : m_sprites.arrierePlan)
 					{
-						arrierePlan.move(0, deplacementVectoriel.y * .75);
+						arrierePlan.move(0, deplacementVectoriel.y * .75f);
 					}
 				}
 				else if (m_sprites.joueur.getPosition().y > m_moteur.maxCameraY)
