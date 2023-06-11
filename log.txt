@@ -9148,3 +9148,525 @@ $  B   �P@ @ B  @ B� �$ �       @       @  h    
 2023-06-11 15:52:33.490 INFO  [23388] [Jeu::~Jeu@170] sprites Structure deleted
 2023-06-11 15:52:33.490 INFO  [23388] [Jeu::~Jeu@171] Main object deleted
 2023-06-11 15:52:33.517 INFO  [23388] [WinMain@23] Program shut down
+2023-06-11 15:53:10.699 INFO  [9200] [WinMain@11] Program started
+2023-06-11 15:53:11.781 INFO  [9200] [Jeu::Jeu@158] Main object initialized
+2023-06-11 15:53:12.766 INFO  [4924] [MoteurMenu::ecranChargement@827] Launching level 1
+2023-06-11 15:53:56.107 INFO  [4924] [MoteurMenu::ecranChargement@827] Launching level 1
+2023-06-11 15:54:29.562 INFO  [4924] [MoteurMenu::ecranChargement@827] Launching level 2
+2023-06-11 15:54:34.466 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:34.569 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:34.569 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:34.679 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:34.679 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:34.786 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:34.786 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:34.894 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:34.894 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:35.002 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:35.002 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:35.113 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:35.113 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:35.221 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:35.221 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:35.331 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:35.331 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:35.440 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:35.440 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:35.549 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:35.550 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:35.658 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:35.658 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:35.765 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:35.766 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:35.876 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:35.876 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:35.985 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:35.985 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:36.095 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:36.203 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:36.203 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:36.312 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:36.312 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:36.421 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:36.421 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:36.529 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:36.529 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:36.638 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:36.639 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:36.749 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:36.749 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:36.858 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:36.858 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:36.965 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:36.966 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:37.075 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:37.075 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:37.184 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:37.184 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:37.293 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:37.293 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:37.403 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:37.403 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:37.511 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:37.511 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:37.621 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:37.621 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:37.730 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:37.730 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:37.838 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:37.947 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:37.947 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:38.056 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:38.056 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:38.164 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:38.164 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:38.271 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:38.271 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:38.379 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:38.379 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:38.487 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:38.488 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:38.596 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:38.596 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:38.704 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:38.704 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:38.813 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:38.814 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:38.921 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:38.921 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:39.030 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:39.031 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:39.139 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:39.139 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:39.247 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:39.247 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:39.356 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:39.356 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:39.465 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:39.465 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:39.575 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:39.575 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:39.683 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:39.683 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:39.791 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:39.791 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:39.899 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:40.007 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:40.007 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:40.115 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:40.116 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:40.225 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:40.225 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:40.334 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:40.334 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:40.443 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:40.443 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:40.552 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:40.552 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:40.661 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:40.661 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:40.770 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:40.771 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:40.880 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:40.880 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:40.989 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:40.989 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:41.097 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:41.097 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:41.206 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:41.206 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:41.315 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:41.315 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:41.424 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:41.424 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:41.533 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:41.534 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:41.642 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:41.642 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:41.750 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:41.750 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:41.859 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:41.859 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:41.967 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:41.967 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:42.075 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:42.076 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:42.184 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:42.185 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:42.294 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:42.294 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:42.403 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:42.403 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:42.511 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:42.512 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:42.621 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:42.621 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:42.731 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:42.838 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:42.855 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:42.962 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:42.962 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:43.070 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:43.070 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:43.178 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:43.179 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:43.285 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:43.286 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:43.394 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:43.394 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:43.503 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:43.503 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:43.612 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:43.613 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:43.721 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:43.721 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:43.829 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:43.830 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:43.937 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:43.937 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:44.046 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:44.046 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:44.155 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:44.155 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:44.263 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:44.263 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:44.373 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:44.373 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:44.480 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:44.588 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:44.588 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:44.696 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:44.696 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:44.805 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:44.806 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:44.914 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:44.914 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:45.024 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:45.024 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:45.133 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:45.133 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:45.242 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:45.242 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:45.350 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:45.350 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:45.459 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:45.459 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:45.570 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:45.570 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:45.679 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:45.679 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:45.787 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:45.787 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:45.896 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:45.896 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:46.004 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:46.004 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:46.112 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:46.113 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:46.222 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:46.330 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:46.330 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:46.440 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:46.440 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:46.549 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:46.549 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:46.657 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:46.657 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:46.766 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:46.766 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:46.875 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:46.875 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:46.977 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:46.977 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:47.085 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:47.085 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:47.193 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:47.194 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:47.302 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:47.302 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:47.412 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:47.412 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:47.519 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:47.519 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:47.627 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:47.627 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:47.735 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:47.735 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:47.842 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:47.842 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:47.951 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:48.058 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:48.059 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:48.167 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:48.168 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:48.276 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:48.292 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:48.400 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:48.400 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:48.508 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:48.508 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:48.618 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:48.618 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:48.727 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:48.727 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:48.836 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:48.836 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:48.944 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:48.944 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:49.052 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:49.052 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:49.162 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:49.162 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:49.272 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:49.272 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:49.379 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:49.379 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:49.488 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:49.488 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:49.597 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:49.598 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:49.705 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:49.706 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:49.815 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:49.815 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:49.923 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:50.027 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:50.027 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:50.137 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:50.138 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:50.245 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:50.246 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:50.354 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:50.355 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:50.464 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:50.464 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:50.572 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:50.572 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:50.681 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:50.681 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:50.790 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:50.790 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:50.899 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:50.899 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:51.007 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:51.008 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:51.116 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:51.116 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:51.223 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:51.224 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:51.331 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:51.331 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:51.446 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:51.446 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:51.553 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:51.661 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:51.661 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:51.770 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:51.770 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:51.878 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:51.878 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:51.987 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:51.987 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:52.095 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:52.095 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:52.205 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:52.205 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:52.313 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:52.314 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:52.421 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:52.422 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:52.531 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:52.531 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:52.641 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:52.641 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:52.750 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:52.750 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:52.859 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:52.859 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:52.967 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:52.967 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:53.077 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:53.077 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:53.185 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:53.186 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:53.294 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:53.403 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:53.403 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:53.511 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:53.511 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:53.619 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:53.619 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:53.727 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:53.728 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:53.830 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:53.831 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:53.940 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:53.940 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:54.049 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:54.049 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:54.158 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:54.158 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:54.262 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:54.262 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:54.371 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:54.371 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:54.478 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:54.478 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:54.587 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:54.587 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:54.697 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:54.697 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:54.806 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:54.806 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:54.914 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:55.023 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:55.023 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:55.131 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:55.132 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:55.240 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:55.240 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:55.349 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:55.349 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:55.459 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:55.459 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:55.568 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:55.568 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:55.677 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:55.677 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:55.785 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:55.785 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:55.894 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:55.894 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:56.002 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:56.003 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:56.111 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:56.111 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:56.219 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:56.220 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:56.323 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:56.324 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:56.432 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:56.432 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:56.541 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:56.541 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:56.648 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:56.649 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:56.757 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:56.757 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:56.867 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:56.867 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:56.975 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:56.976 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:57.084 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:57.084 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:57.193 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:57.193 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:57.303 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:57.303 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:57.411 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:57.412 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:57.518 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:57.518 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:57.627 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:57.627 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:57.734 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:57.734 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:57.843 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:57.844 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:57.951 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 25 dixièmes de secondes
+2023-06-11 15:54:57.951 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 26 dixièmes de secondes
+2023-06-11 15:54:58.060 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 27 dixièmes de secondes
+2023-06-11 15:54:58.060 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 28 dixièmes de secondes
+2023-06-11 15:54:58.168 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 29 dixièmes de secondes
+2023-06-11 15:54:58.169 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 30 dixièmes de secondes
+2023-06-11 15:54:58.277 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:58.386 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:58.386 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:58.496 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:58.497 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:58.604 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:58.604 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:58.712 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 1 dixièmes de secondes
+2023-06-11 15:54:58.713 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 2 dixièmes de secondes
+2023-06-11 15:54:58.823 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 3 dixièmes de secondes
+2023-06-11 15:54:58.823 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 4 dixièmes de secondes
+2023-06-11 15:54:58.932 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 5 dixièmes de secondes
+2023-06-11 15:54:58.933 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 6 dixièmes de secondes
+2023-06-11 15:54:59.040 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 7 dixièmes de secondes
+2023-06-11 15:54:59.040 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 8 dixièmes de secondes
+2023-06-11 15:54:59.149 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 9 dixièmes de secondes
+2023-06-11 15:54:59.150 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 10 dixièmes de secondes
+2023-06-11 15:54:59.257 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 11 dixièmes de secondes
+2023-06-11 15:54:59.257 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 12 dixièmes de secondes
+2023-06-11 15:54:59.365 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 13 dixièmes de secondes
+2023-06-11 15:54:59.365 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 14 dixièmes de secondes
+2023-06-11 15:54:59.474 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 15 dixièmes de secondes
+2023-06-11 15:54:59.474 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 16 dixièmes de secondes
+2023-06-11 15:54:59.582 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 17 dixièmes de secondes
+2023-06-11 15:54:59.583 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 18 dixièmes de secondes
+2023-06-11 15:54:59.691 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 19 dixièmes de secondes
+2023-06-11 15:54:59.691 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 20 dixièmes de secondes
+2023-06-11 15:54:59.800 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 21 dixièmes de secondes
+2023-06-11 15:54:59.800 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 22 dixièmes de secondes
+2023-06-11 15:54:59.909 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 23 dixièmes de secondes
+2023-06-11 15:54:59.909 DEBUG [14552] [MoteurPhysique::desactiverSaut@451] 24 dixièmes de secondes
+2023-06-11 15:54:59.924 INFO  [4924] [MoteurMenu::ecranChargement@827] Launching level 3
+2023-06-11 15:55:20.622 INFO  [9200] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 15:55:20.623 INFO  [9200] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 15:55:20.639 INFO  [9200] [WinMain@23] Program shut down
+2023-06-11 16:02:19.692 INFO  [20716] [WinMain@11] Program started
+2023-06-11 16:02:20.893 INFO  [20716] [Jeu::Jeu@158] Main object initialized
+2023-06-11 16:02:22.090 INFO  [1360] [MoteurMenu::ecranChargement@827] Launching level 1
+2023-06-11 16:02:22.090 DEBUG [1360] [MoteurMenu::ecranChargement@828] Taille de m_sprites.avantPlan avant : 32
+2023-06-11 16:02:22.090 DEBUG [1360] [MoteurMenu::ecranChargement@829] Taille de m_sprites.textures avant : 32
+2023-06-11 16:02:24.153 DEBUG [1360] [MoteurMenu::ecranChargement@843] Taille de m_sprites.avantPlan aprÃ¨s : 32
+2023-06-11 16:02:24.153 DEBUG [1360] [MoteurMenu::ecranChargement@844] Taille de m_sprites.textures aprÃ¨s : 32
+2023-06-11 16:02:54.963 INFO  [1360] [MoteurMenu::ecranChargement@827] Launching level 2
+2023-06-11 16:02:54.964 DEBUG [1360] [MoteurMenu::ecranChargement@828] Taille de m_sprites.avantPlan avant : 32
+2023-06-11 16:02:54.964 DEBUG [1360] [MoteurMenu::ecranChargement@829] Taille de m_sprites.textures avant : 32
+2023-06-11 16:02:57.726 DEBUG [1360] [MoteurMenu::ecranChargement@843] Taille de m_sprites.avantPlan aprÃ¨s : 32
+2023-06-11 16:02:57.726 DEBUG [1360] [MoteurMenu::ecranChargement@844] Taille de m_sprites.textures aprÃ¨s : 32
+2023-06-11 16:03:20.706 INFO  [1360] [MoteurMenu::ecranChargement@827] Launching level 3
+2023-06-11 16:03:20.707 DEBUG [1360] [MoteurMenu::ecranChargement@828] Taille de m_sprites.avantPlan avant : 32
+2023-06-11 16:03:20.707 DEBUG [1360] [MoteurMenu::ecranChargement@829] Taille de m_sprites.textures avant : 32
+2023-06-11 16:03:22.724 DEBUG [1360] [MoteurMenu::ecranChargement@843] Taille de m_sprites.avantPlan aprÃ¨s : 32
+2023-06-11 16:03:22.725 DEBUG [1360] [MoteurMenu::ecranChargement@844] Taille de m_sprites.textures aprÃ¨s : 32
+2023-06-11 16:03:35.586 INFO  [20716] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 16:03:35.586 INFO  [20716] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 16:03:35.605 INFO  [20716] [WinMain@23] Program shut down
+2023-06-11 16:16:40.205 INFO  [21392] [WinMain@11] Program started
+2023-06-11 16:16:41.169 INFO  [21392] [Jeu::Jeu@158] Main object initialized
+2023-06-11 16:16:41.944 INFO  [10324] [MoteurMenu::ecranChargement@847] Launching level 1
+2023-06-11 16:17:13.277 INFO  [10324] [MoteurMenu::ecranChargement@847] Launching level 2
+2023-06-11 16:17:44.324 INFO  [21392] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 16:17:44.324 INFO  [21392] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 16:17:44.347 INFO  [21392] [WinMain@23] Program shut down
+2023-06-11 16:32:15.140 INFO  [16844] [WinMain@11] Program started
+2023-06-11 16:32:15.942 INFO  [16844] [Jeu::Jeu@158] Main object initialized
+2023-06-11 16:32:17.379 INFO  [13072] [MoteurMenu::ecranChargement@847] Launching level 1
+2023-06-11 16:32:49.728 INFO  [13072] [MoteurMenu::ecranChargement@847] Launching level 2
+2023-06-11 16:33:10.551 INFO  [16844] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 16:33:10.551 INFO  [16844] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 16:33:10.577 INFO  [16844] [WinMain@23] Program shut down
+2023-06-11 16:35:07.893 INFO  [20660] [WinMain@11] Program started
+2023-06-11 16:35:08.486 INFO  [20660] [Jeu::Jeu@158] Main object initialized
+2023-06-11 16:35:09.583 INFO  [10692] [MoteurMenu::ecranChargement@847] Launching level 1
+2023-06-11 16:35:53.580 INFO  [10692] [MoteurMenu::ecranChargement@847] Launching level 2
+2023-06-11 16:36:26.011 INFO  [20660] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 16:36:26.011 INFO  [20660] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 16:36:26.031 INFO  [20660] [WinMain@23] Program shut down
+2023-06-11 16:41:00.788 INFO  [17800] [WinMain@11] Program started
+2023-06-11 16:41:01.396 INFO  [17800] [Jeu::Jeu@158] Main object initialized
+2023-06-11 16:41:02.493 INFO  [15856] [MoteurMenu::ecranChargement@847] Launching level 1
+2023-06-11 16:41:35.142 INFO  [15856] [MoteurMenu::ecranChargement@847] Launching level 2
+2023-06-11 16:41:57.295 INFO  [17800] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 16:41:57.295 INFO  [17800] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 16:41:57.309 INFO  [17800] [WinMain@23] Program shut down
+2023-06-11 16:42:40.770 INFO  [10468] [WinMain@11] Program started
+2023-06-11 16:42:41.390 INFO  [10468] [Jeu::Jeu@158] Main object initialized
+2023-06-11 16:42:42.153 INFO  [8028] [MoteurMenu::ecranChargement@847] Launching level 1
+2023-06-11 16:43:14.562 INFO  [8028] [MoteurMenu::ecranChargement@847] Launching level 2
+2023-06-11 16:43:48.404 INFO  [8028] [MoteurMenu::ecranChargement@847] Launching level 3
+2023-06-11 16:43:55.156 INFO  [10468] [Jeu::~Jeu@170] sprites Structure deleted
+2023-06-11 16:43:55.157 INFO  [10468] [Jeu::~Jeu@171] Main object deleted
+2023-06-11 16:43:55.180 INFO  [10468] [WinMain@23] Program shut down

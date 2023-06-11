@@ -448,7 +448,7 @@ private:
 			if (m_tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
 			{
 				++m_tempsDixiemeSeconde;
-				if (m_moteur.niveau == 2) PLOGD << m_tempsDixiemeSeconde << L" dixièmes de secondes";
+				//if (m_moteur.niveau == 2) PLOGD << m_tempsDixiemeSeconde << L" dixièmes de secondes";
 			}
 			else
 			{
@@ -665,6 +665,7 @@ public:
 	void deplacement()
 	{
 		m_tempsDixiemeSeconde = 0;
+		m_collisions.reserve(m_sprites.avantPlan.size());
 		int positionTableauCheckpoint{ indexCheckpoint() };
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
