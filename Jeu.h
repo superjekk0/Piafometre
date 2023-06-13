@@ -39,16 +39,16 @@ private:
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
 	std::unique_ptr<ObjetADessiner> sprites{ new (std::nothrow) ObjetADessiner };
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
-	
+
 	void rendu()
 	{
 		fenetre->clear(sprites->couleur);
 		fenetre->setView(sprites->camera);
-		for (int i{0}; i < sprites->arrierePlan.size(); ++i)
+		for (int i{ 0 }; i < sprites->arrierePlan.size(); ++i)
 		{
 			fenetre->draw(sprites->arrierePlan[i]);
 		}
-		for (int i{0}; i < sprites->avantPlan.size(); ++i)
+		for (int i{ 0 }; i < sprites->avantPlan.size(); ++i)
 		{
 			if (sprites->avantPlan[i].visible)
 				fenetre->draw(sprites->avantPlan[i].sprite);
@@ -74,7 +74,41 @@ private:
 		return Langue::fr;
 	}
 
-
+	void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables)
+	{
+		while (pFenetre.pollEvent(evenementJeu))
+		{
+			switch (evenementJeu.type)
+			{
+			case sf::Event::KeyPressed:
+				if (sprites->positionDansJeu != PositionJeu::fin)
+				{
+					for (int i{ 0 }; i < pTouches.size(); ++i)
+					{
+						touchesActionnees[i] = Clv::isKeyPressed(pTouches[i]);
+					}
+				}
+				break;
+			case sf::Event::KeyReleased:
+				for (int i{ 0 }; i < pTouches.size(); ++i)
+				{
+					touchesActionnees[i] = Clv::isKeyPressed(pTouches[i]);
+				}
+				if (!touchesActionnees[4])
+					touchesNonRepetables.reset(0);
+				if (!touchesActionnees[6])
+					touchesNonRepetables.reset(1);
+				if (!touchesActionnees[5])
+					touchesNonRepetables.reset(2);
+				break;
+			case sf::Event::Closed:
+				Jeu::preparerQuitter(threadsActifs, touchesActionnees, peutDeplacer);
+				return;
+			default:
+				break;
+			}
+		}
+	}
 public:
 
 	static std::string symboleLangue(const Langue& langue)

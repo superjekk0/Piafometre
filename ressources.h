@@ -36,6 +36,7 @@ enum class PositionJeu {
 	chargement,
 	pause,
 	quitter_pause,
+	fin,
 	max
 };
 
