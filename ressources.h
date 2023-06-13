@@ -46,7 +46,7 @@ enum class TypePlateforme {
 	checkPoint,
 	pics,
 	finTableau,
-	max
+	decor
 };
 
 enum Oiseau {
