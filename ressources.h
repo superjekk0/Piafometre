@@ -36,6 +36,7 @@ enum class PositionJeu {
 	chargement,
 	pause,
 	quitter_pause,
+	fin,
 	max
 };
 
@@ -46,7 +47,7 @@ enum class TypePlateforme {
 	checkPoint,
 	pics,
 	finTableau,
-	max
+	decor
 };
 
 enum Oiseau {

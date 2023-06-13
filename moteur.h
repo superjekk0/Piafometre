@@ -19,6 +19,50 @@ enum class Collision {
 	max
 };
 
+enum class PositionCollision {
+	droite,
+	gauche,
+	haut,
+	bas
+};
+
+/// <summary>
+/// Indique une collision qui a lieu entre le joueur et une plateforme
+/// </summary>
+class InfosCollision {
+private:
+	const Plateforme* const m_plateforme;
+	const PositionCollision m_positionColision;
+	const Collision m_collision;
+	const int m_indexPlateforme;
+public:
+	InfosCollision(const Plateforme& pPlateforme, const PositionCollision pPositionCollision, const Collision pCollision, const int pIndex) : m_plateforme{ &pPlateforme }, m_collision{ pCollision }, m_positionColision{ pPositionCollision }, m_indexPlateforme{ pIndex }
+	{}
+
+	InfosCollision() : m_plateforme{nullptr}, m_positionColision{PositionCollision::bas}, m_collision{Collision::aucune},m_indexPlateforme{-1}
+	{}
+
+	const Plateforme& plateforme() const
+	{
+		return *m_plateforme;
+	}
+
+	PositionCollision positionCollision() const
+	{
+		return m_positionColision;
+	}
+
+	Collision collision() const
+	{
+		return m_collision;
+	}
+
+	int indexPlateforme() const
+	{
+		return m_indexPlateforme;
+	}
+};
+
 float getWidth(const sf::Texture& texture)
 {
 	return texture.getSize().x;
@@ -26,7 +70,7 @@ float getWidth(const sf::Texture& texture)
 float getWidth(const sf::Sprite& sprite)
 {
 	//return sprite.getLocalBounds().width;
-	return sprite.getTextureRect().width * sprite.getScale().x;
+	return sprite.getGlobalBounds().width;
 }
 float getHeight(const sf::Texture& texture)
 {
@@ -35,12 +79,18 @@ float getHeight(const sf::Texture& texture)
 float getHeight(const sf::Sprite& sprite)
 {
 	//return sprite.getGlobalBounds().height;
-	return sprite.getTextureRect().height * sprite.getScale().y;
+	return sprite.getGlobalBounds().height;
 }
+/// <summary>
+/// Le joueur est proche du bloc par son bord gauche
+/// </summary>
 bool procheBordGauche(const sf::Sprite& joueur, const sf::Sprite& bloc)
 {
 	return joueur.getPosition().x - utilitaire::deplacement >= bloc.getPosition().x + getWidth(bloc);
 }
+/// <summary>
+/// Le joueur est proche du bloc par son bord droit
+/// </summary>
 bool procheBordDroite(const sf::Sprite& joueur, const sf::Sprite& bloc)
 {
 	return joueur.getPosition().x + getWidth(joueur) + utilitaire::deplacement <= bloc.getPosition().x;
@@ -85,6 +135,9 @@ bool cameraPeutContinuerBas(const sf::Sprite& joueur, const sf::View& camera, co
 {
 	return (joueur.getPosition().y + getHeight(joueur) / 2 >= camera.getCenter().y && !cameraToucheBordBas(camera, moteur));
 }
+/// <summary>
+/// Le joueur entre en collision avec le bloc par son côté bas
+/// </summary>
 bool collisionBas(const sf::Sprite& joueur, const Plateforme& bloc)
 {
 	return (joueur.getPosition().x + getWidth(joueur) > bloc.sprite.getPosition().x)
@@ -92,13 +145,19 @@ bool collisionBas(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y + getHeight(joueur) >= bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y + getHeight(joueur) <= bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
+/// <summary>
+/// Le joueur entre en collision avec le bloc par son côté haut
+/// </summary>
 bool collisionHaut(const sf::Sprite& joueur, const Plateforme& bloc)
 {
-	return (joueur.getPosition().x > bloc.sprite.getPosition().x)
+	return (joueur.getPosition().x + getWidth(joueur) > bloc.sprite.getPosition().x)
 		&& (joueur.getPosition().x < bloc.sprite.getPosition().x + getWidth(bloc.sprite))
 		&& (joueur.getPosition().y > bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
+/// <summary>
+/// Le joueur entre en collision avec le bloc par son côté droit
+/// </summary>
 bool collisionDroite(const sf::Sprite& joueur, const Plateforme& bloc)
 {
 	return (joueur.getPosition().x + getWidth(joueur) >= bloc.sprite.getPosition().x)
@@ -106,6 +165,9 @@ bool collisionDroite(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y + getHeight(joueur) > bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
+/// <summary>
+/// Le joueur entre en collision avec le bloc par son côté gauche
+/// </summary>
 bool collisionGauche(const sf::Sprite& joueur, const Plateforme& bloc)
 {
 	return (joueur.getPosition().x >= bloc.sprite.getPosition().x)
@@ -173,52 +235,69 @@ private:
 	std::bitset<3>& m_touchesNonRepetables;
 	MoteurMenu& m_menus;								//Pour appeler l'écran de chargement
 	bool m_gauche{ false };								//Le joueur regarde à gauche (Si aucune touche n'est appuyée, garde la direction actuelle)
-	int m_tempsDixiemeSeconde{ 0 };						//Sert à mesurer le temps de saut de le faire achever plus vite
+	int m_tempsDixiemeSeconde{ 0 };						//Indique combien de dixièmes de secondes se sont écoulées au saut
 	//Le bit 0 correspond à si le joueur peut sauter
 	//Le bit 1 correspond à si le joueur peut faire un autre saut
 	//Le bit 2 correspond à si un saut est en cours.
 	//Le bit 3 correspond à si un saut est possible en appuyant sur le bouton saut
 	std::bitset<4> m_autorisationsSaut{ 0b0000 };
 	int m_DixiemeSecondePeutSauter{ 0 };				//Sert à vérifier quand le joueur peut sauter
+	std::vector<InfosCollision> m_collisions;
 
 #pragma region COLLISIONS
-	Collision touchePlateformeBas()
-	{
-		for (auto& plateforme : m_sprites.avantPlan)
-		{
 
-			if (collisionBas(m_sprites.joueur, plateforme) && procheSol(m_sprites.joueur, plateforme.sprite))
+	/// <summary>
+	/// Indique si la plateforme recherchée est déjà inscrite dans le vecteur de collisions
+	/// </summary>
+	bool collisionPresente(const int pPlateformeRecherchee)
+	{
+		for (auto& collision : m_collisions)
+		{
+			if (collision.indexPlateforme() == pPlateformeRecherchee) return true;
+		}
+		return false;
+	}
+
+	void touchePlateformeBas()
+	{
+		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
+		{
+			if (!collisionPresente(i) && collisionBas(m_sprites.joueur, m_sprites.avantPlan[i]) && procheSol(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
 			{
-				switch (plateforme.comportement)
+				switch (m_sprites.avantPlan[i].comportement)
 				{
 				case TypePlateforme::solide:
 				case TypePlateforme::semiSolide:
-					if (procheSol(m_sprites.joueur, plateforme.sprite))
-						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
-					return Collision::normale;
+					//if (procheSol(m_sprites.joueur, plateforme.sprite))
+					//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
+					//return Collision::normale;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::normale, i));
 					break;
 				case TypePlateforme::pics:
 					//if (procheSol(m_sprites.joueur, plateforme.sprite))
 					//{
-						--m_moteur.nbVie;
-						return Collision::pics;
+						//--m_moteur.nbVie;
+						//return Collision::pics;
 					//}
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::pics, i));
 					break;
-
 				case TypePlateforme::checkPoint:
-					return Collision::checkpoint;
+					//return Collision::checkpoint;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::checkpoint, i));
 					break;
 				case TypePlateforme::objet:
-					if (!plateforme.touche)
-					{
-						m_autorisationsSaut.set(3);
-						m_autorisationsSaut.set(1);
-						m_DixiemeSecondePeutSauter = 0;
-						plateforme.touche = true;
-					}
+					//if (!plateforme.touche)
+					//{
+					//	m_autorisationsSaut.set(3);
+					//	m_autorisationsSaut.set(1);
+					//	m_DixiemeSecondePeutSauter = 0;
+					//	plateforme.touche = true;
+					//}
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::objet, i));
 					break;
 				case TypePlateforme::finTableau:
-					return Collision::fin;
+					//return Collision::fin;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::fin, i));
 					break;
 				default:
 					break;
@@ -227,37 +306,41 @@ private:
 			}
 			//if (plateformes[i].comportement != TypePlateforme::objet)
 		}
-		return Collision::aucune;
+		//return Collision::aucune;
 	}
 
-	Collision touchePlateformeGauche()
+	void touchePlateformeGauche()
 	{
-		for (auto& plateforme : m_sprites.avantPlan)
+		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (collisionGauche(m_sprites.joueur, plateforme))
+			if (!collisionPresente(i) && collisionGauche(m_sprites.joueur, m_sprites.avantPlan[i]))
 			{
-				switch (plateforme.comportement)
+				switch (m_sprites.avantPlan[i].comportement)
 				{
 				case TypePlateforme::solide:
 				case TypePlateforme::pics:
-					if (procheBordGauche(m_sprites.joueur, plateforme.sprite))
-						m_sprites.joueur.setPosition(plateforme.sprite.getPosition().x + getWidth(plateforme.sprite), m_sprites.joueur.getPosition().y);
-					return Collision::normale;
+					//if (procheBordGauche(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
+					//	m_sprites.joueur.setPosition(m_sprites.avantPlan[i].sprite.getPosition().x + getWidth(m_sprites.avantPlan[i].sprite), m_sprites.joueur.getPosition().y);
+					//return Collision::normale;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::normale, i));
 					break;
 				case TypePlateforme::checkPoint:
-					return Collision::checkpoint;
+					//return Collision::checkpoint;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::checkpoint, i));
 					break;
 				case TypePlateforme::objet:
-					if (!plateforme.touche)
-					{
-						m_autorisationsSaut.set(3);
-						m_autorisationsSaut.set(1);
-						m_DixiemeSecondePeutSauter = 0;
-						plateforme.touche = true;
-					}
+					//if (!m_sprites.avantPlan[i].touche)
+					//{
+					//	m_autorisationsSaut.set(3);
+					//	m_autorisationsSaut.set(1);
+					//	m_DixiemeSecondePeutSauter = 0;
+					//	m_sprites.avantPlan[i].touche = true;
+					//}
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::objet, i));
 					break;
 				case TypePlateforme::finTableau:
-					return Collision::fin;
+					//return Collision::fin;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::fin, i));
 					break;
 				default:
 					break;
@@ -265,80 +348,94 @@ private:
 
 			}
 		}
-		return Collision::aucune;
+		//return Collision::aucune;
 	}
 
-	Collision touchePlateformeDroite()
+	void touchePlateformeDroite()
 	{
-		for (auto& plateforme : m_sprites.avantPlan)
+		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (collisionDroite(m_sprites.joueur, plateforme))
+			if (!collisionPresente(i) && collisionDroite(m_sprites.joueur, m_sprites.avantPlan[i]))
 			{
-				switch (plateforme.comportement)
+				switch (m_sprites.avantPlan[i].comportement)
 				{
 				case TypePlateforme::solide:
 				case TypePlateforme::pics:
-					if (procheBordDroite(m_sprites.joueur, plateforme.sprite))
-						m_sprites.joueur.setPosition(plateforme.sprite.getPosition().x - getWidth(m_sprites.joueur),
-							m_sprites.joueur.getPosition().y);
-					return Collision::normale;
+					//if (procheBordDroite(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
+					//	m_sprites.joueur.setPosition(m_sprites.avantPlan[i].sprite.getPosition().x - getWidth(m_sprites.joueur),
+					//		m_sprites.joueur.getPosition().y);
+					//return Collision::normale;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::normale, i));
+					break;
 				case TypePlateforme::checkPoint:
-					return Collision::checkpoint;
+					//return Collision::checkpoint;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::checkpoint, i));
+					break;
 				case TypePlateforme::objet:
-					if (!plateforme.touche)
-					{
-						m_autorisationsSaut.set(3);
-						m_autorisationsSaut.set(1);
-						m_DixiemeSecondePeutSauter = 0;
-						plateforme.touche = true;
-					}
+					//if (!m_sprites.avantPlan[i].touche)
+					//{
+					//	m_autorisationsSaut.set(3);
+					//	m_autorisationsSaut.set(1);
+					//	m_DixiemeSecondePeutSauter = 0;
+					//	m_sprites.avantPlan[i].touche = true;
+					//}
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::objet, i));
 					break;
 				case TypePlateforme::finTableau:
-					return Collision::fin;
+					//return Collision::fin;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::fin, i));
 					break;
 				default:
 					break;
 				}
 			}
 		}
-		return Collision::aucune;
+		//return Collision::aucune;
 	}
 
-	Collision touchePlateformeHaut()
+	void touchePlateformeHaut()
 	{
-		for (auto& plateforme : m_sprites.avantPlan)
+		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (collisionHaut(m_sprites.joueur, plateforme))
+			if (!collisionPresente(i) && collisionHaut(m_sprites.joueur, m_sprites.avantPlan[i]))
 			{
-				switch (plateforme.comportement)
+				switch (m_sprites.avantPlan[i].comportement)
 				{
 				case TypePlateforme::solide:
-					m_tempsDixiemeSeconde = finTempsSaut + 1;
-					if (prochePlafond(m_sprites.joueur, plateforme.sprite))
-						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y + getHeight(plateforme.sprite));
-					return Collision::normale;
+					//m_tempsDixiemeSeconde = finTempsSaut + 1;
+					//if (prochePlafond(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
+					//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, m_sprites.avantPlan[i].sprite.getPosition().y + getHeight(m_sprites.avantPlan[i].sprite));
+					//return Collision::normale;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::normale, i));
+					break;
 				case TypePlateforme::pics:
-					return Collision::pics;
+					//return Collision::pics;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::pics, i));
+					break;
 				case TypePlateforme::objet:
-					if (!plateforme.touche)
-					{
-						m_autorisationsSaut.set(3);
-						m_autorisationsSaut.set(1);
-						m_DixiemeSecondePeutSauter = 0;
-						plateforme.touche = true;
-					}
+					//if (!m_sprites.avantPlan[i].touche)
+					//{
+					//	m_autorisationsSaut.set(3);
+					//	m_autorisationsSaut.set(1);
+					//	m_DixiemeSecondePeutSauter = 0;
+					//	m_sprites.avantPlan[i].touche = true;
+					//}
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::objet, i));
 					break;
 				case TypePlateforme::checkPoint:
-					return Collision::checkpoint;
+					//return Collision::checkpoint;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::checkpoint, i));
+					break;
 				case TypePlateforme::finTableau:
-					return Collision::fin;
+					//return Collision::fin;
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::fin, i));
 					break;
 				default:
 					break;
 				}
 			}
 		}
-		return Collision::aucune;
+		//return Collision::aucune;
 	}
 
 #pragma endregion
@@ -351,6 +448,7 @@ private:
 			if (m_tempsDixiemeSeconde < finTempsSaut) //Équivalent de 3 secondes
 			{
 				++m_tempsDixiemeSeconde;
+				//if (m_moteur.niveau == 2) PLOGD << m_tempsDixiemeSeconde << L" dixièmes de secondes";
 			}
 			else
 			{
@@ -360,6 +458,19 @@ private:
 			}
 			std::this_thread::sleep_for(std::chrono::milliseconds(100 - cycle.restart().asMilliseconds()));
 		}
+	}
+
+	/// <summary>
+	/// Indique si le joueur a pied sur une plateforme
+	/// </summary>
+	bool piedSurPlateforme()
+	{
+		for (auto& collision : m_collisions)
+		{
+			if (collision.positionCollision() == PositionCollision::bas && collision.collision() == Collision::normale)
+				return true;
+		}
+		return false;
 	}
 
 	/// <summary>
@@ -383,7 +494,7 @@ private:
 					getWidth(*m_sprites.joueur.getTexture()) / 3, getHeight(*m_sprites.joueur.getTexture()) / Oiseau::max));
 				++frameAnimation;
 			}
-			else if (mouvementsJoueur.y >= 0 && touchePlateformeBas() != Collision::normale)
+			else if (mouvementsJoueur.y >= 0 && !piedSurPlateforme())
 			{
 				//Puisque l'image de l'oiseau où il plane est à la position 1, il est inutile de faire le modulo
 				m_sprites.joueur.setTextureRect(sf::IntRect(getWidth(*m_sprites.joueur.getTexture()) / 3,
@@ -472,6 +583,74 @@ private:
 		}
 		m_sprites.hud.resize(0);
 		sautEffectif.release();
+		m_autorisationsSaut.reset();
+	}
+
+	/// <summary>
+	/// 
+	/// </summary>
+	/// <param name="pIndexCheckpoint">Index du checkpoint</param>
+	/// <returns>Lorsque vrai, il faut par la suite terminer le thread principal</returns>
+	bool gestionCollisions(int pIndexCheckpoint, std::unique_ptr<std::thread>& pSautEffectif, sf::Vector2f& pDeplacements)
+	{
+		for (auto& collision : m_collisions)
+		{
+			Plateforme& plateforme = m_sprites.avantPlan[collision.indexPlateforme()];
+			switch (collision.collision())
+			{
+			case Collision::pics:
+				mort(pSautEffectif);
+				return true;
+				break;
+			case Collision::checkpoint:
+				m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+					m_sprites.joueur, m_sprites.arrierePlan,
+					m_sprites.avantPlan[pIndexCheckpoint]);
+				break;
+			case Collision::objet:
+				if (!plateforme.touche)
+				{
+					m_autorisationsSaut.set(3);
+					m_autorisationsSaut.set(1);
+					m_DixiemeSecondePeutSauter = 0;
+					plateforme.touche = true;
+				}
+				break;
+			case Collision::normale:
+				switch (collision.positionCollision())
+				{
+				case PositionCollision::droite:
+					pDeplacements.x -= utilitaire::deplacement;
+					break;
+				case PositionCollision::gauche:
+					pDeplacements.x += utilitaire::deplacement;
+					break;
+				case PositionCollision::haut:
+					pDeplacements.y += utilitaire::deplacement;
+					m_tempsDixiemeSeconde = finTempsSaut;
+					m_autorisationsSaut.reset(2);
+					break;
+				case PositionCollision::bas:
+					if (procheSol(m_sprites.joueur, plateforme.sprite))
+						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
+
+					m_autorisationsSaut.set(0);
+					m_autorisationsSaut.set(1);
+					break;
+				}
+				break;
+			case Collision::fin:
+				++m_moteur.niveau;
+				m_peutDeplacer = !m_peutDeplacer;
+				m_autorisationsSaut.reset();
+				pSautEffectif.release();
+				m_moteur.checkpoint.reinitialiser();
+				m_menus.ecranChargement();
+				return true;
+				break;
+			}
+		}
+		return false;
 	}
 public:
 
@@ -487,6 +666,8 @@ public:
 
 	void deplacement()
 	{
+		m_tempsDixiemeSeconde = 0;
+		m_collisions.reserve(m_sprites.avantPlan.size());
 		int positionTableauCheckpoint{ indexCheckpoint() };
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
@@ -513,113 +694,126 @@ public:
 		long frameAnimation{ 0 };
 		while (m_peutDeplacer)
 		{
+			m_collisions.resize(0);
 			deplacementVectoriel.x = 0.f;
 			deplacementVectoriel.y = 0.f;
-			if ((m_touchesActionnees[0] && m_sprites.joueur.getPosition().x > m_moteur.minCameraX))
-			{
-				switch (touchePlateformeGauche())
-				{
-				case Collision::aucune:
-					deplacementVectoriel.x -= utilitaire::deplacement;
-					break;
-				case Collision::checkpoint:
-					deplacementVectoriel.x -= utilitaire::deplacement;
-					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
-						m_sprites.joueur,
-						m_sprites.arrierePlan,
-						m_sprites.avantPlan[positionTableauCheckpoint]);
-					break;
-				case Collision::fin:
-					++m_moteur.niveau;
-					m_moteur.checkpoint.reinitialiser();
-					m_menus.ecranChargement();
-					return;
-					break;
-				default:
-					break;
-				}
-			}
-			if (m_touchesActionnees[1] && m_sprites.joueur.getPosition().x + getWidth(m_sprites.joueur) < m_moteur.maxCameraX)
-			{
-				switch (touchePlateformeDroite())
-				{
-				case Collision::aucune:
-					deplacementVectoriel.x += utilitaire::deplacement;
-					break;
-				case Collision::checkpoint:
-					deplacementVectoriel.x += utilitaire::deplacement;
-					if (!m_moteur.checkpoint.checkpointActif()) m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
-						m_sprites.joueur,
-						m_sprites.arrierePlan,
-						m_sprites.avantPlan[positionTableauCheckpoint]);
-					break;
-				case Collision::objet:
-					deplacementVectoriel.x += utilitaire::deplacement;
-					break;
-				case Collision::fin:
-					++m_moteur.niveau;
-					m_moteur.checkpoint.reinitialiser();
-					m_menus.ecranChargement();
-					return;
-				default:
-					break;
-				}
-			}
 			if ((m_autorisationsSaut.test(2)) && (m_sprites.joueur.getPosition().y > m_moteur.minCameraY - m_sprites.camera.getSize().y / 2))
 			{
-				switch (touchePlateformeHaut())
-				{
-				case Collision::aucune:
-					deplacementVectoriel.y -= utilitaire::deplacement;
-					break;
-				case Collision::checkpoint:
-					deplacementVectoriel.y -= utilitaire::deplacement;
-					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
-						m_sprites.joueur,
-						m_sprites.arrierePlan,
-						m_sprites.avantPlan[positionTableauCheckpoint]);
-					break;
-				case Collision::fin:
-					++m_moteur.niveau;
-					m_moteur.checkpoint.reinitialiser();
-					m_menus.ecranChargement();
-					return;
-				default:
-					break;
-				}
+				touchePlateformeHaut();
+				deplacementVectoriel.y -= utilitaire::deplacement;
+				//switch (touchePlateformeHaut())
+				//{
+				//case Collision::aucune:
+				//	deplacementVectoriel.y -= utilitaire::deplacement;
+				//	break;
+				//case Collision::checkpoint:
+				//	deplacementVectoriel.y -= utilitaire::deplacement;
+				//	m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+				//		m_sprites.joueur,
+				//		m_sprites.arrierePlan,
+				//		m_sprites.avantPlan[positionTableauCheckpoint]);
+				//	break;
+				//case Collision::fin:
+				//	++m_moteur.niveau;
+				//	m_moteur.checkpoint.reinitialiser();
+				//	m_menus.ecranChargement();
+				//	return;
+				//default:
+				//	break;
+				//}
 			}
 			if (!m_autorisationsSaut.test(2))
 			{
-				switch (touchePlateformeBas())
-				{
-				case Collision::aucune:
-					deplacementVectoriel.y += utilitaire::deplacement;
-					break;
-				case Collision::pics:
-					mort(sautEffectif);
-					return;
-					break;
-				case Collision::checkpoint:
-					deplacementVectoriel.y += utilitaire::deplacement;
-					m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
-						m_sprites.joueur,
-						m_sprites.arrierePlan,
-						m_sprites.avantPlan[positionTableauCheckpoint]);
-					break;
-				case Collision::normale:
-					m_autorisationsSaut.set(0);
-					m_autorisationsSaut.set(1);
-					break;
-				case Collision::fin:
-					++m_moteur.niveau;
-					m_moteur.checkpoint.reinitialiser();
-					m_menus.ecranChargement();
-					return;
-				default:
-					break;
-				}
+				touchePlateformeBas();
+				deplacementVectoriel.y += utilitaire::deplacement;
+				//switch (touchePlateformeBas())
+				//{
+				//case Collision::aucune:
+				//	deplacementVectoriel.y += utilitaire::deplacement;
+				//	break;
+				//case Collision::pics:
+				//	mort(sautEffectif);
+				//	return;
+				//	break;
+				//case Collision::checkpoint:
+				//	deplacementVectoriel.y += utilitaire::deplacement;
+				//	m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+				//		m_sprites.joueur,
+				//		m_sprites.arrierePlan,
+				//		m_sprites.avantPlan[positionTableauCheckpoint]);
+				//	break;
+				//case Collision::normale:
+				//	m_autorisationsSaut.set(0);
+				//	m_autorisationsSaut.set(1);
+				//	break;
+				//case Collision::fin:
+				//	++m_moteur.niveau;
+				//	m_moteur.checkpoint.reinitialiser();
+				//	m_menus.ecranChargement();
+				//	return;
+				//default:
+				//	break;
+				//}
 				//deplacementVectoriel.y += utilitaire::deplacement;
 			}
+
+			if ((m_touchesActionnees[0] && m_sprites.joueur.getPosition().x > m_moteur.minCameraX))
+			{
+				touchePlateformeGauche();
+				deplacementVectoriel.x -= utilitaire::deplacement;
+				//switch (touchePlateformeGauche())
+				//{
+				//case Collision::aucune:
+				//	deplacementVectoriel.x -= utilitaire::deplacement;
+				//	break;
+				//case Collision::checkpoint:
+				//	deplacementVectoriel.x -= utilitaire::deplacement;
+				//	m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+				//		m_sprites.joueur,
+				//		m_sprites.arrierePlan,
+				//		m_sprites.avantPlan[positionTableauCheckpoint]);
+				//	break;
+				//case Collision::fin:
+				//	++m_moteur.niveau;
+				//	m_moteur.checkpoint.reinitialiser();
+				//	m_menus.ecranChargement();
+				//	return;
+				//	break;
+				//default:
+				//	break;
+				//}
+			}
+			if (m_touchesActionnees[1] && m_sprites.joueur.getPosition().x + getWidth(m_sprites.joueur) < m_moteur.maxCameraX)
+			{
+				touchePlateformeDroite();
+				deplacementVectoriel.x += utilitaire::deplacement;
+				//switch (touchePlateformeDroite())
+				//{
+				//case Collision::aucune:
+				//	deplacementVectoriel.x += utilitaire::deplacement;
+				//	break;
+				//case Collision::checkpoint:
+				//	deplacementVectoriel.x += utilitaire::deplacement;
+				//	if (!m_moteur.checkpoint.checkpointActif()) m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
+				//		m_sprites.joueur,
+				//		m_sprites.arrierePlan,
+				//		m_sprites.avantPlan[positionTableauCheckpoint]);
+				//	break;
+				//case Collision::objet:
+				//	deplacementVectoriel.x += utilitaire::deplacement;
+				//	break;
+				//case Collision::fin:
+				//	++m_moteur.niveau;
+				//	m_moteur.checkpoint.reinitialiser();
+				//	m_menus.ecranChargement();
+				//	return;
+				//default:
+				//	break;
+				//}
+			}
+			assert(m_collisions.size() <= m_sprites.avantPlan.size() && "Il ne peut pas y avoir plus de collisions que de plateformes");
+			if (gestionCollisions(positionTableauCheckpoint, sautEffectif, deplacementVectoriel))
+				return;
 			if (m_touchesActionnees[5] && !m_touchesNonRepetables.test(2) && personnagePeutSauter())
 			{
 				//PLOGD << L"A commencé à sauter";
@@ -650,7 +844,7 @@ public:
 					m_sprites.camera.move(deplacementVectoriel.x, 0);
 					for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
 					{
-						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75, 0);
+						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75f, 0);
 					}
 				}
 			}
@@ -662,7 +856,7 @@ public:
 					m_sprites.camera.move(deplacementVectoriel.x, 0);
 					for (auto& arrierePlan : m_sprites.arrierePlan)
 					{
-						arrierePlan.move(deplacementVectoriel.x * .75, 0);
+						arrierePlan.move(deplacementVectoriel.x * .75f, 0);
 					}
 				}
 			}
@@ -674,7 +868,7 @@ public:
 					m_sprites.camera.move(0, deplacementVectoriel.y);
 					for (auto& arrierePlan : m_sprites.arrierePlan)
 					{
-						arrierePlan.move(0, deplacementVectoriel.y * .75);
+						arrierePlan.move(0, deplacementVectoriel.y * .75f);
 					}
 				}
 			}
@@ -685,7 +879,7 @@ public:
 					m_sprites.camera.move(0, deplacementVectoriel.y);
 					for (auto& arrierePlan : m_sprites.arrierePlan)
 					{
-						arrierePlan.move(0, deplacementVectoriel.y * .75);
+						arrierePlan.move(0, deplacementVectoriel.y * .75f);
 					}
 				}
 				else if (m_sprites.joueur.getPosition().y > m_moteur.maxCameraY)
@@ -696,7 +890,8 @@ public:
 			}
 			m_sprites.joueur.move(deplacementVectoriel);
 			m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
-			animationCheckpoint(m_sprites.avantPlan[positionTableauCheckpoint].sprite, frameAnimation);
+			if (positionTableauCheckpoint != -1)
+				animationCheckpoint(m_sprites.avantPlan[positionTableauCheckpoint].sprite, frameAnimation);
 			animationJoueur(deplacementVectoriel, frameAnimation);
 			++frameAnimation;
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));

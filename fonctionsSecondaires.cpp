@@ -334,37 +334,5 @@ bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle)
 }
 
 
-void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables)
-{
-	while (pFenetre.pollEvent(evenementJeu))
-	{
-		switch (evenementJeu.type)
-		{
-		case sf::Event::KeyPressed:
-			for (int i{ 0 }; i < pTouches.size(); ++i)
-			{
-				touchesActionnees[i] = Clv::isKeyPressed(pTouches[i]);
-			}
-			break;
-		case sf::Event::KeyReleased:
-			for (int i{ 0 }; i < pTouches.size(); ++i)
-			{
-				touchesActionnees[i] = Clv::isKeyPressed(pTouches[i]);
-			}
-			if (!touchesActionnees[4])
-				touchesNonRepetables.reset(0);
-			if (!touchesActionnees[6])
-				touchesNonRepetables.reset(1);
-			if (!touchesActionnees[5])
-				touchesNonRepetables.reset(2);
-			break;
-		case sf::Event::Closed:
-			Jeu::preparerQuitter(threadsActifs, touchesActionnees, peutDeplacer);
-			return;
-		default:
-			break;
-		}
-	}
-}
 
 
