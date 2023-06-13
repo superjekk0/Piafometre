@@ -736,7 +736,7 @@ private:
 			m_sprites.arrierePlan[0].setPosition(0.f, -475.f);
 			break;
 		default:
-			assert(false && "Niveau non disponible");
+			
 			break;
 		}
 	}

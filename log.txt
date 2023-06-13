@@ -10287,3 +10287,15 @@ $  B   �P@ @ B  @ B� �$ �       @       @  h    
 2023-06-13 18:37:08.382 INFO  [23088] [MoteurMenu::ecranChargement@1067] Launching level 3
 2023-06-13 18:37:33.270 INFO  [23088] [MoteurMenu::ecranChargement@1067] Launching level 4
 2023-06-13 18:38:00.094 INFO  [23088] [MoteurMenu::ecranChargement@1067] Launching level 5
+2023-06-13 18:44:18.758 INFO  [4396] [WinMain@11] Program started
+2023-06-13 18:44:19.648 INFO  [4396] [Jeu::Jeu@158] Main object initialized
+2023-06-13 18:44:20.321 INFO  [22728] [MoteurMenu::ecranChargement@1067] Launching level 2
+2023-06-13 18:45:52.921 INFO  [576] [WinMain@11] Program started
+2023-06-13 18:45:53.543 INFO  [576] [Jeu::Jeu@158] Main object initialized
+2023-06-13 18:48:05.418 INFO  [8332] [WinMain@11] Program started
+2023-06-13 18:48:05.968 INFO  [8332] [Jeu::Jeu@158] Main object initialized
+2023-06-13 18:49:10.023 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 2
+2023-06-13 18:49:32.376 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 3
+2023-06-13 18:49:50.994 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 4
+2023-06-13 18:49:59.406 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 4
+2023-06-13 18:50:24.943 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 5
