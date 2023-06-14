@@ -74,35 +74,35 @@ private:
 		return Langue::fr;
 	}
 
-	void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables)
+	void detectionEvenement(sf::Event& evenementJeu)
 	{
-		while (pFenetre.pollEvent(evenementJeu))
+		while (fenetre->pollEvent(evenementJeu))
 		{
 			switch (evenementJeu.type)
 			{
 			case sf::Event::KeyPressed:
 				if (sprites->positionDansJeu != PositionJeu::fin)
 				{
-					for (int i{ 0 }; i < pTouches.size(); ++i)
+					for (int i{ 0 }; i < touches.size(); ++i)
 					{
-						touchesActionnees[i] = Clv::isKeyPressed(pTouches[i]);
+						touchesActionnees[i] = Clv::isKeyPressed(touches[i]);
 					}
 				}
 				break;
 			case sf::Event::KeyReleased:
-				for (int i{ 0 }; i < pTouches.size(); ++i)
+				for (int i{ 0 }; i < touches.size(); ++i)
 				{
-					touchesActionnees[i] = Clv::isKeyPressed(pTouches[i]);
+					touchesActionnees[i] = Clv::isKeyPressed(touches[i]);
 				}
 				if (!touchesActionnees[4])
-					touchesNonRepetables.reset(0);
+					toucheNonRepetables.reset(0);
 				if (!touchesActionnees[6])
-					touchesNonRepetables.reset(1);
+					toucheNonRepetables.reset(1);
 				if (!touchesActionnees[5])
-					touchesNonRepetables.reset(2);
+					toucheNonRepetables.reset(2);
 				break;
 			case sf::Event::Closed:
-				Jeu::preparerQuitter(threadsActifs, touchesActionnees, peutDeplacer);
+				Jeu::preparerQuitter(threadsActifs, touchesActionnees, deplacementActif);
 				return;
 			default:
 				break;
@@ -247,8 +247,7 @@ public:
 		/// TODO : Changer les fonctions pour enlever les boucles while dedans et changer "detach" par "join" dans les threads associés
 		while (threadsActifs)
 		{
-			detectionEvenement(*evenementFenetre, threadsActifs, deplacementActif,
-				touchesActionnees, touches, *fenetre, toucheNonRepetables);
+			detectionEvenement(*evenementFenetre);
 			rendu();
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds())); //Se met à jour à chaque 1/60ème de seconde
 		}

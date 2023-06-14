@@ -10299,3 +10299,12 @@ $  B   �P@ @ B  @ B� �$ �       @       @  h    
 2023-06-13 18:49:50.994 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 4
 2023-06-13 18:49:59.406 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 4
 2023-06-13 18:50:24.943 INFO  [20552] [MoteurMenu::ecranChargement@1067] Launching level 5
+2023-06-14 09:30:41.650 INFO  [2680] [WinMain@11] Program started
+2023-06-14 09:30:42.528 INFO  [2680] [Jeu::Jeu@192] Main object initialized
+2023-06-14 09:30:44.216 INFO  [6280] [MoteurMenu::deplacementMenus@920] Exiting main menu
+2023-06-14 09:30:44.216 INFO  [6280] [MoteurMenu::deplacementMenus@921] Entering in settings region
+2023-06-14 09:30:45.226 INFO  [6280] [MoteurMenu::deplacementMenus@1021] Exiting settings region
+2023-06-14 09:30:45.226 INFO  [6280] [MoteurMenu::deplacementMenus@1022] Entering main menu
+2023-06-14 09:30:46.775 INFO  [2680] [Jeu::~Jeu@204] sprites Structure deleted
+2023-06-14 09:30:46.775 INFO  [2680] [Jeu::~Jeu@205] Main object deleted
+2023-06-14 09:30:46.808 INFO  [2680] [WinMain@23] Program shut down
