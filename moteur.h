@@ -476,10 +476,7 @@ private:
 	/// <summary>
 /// 
 /// </summary>
-/// <param name="joueur">Sprite du joueur</param>
-/// <param name="threadsActifs">Sémaphore pour le fil d'exécution</param>
 /// <param name="mouvementsJoueur">Mouvements vectoriels du joueur</param>
-/// <param name="gauche">Indique si la direction de l'oiseau est à gauche</param>
 	void animationJoueur(const sf::Vector2f& mouvementsJoueur, long pFrameAnimation)
 	{
 		static int frameAnimation{ 0 };
@@ -681,17 +678,44 @@ public:
 		long frameAnimation{ 0 };
 		if (m_sprites.positionDansJeu == PositionJeu::fin)
 		{
+			//m_sprites.camera.zoom(3.f);
+			float zoom{ 1.0038f };
+			int tempsZoomOut{ 0 };
 			while (m_peutDeplacer && m_threadsActifs)
 			{
 				deplacementVectoriel.x = utilitaire::deplacement;
-				if (frameAnimation < 60)
+				m_collisions.resize(1);
+				if (frameAnimation < 50l)
+				{
+					if (m_collisions.size() > 0) m_collisions.pop_back();
 					deplacementVectoriel.y = 0.f;
-				else
+					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[0], PositionCollision::bas, Collision::normale, 0));
+					m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
+					m_sprites.camera.move(deplacementVectoriel.x, 0.f);
+				}
+				else if (frameAnimation < 170l)
+				{
 					deplacementVectoriel.y = -utilitaire::deplacement;
-				m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
+					m_sprites.joueur.move(deplacementVectoriel);
+					m_sprites.camera.move(deplacementVectoriel);
+				}
+				else
+				{
+					if (tempsZoomOut >= 170)
+						zoom = 1.f;
+					m_sprites.camera.zoom(zoom);
+					++tempsZoomOut;
+					deplacementVectoriel.y = -utilitaire::deplacement;
+					m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
+					m_sprites.camera.move(deplacementVectoriel.x, 0.f);
+				}
 				animationJoueur(deplacementVectoriel, frameAnimation);
-				m_sprites.camera.move(deplacementVectoriel.x, 0.f);
 				++frameAnimation;
+				if (m_sprites.camera.getCenter().x - m_sprites.camera.getSize().x / 2.f >= getWidth(m_sprites.textures[1]))
+				{
+					m_sprites.camera.move(-getWidth(m_sprites.textures[1]), 0.f);
+					m_sprites.joueur.move(-getWidth(m_sprites.textures[1]), 0.f);
+				}
 				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 			}
 			reglerVisible.release();

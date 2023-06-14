@@ -750,8 +750,8 @@ private:
 
 			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1], true);
 			m_sprites.avantPlan[0].sprite.setScale(1.f, 1.f);
-			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[1]) * 2, getHeight(m_sprites.textures[1])));
-			m_sprites.avantPlan[0].sprite.setPosition(-getWidth(m_sprites.avantPlan[0].sprite) / 2.f, 720.f - getHeight(m_sprites.avantPlan[0].sprite));
+			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[1]) * 3, getHeight(m_sprites.textures[1])));
+			m_sprites.avantPlan[0].sprite.setPosition(0.f, 720.f - getHeight(m_sprites.avantPlan[0].sprite));
 
 			m_sprites.joueur.setPosition(375.f, 50.f);
 			break;
