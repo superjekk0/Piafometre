@@ -697,6 +697,7 @@ public:
 			reglerVisible.release();
 			sautEffectif.release();
 			joueurPeutSauter.release();
+			std::this_thread::sleep_for(std::chrono::milliseconds(500));
 			return;
 		}
 		else
