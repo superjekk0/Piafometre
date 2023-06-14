@@ -277,8 +277,7 @@ private:
 			moteur.maxCameraX = 1280;
 			break;
 		default:
-
-			assert(false && L"Règle de niveau non créée");
+			//Il s'agit de la fin, donc aucune règle!
 			break;
 		}
 	}
@@ -736,7 +735,12 @@ private:
 			m_sprites.arrierePlan[0].setPosition(0.f, -475.f);
 			break;
 		default:
-			
+			m_sprites.arrierePlan.resize(0);
+			m_sprites.avantPlan.resize(1);
+			m_sprites.positionDansJeu = PositionJeu::fin;
+
+			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1], true);
+			m_sprites.avantPlan[0].sprite.setScale(4.5f, 4.5f);
 			break;
 		}
 	}
@@ -837,6 +841,10 @@ private:
 			m_sprites.textures[9].setRepeated(true);
 			break;
 		default:
+			m_sprites.textures.resize(2);
+			verifFichierDisponible("parallax - mountain - mountains.png", 1);
+
+			m_sprites.textures[1].setRepeated(true);
 			break;
 		}
 	}
