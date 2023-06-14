@@ -296,6 +296,8 @@ private:
 		{
 		case 1:
 			m_sprites.couleur = sf::Color(119, 181, 254);
+			m_sprites.positionDansJeu = PositionJeu::jeu;
+
 			m_sprites.avantPlan.resize(13);
 			m_sprites.arrierePlan.resize(2);
 
@@ -375,6 +377,7 @@ private:
 			break;
 		case 2:
 			m_sprites.couleur = sf::Color(0x2D100DFF);
+			m_sprites.positionDansJeu = PositionJeu::jeu;
 
 			m_sprites.avantPlan.resize(22);
 			m_sprites.arrierePlan.resize(1);
@@ -517,6 +520,8 @@ private:
 			break;
 		case 3:
 			m_sprites.couleur = sf::Color(0xD4E7FFFF);
+			m_sprites.positionDansJeu = PositionJeu::jeu;
+			
 
 			m_sprites.arrierePlan.resize(1);
 			m_sprites.avantPlan.resize(13);
@@ -605,6 +610,7 @@ private:
 			break;
 		case 4:
 			m_sprites.couleur = sf::Color(0xFEFEE2FF);
+			m_sprites.positionDansJeu = PositionJeu::jeu;
 
 			m_sprites.avantPlan.resize(21);
 			m_sprites.arrierePlan.resize(1);
@@ -625,6 +631,7 @@ private:
 			m_sprites.avantPlan[2].sprite.setScale(1.f, 1.f);
 			m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, 600, getHeight(m_sprites.textures[2])));
 			m_sprites.avantPlan[2].sprite.setPosition((m_sprites.avantPlan[1].coinSpriteDroitHaut() + m_sprites.avantPlan[1].coinSpriteGaucheHaut()) / 2.f + sf::Vector2f(-getWidth(m_sprites.avantPlan[2].sprite) / 2.f, -150.f - getHeight(m_sprites.avantPlan[2].sprite)));
+			m_sprites.avantPlan[2].sprite.setColor(sf::Color(0xFFFFFFFF));
 			m_sprites.avantPlan[2].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[7], true);
@@ -649,6 +656,7 @@ private:
 			m_sprites.avantPlan[6].sprite.setScale(1.f, 1.f);
 			m_sprites.avantPlan[6].sprite.setTextureRect(sf::IntRect(0, 35, 125, getHeight(m_sprites.textures[1]) * 5.f));
 			m_sprites.avantPlan[6].sprite.setPosition((m_sprites.avantPlan[2].coinSpriteGaucheBas() + m_sprites.avantPlan[2].coinSpriteDroitBas()) / 2.f + sf::Vector2f(-getWidth(m_sprites.avantPlan[6].sprite) / 2.f, -getHeight(m_sprites.avantPlan[6].sprite)));
+			m_sprites.avantPlan[6].sprite.setColor(sf::Color(0xFFFFFFFF));
 			m_sprites.avantPlan[6].comportement = TypePlateforme::solide;
 
 			m_sprites.avantPlan[7].sprite.setTexture(m_sprites.textures[7], true);
@@ -738,9 +746,14 @@ private:
 			m_sprites.arrierePlan.resize(0);
 			m_sprites.avantPlan.resize(1);
 			m_sprites.positionDansJeu = PositionJeu::fin;
+			m_sprites.couleur = sf::Color(0xB32400FF);
 
 			m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1], true);
-			m_sprites.avantPlan[0].sprite.setScale(4.5f, 4.5f);
+			m_sprites.avantPlan[0].sprite.setScale(1.f, 1.f);
+			m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[1]) * 2, getHeight(m_sprites.textures[1])));
+			m_sprites.avantPlan[0].sprite.setPosition(-getWidth(m_sprites.avantPlan[0].sprite) / 2.f, 720.f - getHeight(m_sprites.avantPlan[0].sprite));
+
+			m_sprites.joueur.setPosition(375.f, 50.f);
 			break;
 		}
 	}
@@ -842,7 +855,7 @@ private:
 			break;
 		default:
 			m_sprites.textures.resize(2);
-			verifFichierDisponible("parallax - mountain - mountains.png", 1);
+			verifFichierDisponible("resources/textures/montagneFond.png", 1);
 
 			m_sprites.textures[1].setRepeated(true);
 			break;
@@ -911,7 +924,7 @@ public:
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
-						m_moteur.niveau = 2; //Dès que la construction des niveaux est terminée, remettre à 1
+						m_moteur.niveau = 5; //Dès que la construction des niveaux est terminée, remettre à 1
 						ecranChargement();
 						return;
 						break;
@@ -1086,7 +1099,7 @@ public:
 		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 		m_peutDeplacer = true;
 		m_sprites.hud.resize(0);
-		m_sprites.positionDansJeu = PositionJeu::jeu;
+		//m_sprites.positionDansJeu = PositionJeu::jeu;
 	}
 
 	void pause()

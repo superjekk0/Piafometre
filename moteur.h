@@ -39,7 +39,7 @@ public:
 	InfosCollision(const Plateforme& pPlateforme, const PositionCollision pPositionCollision, const Collision pCollision, const int pIndex) : m_plateforme{ &pPlateforme }, m_collision{ pCollision }, m_positionColision{ pPositionCollision }, m_indexPlateforme{ pIndex }
 	{}
 
-	InfosCollision() : m_plateforme{nullptr}, m_positionColision{PositionCollision::bas}, m_collision{Collision::aucune},m_indexPlateforme{-1}
+	InfosCollision() : m_plateforme{ nullptr }, m_positionColision{ PositionCollision::bas }, m_collision{ Collision::aucune }, m_indexPlateforme{ -1 }
 	{}
 
 	const Plateforme& plateforme() const
@@ -677,18 +677,41 @@ public:
 		//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
 		//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
 		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{[&]() {peutSauter(); }} };
-		for (auto& plateforme : m_sprites.avantPlan)
-			if (plateforme.comportement == TypePlateforme::objet)
-				minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
-
-		for (auto& minuterie : minuterieObjetsTouches)
-			minuterie.detach();
-
-		reglerVisible->detach();
-		joueurPeutSauter->detach();
-		sautEffectif->detach();
-		sf::Clock debutCycle{};
+		sf::Clock debutCycle;
 		long frameAnimation{ 0 };
+		if (m_sprites.positionDansJeu == PositionJeu::fin)
+		{
+			while (m_peutDeplacer && m_threadsActifs)
+			{
+				deplacementVectoriel.x = utilitaire::deplacement;
+				if (frameAnimation < 60)
+					deplacementVectoriel.y = 0.f;
+				else
+					deplacementVectoriel.y = -utilitaire::deplacement;
+				m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
+				animationJoueur(deplacementVectoriel, frameAnimation);
+				m_sprites.camera.move(deplacementVectoriel.x, 0.f);
+				++frameAnimation;
+				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
+			}
+			reglerVisible.release();
+			sautEffectif.release();
+			joueurPeutSauter.release();
+			return;
+		}
+		else
+		{
+			for (auto& plateforme : m_sprites.avantPlan)
+				if (plateforme.comportement == TypePlateforme::objet)
+					minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
+
+			for (auto& minuterie : minuterieObjetsTouches)
+				minuterie.detach();
+
+			reglerVisible->detach();
+			joueurPeutSauter->detach();
+			sautEffectif->detach();
+		}
 		while (m_peutDeplacer)
 		{
 			m_collisions.resize(0);

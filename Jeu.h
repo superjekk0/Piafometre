@@ -243,10 +243,13 @@ public:
 		//detecTouches->detach();
 		mouvementMenu->detach();
 
+		//std::thread evenements{ [&] {detectionEvenement(*evenementFenetre); } }; //À modifier plus tard
+
 		sf::Clock debutCycle;
 		/// TODO : Changer les fonctions pour enlever les boucles while dedans et changer "detach" par "join" dans les threads associés
 		while (threadsActifs)
 		{
+			//evenements.join();
 			detectionEvenement(*evenementFenetre);
 			rendu();
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds())); //Se met à jour à chaque 1/60ème de seconde
