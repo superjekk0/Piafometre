@@ -1,3 +1,4 @@
+#pragma once
 #include "ressources.h"
 
 #ifndef PLATEFORME_H

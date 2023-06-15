@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MOTEURMENU_H
 #define MOTEURMENU_H
 
@@ -924,7 +925,7 @@ public:
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
-						m_moteur.niveau = 5; //Dès que la construction des niveaux est terminée, remettre à 1
+						m_moteur.niveau = 1; //Dès que la construction des niveaux est terminée, remettre à 1
 						ecranChargement();
 						return;
 						break;
@@ -944,7 +945,7 @@ public:
 					case 2: //Quitter le logiciel
 						Jeu::preparerQuitter(m_threadsActifs, m_touchesActionnees, m_peutDeplacer);
 						//threadsActifs = false;
-						//std::this_thread::sleep_for(100ms);
+						std::this_thread::sleep_for(std::chrono::milliseconds(100));
 						//touchesActionnees.set(7);
 						return;
 						break;

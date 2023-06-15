@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MOTEUR_H
 #define MOTEUR_H
 
@@ -715,6 +716,22 @@ public:
 				{
 					m_sprites.camera.move(-getWidth(m_sprites.textures[1]), 0.f);
 					m_sprites.joueur.move(-getWidth(m_sprites.textures[1]), 0.f);
+				}
+				if (Clv::isKeyPressed(Clv::Enter))
+				{
+					m_peutDeplacer = !m_peutDeplacer;
+					m_touchesNonRepetables[0] = true;
+					m_sprites.positionDansJeu = PositionJeu::accueil;
+					m_sprites.couleur = sf::Color(0x808080FF);
+					m_sprites.camera.setSize(1280.f, 720.f);
+					m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
+					reglerVisible.release();
+					sautEffectif.release();
+					joueurPeutSauter.release();
+					m_sprites.hud.resize(4);
+					m_sprites.arrierePlan.resize(0);
+					m_sprites.avantPlan.resize(0);
+					return;
 				}
 				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 			}
