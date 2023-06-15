@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PLATEFORMES_H
 #define PLATEFORMES_H
 
