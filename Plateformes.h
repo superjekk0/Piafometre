@@ -14,24 +14,28 @@ enum class TextureRule {
 
 class Tile : sf::Transformable {
 private:
-	const sf::Texture* const m_texture;			// La texture héritée de la classe contenant la tuile
+	const sf::Texture* const m_texture;		// La texture héritée de la classe contenant la tuile
 	sf::Vector2f m_textureSize;				// Indique la taille de la sous-texture utilisée
 	sf::Vector2f m_texturePosition;			// Indique la position de départ de la sous-texture
 	sf::Vector2f m_position;				// Donne la position de la case au coin supérieur gauche
 	sf::Vector2f m_tileSize;				// Donne la taille de la case
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
 	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
-	sf::Vector2f m_scale{ 1.f, 1.f };			// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
+	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
 	///TODO : Inclure les membres privés tels que la texture globale, le carré de texture, les transformations appliquées à la texture, la taille désirée
 	
 	void intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& desiredSize);
 public:
 
+	/// <summary>
+	/// Ce constructeur ne devrait jamais être utilisé autrement que pour changer la taille du std::vector
+	/// </summary>
 	Tile();
 
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount, TextureRule textureRule);
 
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount, TextureRule textureRule, const sf::Vector2f& scale);
+	
 	/// <summary>
 	/// Retourne une référence de la liste générique de sommets (pour pouvoir tout dessiner en un appel de la méthode draw)
 	/// </summary>
@@ -67,6 +71,17 @@ public:
 	/// </summary>
 	sf::Vector2f bottomRightCorner() const;
 
+	/// <summary>
+	/// Mets la tuile à l'échelle spécifiée selon la règle de textures. Attention! Pour que le changement soit perceptible par l'utilisateur, l'ensemble des sommets doit être recopié dans une liste générique.
+	/// </summary>
+	/// <param name="scale">Multiplicateur de taille</param>
+	void setScale(const sf::Vector2f& scale);
+
+	/// <summary>
+	/// Mets la tuile à l'échelle spécifiée selon la règle de textures. Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
+	/// </summary>
+	/// <param name="scale">Échelle de texture appliquée aux ordonnées et aux abcisses</param>
+	void setScale(const float scale);
 };
 
 void Tile::intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& desiredSize)
@@ -79,31 +94,31 @@ void Tile::intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& d
 	while (coinGaucheSommet.y < desiredSize.y)
 	{
 		coinGaucheSommet.x = 0.f;
-		for (; coinGaucheSommet.x < desiredSize.x; coinGaucheSommet.x += m_textureSize.x,
+		for (; coinGaucheSommet.x < desiredSize.x; coinGaucheSommet.x += m_textureSize.x * m_scale.x,
 			indexSommet = m_vertexes.size(), m_vertexes.resize(m_vertexes.size() + 6))
 		{
 			m_vertexes[indexSommet].position = coinGaucheSommet;
 			m_vertexes[indexSommet].texCoords = sf::Vector2f(m_texturePosition.x, 0.f);
 
-			if (coinGaucheSommet.y + m_textureSize.y > desiredSize.y)
+			if (coinGaucheSommet.y + m_textureSize.y * m_scale.y > desiredSize.y)
 			{
 				m_vertexes[indexSommet + 1].position = coinGaucheSommet + sf::Vector2f(0.f, desiredSize.y - coinGaucheSommet.y);
 				m_vertexes[indexSommet + 1].texCoords = sf::Vector2f(m_texturePosition.x, desiredSize.y - coinGaucheSommet.y);
 			}
 			else
 			{
-				m_vertexes[indexSommet + 1].position = coinGaucheSommet + sf::Vector2f(0.f, m_textureSize.y);
+				m_vertexes[indexSommet + 1].position = coinGaucheSommet + sf::Vector2f(0.f, m_textureSize.y * m_scale.y);
 				m_vertexes[indexSommet + 1].texCoords = sf::Vector2f(m_texturePosition.x, m_textureSize.y);
 			}
 
-			if (coinGaucheSommet.x + m_textureSize.x > desiredSize.y)
+			if (coinGaucheSommet.x + m_textureSize.x * m_scale.x > desiredSize.y)
 			{
 				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(desiredSize.x - coinGaucheSommet.x, 0.f);
 				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(m_texturePosition.x + (desiredSize.x - coinGaucheSommet.x), 0.f);
 			}
 			else
 			{
-				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(m_textureSize.x, 0.f);
+				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(m_textureSize.x * m_scale.x, 0.f);
 				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(m_texturePosition.x + m_textureSize.x, 0.f);
 			}
 
@@ -113,12 +128,8 @@ void Tile::intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& d
 			m_vertexes[indexSommet + 5].position = sf::Vector2f(m_vertexes[indexSommet + 4].position.x, m_vertexes[indexSommet + 3].position.y);
 			m_vertexes[indexSommet + 5].texCoords = sf::Vector2f(m_vertexes[indexSommet + 4].texCoords.x, m_vertexes[indexSommet + 3].texCoords.y);
 
-			//Le but est de toujours changer d'un sommet sans jamais faire de bond qui ne semble pas possible à faire avec un triangle
-			//indexSommet = m_vertexes.size();
-			//m_vertexes.resize(m_vertexes.size() + 3);
-			//coinGaucheSommet.x += m_taille;
 		}
-		coinGaucheSommet.y += m_textureSize.y;
+		coinGaucheSommet.y += m_textureSize.y * m_scale.y;
 	}
 	for (sf::Vertex& point : m_vertexes)
 	{
@@ -135,7 +146,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
 	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture },
 	m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
-	m_textureRule{ textureRule }, m_scale{ m_scale }
+	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{desiredSize}
 {
 	intializeVertexes(position, desiredSize);
 }
@@ -145,7 +156,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector
 	const sf::Vector2f& position, int subTextureCount, TextureRule textureRule) :
 	m_texture{ &texture }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
-	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }
+	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{desiredSize}
 {
 	intializeVertexes(position, desiredSize);
 }
@@ -183,6 +194,59 @@ sf::Vector2f Tile::bottomLeftCorner() const
 sf::Vector2f Tile::bottomRightCorner() const
 {
 	return m_position + this->m_tileSize;
+}
+
+void Tile::setScale(const sf::Vector2f& scale)
+{
+	switch (m_textureRule)
+	{
+	case TextureRule::repeatTexture:
+		m_tileSize.x *= scale.x;
+		m_tileSize.y *= scale.y;
+		break;
+	case TextureRule::keep_height:
+		m_scale.x *= scale.y;
+		m_scale.y *= scale.y;
+		m_tileSize.x *= scale.y;
+		m_tileSize.y *= scale.y;
+		break;
+	case TextureRule::keep_width:
+		m_scale.x *= scale.x;
+		m_scale.y *= scale.x;
+		m_tileSize.x *= scale.x;
+		m_tileSize.y *= scale.x;
+		break;
+	case TextureRule::keep_size:
+		m_scale.x *= scale.x;
+		m_scale.y *= scale.y;
+		break;
+	case TextureRule::adjustable_size:
+		m_scale.x *= scale.x;
+		m_scale.y *= scale.y;
+		m_tileSize.x *= scale.x;
+		m_tileSize.y *= scale.y;
+		break;
+	}
+	intializeVertexes(m_position, m_tileSize);
+}
+
+void Tile::setScale(float scale)
+{
+	switch (m_textureRule)
+	{
+	case TextureRule::keep_height:
+	case TextureRule::keep_width:
+	case TextureRule::adjustable_size:
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::repeatTexture:
+		m_tileSize *= scale;
+		break;
+	case TextureRule::keep_size:
+		m_scale *= scale;
+		break;
+	}
 }
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Hériter de CaseOptimisee
