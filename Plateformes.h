@@ -1,15 +1,16 @@
-#pragma once
 #ifndef PLATEFORMES_H
 #define PLATEFORMES_H
 
 #include "Jeu.h"
 
 enum class TextureRule {
-	repeatTexture,		// La texture sera répétée dans la tuile. Augmenter l'échelle augmentera simplement la taille de la tuile, sans augmenter la taille des textures
+	repeat_texture,		// La texture sera répétée dans la tuile. Augmenter l'échelle augmentera simplement la taille de la tuile, sans augmenter la taille des textures
 	keep_height,		// La texture sera transformée en mettant la hauteur en priorité. Ex: l'échelle de la tuile au début est de 1:1, puis devient 2:1, ça va être 1:1, puisque la hauteur a priorité. Le rectangle de texture n'est pas affecté (si une texture se répétait 2 fois, elle restera répétée 2 fois)
 	keep_width,			// La texture sera transformée en mettant la largeur en priorité. Ex: l'échelle de la tuile au début est de 1:1 (100x100), puis devient 2:1. La tuile aura l'échelle 2:2 (200x200), puisque la largeur a priorité. Le rectangle de texture n'est pas affecté (si une texture se répète 2 fois, elle restera répétée 2 fois)
 	keep_size,			// La texture sera plus grosse, mais l'objet gardera la même taille
-	adjustable_size		// Aucune tentative n'est faite pour garder la même taille que celle passée auparavant, tout sera transformée selon ce qui est donné, sans garder les proportions
+	adjustable_size,	// Aucune tentative n'est faite pour garder la même taille que celle passée auparavant, tout sera transformée selon ce qui est donné, sans garder les proportions
+	fill_space			// La texture prend l'entièreté de l'espace sans se répéter. La taille de la case a donc priorité sur son échelle
+
 };
 
 class Tile : sf::Transformable {
@@ -22,9 +23,8 @@ private:
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
 	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
 	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
-	///TODO : Inclure les membres privés tels que la texture globale, le carré de texture, les transformations appliquées à la texture, la taille désirée
 	
-	void intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& desiredSize);
+	void intializeVertexes();
 public:
 
 	/// <summary>
@@ -81,29 +81,47 @@ public:
 	/// Mets la tuile à l'échelle spécifiée selon la règle de textures. Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
 	/// </summary>
 	/// <param name="scale">Échelle de texture appliquée aux ordonnées et aux abcisses</param>
-	void setScale(const float scale);
+	void setScale(float scale);
+
+	/// <summary>
+	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille (voir la documentation des règles de textures pour plus de détails)
+	/// </summary>
+	/// <param name="size">Nouvelle taille demandée</param>
+	void resize(const sf::Vector2f& size);
+
+	/// <summary>
+	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille (voir la documentation des règles de textures pour plus de détails)
+	/// </summary>
+	/// <param name="x">Nouvelle taille horizontale demandée</param>
+	/// <param name="y">Nouvelle taille verticale demandée</param>
+	void resize(float x, float y);
 };
 
-void Tile::intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& desiredSize)
+void Tile::intializeVertexes()
 {
-	setPosition(position);
+	if (m_textureRule == TextureRule::fill_space)
+	{
+		m_scale.x = m_tileSize.x / m_textureSize.x;
+		m_scale.y = m_tileSize.y / m_textureSize.y;
+	}
+
 	sf::Vector2f coinGaucheSommet;
 	m_vertexes.resize(6);
 	std::size_t indexSommet{ 0 };
 
-	while (coinGaucheSommet.y < desiredSize.y)
+	while (coinGaucheSommet.y < m_tileSize.y)
 	{
 		coinGaucheSommet.x = 0.f;
-		for (; coinGaucheSommet.x < desiredSize.x; coinGaucheSommet.x += m_textureSize.x * m_scale.x,
+		for (; coinGaucheSommet.x < m_tileSize.x; coinGaucheSommet.x += m_textureSize.x * m_scale.x,
 			indexSommet = m_vertexes.size(), m_vertexes.resize(m_vertexes.size() + 6))
 		{
 			m_vertexes[indexSommet].position = coinGaucheSommet;
 			m_vertexes[indexSommet].texCoords = sf::Vector2f(m_texturePosition.x, 0.f);
 
-			if (coinGaucheSommet.y + m_textureSize.y * m_scale.y > desiredSize.y)
+			if (coinGaucheSommet.y + m_textureSize.y * m_scale.y > m_tileSize.y)
 			{
-				m_vertexes[indexSommet + 1].position = coinGaucheSommet + sf::Vector2f(0.f, desiredSize.y - coinGaucheSommet.y);
-				m_vertexes[indexSommet + 1].texCoords = sf::Vector2f(m_texturePosition.x, desiredSize.y - coinGaucheSommet.y);
+				m_vertexes[indexSommet + 1].position = coinGaucheSommet + sf::Vector2f(0.f, m_tileSize.y - coinGaucheSommet.y);
+				m_vertexes[indexSommet + 1].texCoords = sf::Vector2f(m_texturePosition.x, m_tileSize.y - coinGaucheSommet.y);
 			}
 			else
 			{
@@ -111,10 +129,10 @@ void Tile::intializeVertexes(const sf::Vector2f& position, const sf::Vector2f& d
 				m_vertexes[indexSommet + 1].texCoords = sf::Vector2f(m_texturePosition.x, m_textureSize.y);
 			}
 
-			if (coinGaucheSommet.x + m_textureSize.x * m_scale.x > desiredSize.y)
+			if (coinGaucheSommet.x + m_textureSize.x * m_scale.x > m_tileSize.y)
 			{
-				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(desiredSize.x - coinGaucheSommet.x, 0.f);
-				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(m_texturePosition.x + (desiredSize.x - coinGaucheSommet.x), 0.f);
+				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(m_tileSize.x - coinGaucheSommet.x, 0.f);
+				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(m_texturePosition.x + (m_tileSize.x - coinGaucheSommet.x), 0.f);
 			}
 			else
 			{
@@ -148,7 +166,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{desiredSize}
 {
-	intializeVertexes(position, desiredSize);
+	intializeVertexes();
 }
 
 
@@ -158,7 +176,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{desiredSize}
 {
-	intializeVertexes(position, desiredSize);
+	intializeVertexes();
 }
 
 float Tile::height() const
@@ -200,7 +218,8 @@ void Tile::setScale(const sf::Vector2f& scale)
 {
 	switch (m_textureRule)
 	{
-	case TextureRule::repeatTexture:
+	case TextureRule::repeat_texture:
+	case TextureRule::fill_space:
 		m_tileSize.x *= scale.x;
 		m_tileSize.y *= scale.y;
 		break;
@@ -227,7 +246,7 @@ void Tile::setScale(const sf::Vector2f& scale)
 		m_tileSize.y *= scale.y;
 		break;
 	}
-	intializeVertexes(m_position, m_tileSize);
+	intializeVertexes();
 }
 
 void Tile::setScale(float scale)
@@ -240,11 +259,62 @@ void Tile::setScale(float scale)
 		m_tileSize *= scale;
 		m_scale *= scale;
 		break;
-	case TextureRule::repeatTexture:
+	case TextureRule::repeat_texture:
+	case TextureRule::fill_space:
 		m_tileSize *= scale;
 		break;
 	case TextureRule::keep_size:
 		m_scale *= scale;
+		break;
+	}
+}
+
+void Tile::resize(const sf::Vector2f& size)
+{
+	float scale{};
+	switch (m_textureRule)
+	{
+	case TextureRule::repeat_texture:
+	case TextureRule::adjustable_size:
+	case TextureRule::fill_space:
+		m_tileSize = size;
+		break;
+	case TextureRule::keep_height:
+		scale = size.y / m_tileSize.y;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_width:
+		scale = size.x / m_tileSize.y;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_size:
+		break;
+	}
+}
+
+void Tile::resize(float x, float y)
+{
+	float scale{};
+	switch (m_textureRule)
+	{
+	case TextureRule::repeat_texture:
+	case TextureRule::adjustable_size:
+	case TextureRule::fill_space:
+		m_tileSize = sf::Vector2f(x, y);
+		break;
+	case TextureRule::keep_height:
+		scale = y / m_tileSize.y;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_width:
+		scale = x / m_textureSize.x;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_size:
 		break;
 	}
 }
@@ -259,12 +329,6 @@ public:
 	/// TODO : Méthode pour changer la taille du carré de texture
 	/// TODO : Méthode pour changer la taille désirée de la plateforme
 	/// TODO : Méthode pour changer le comportement de la plateforme
-	/// TODO : Méthode pour obtenir les coordonnées du coin supérieur droit
-	/// TODO : Méthode pour obtenir les coordonnées du coin supérieur gauche
-	/// TODO : Méthode pour obtenir les coordonnées du coin inférieur gauche
-	/// TODO : Méthode pour obtenir les coordonnées du coin inférieur droit
-	/// TODO : Méthode pour obtenir la largeur de la plateforme
-	/// TODO : Méthode pour obtenir la hauteur de la plateforme
 };
 
 /// TODO : Ajouter l'héritage des classe SFML de base

@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MOTEUR_H
 #define MOTEUR_H
 

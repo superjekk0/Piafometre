@@ -1,4 +1,3 @@
-#pragma once
 #ifndef RESSOURCES_H
 #define RESSOURCES_H
 
