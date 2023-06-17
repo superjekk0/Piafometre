@@ -23,7 +23,8 @@ private:
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
 	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
 	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
-	
+	int m_textureCount{0};
+
 	void intializeVertexes();
 public:
 
@@ -91,17 +92,60 @@ public:
 	void setScale(float x, float y);
 
 	/// <summary>
-	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille (voir la documentation des règles de textures pour plus de détails)
+	/// Met l'échelle de la texture à l'échelle spécifée selon la règle de texture ou change la taille autrement (voir la documentation pour plus de détails)
+	/// </summary>
+	/// <param name="scale">Facteur d'agrandissement de la texture</param>
+	/// <param name="textureRule">Nouvelle règle de texture</param>
+	void setScale(const sf::Vector2f& scale, TextureRule textureRule);
+
+	/// <summary>
+	/// Met l'échelle de la texture à l'échelle spécifiée dans les deux axes selon la règle de texture (ou change la taille autrement). Voir la documentation pour plus de détails.
+	/// </summary>
+	/// <param name="scale">Facteur d'agrandissement de la texture à l'horizontal et à la verticale</param>
+	/// <param name="textureRule">Nouvelle règle de texture</param>
+	void setScale(float scale, TextureRule textureRule);
+
+	/// <summary>
+	/// Met l'échelle de la texture à l'échelle spécifié à l'axe spécifié en paramètre selon la règle de texture (ou change la taille, autrement). Voir la documentation pour plus de détails.
+	/// </summary>
+	/// <param name="x">Facteur d'agrandissement horizontal</param>
+	/// <param name="y">Facteur d'agrandissement vertical</param>
+	/// <param name="textureRule">Nouvelle règle de texture</param>
+	void setScale(float x, float y, TextureRule textureRule);
+
+	/// <summary>
+	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation des règles de textures pour plus de détails.
 	/// </summary>
 	/// <param name="size">Nouvelle taille demandée</param>
 	void resize(const sf::Vector2f& size);
 
 	/// <summary>
-	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille (voir la documentation des règles de textures pour plus de détails)
+	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation des règles de textures pour plus de détails.
 	/// </summary>
 	/// <param name="x">Nouvelle taille horizontale demandée</param>
 	/// <param name="y">Nouvelle taille verticale demandée</param>
 	void resize(float x, float y);
+
+	/// <summary>
+	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation des règles de textures pour plus de détails.
+	/// </summary>
+	/// <param name="size">Nouvelle taille demandée</param>
+	/// <param name="textureRule">Nouvelle règle de texture</param>
+	void resize(const sf::Vector2f& size, TextureRule textureRule);
+
+	/// <summary>
+	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation pour plus de détails.
+	/// </summary>
+	/// <param name="x">Nouvelle taille horizontale demandée</param>
+	/// <param name="y">Nouvelle taille verticale demandée</param>
+	/// <param name="textureRule">Nouvelle règle de texture</param>
+	void resize(float x, float y, TextureRule textureRule);
+
+	/// <summary>
+	/// Change la sous-texture de la tuile
+	/// </summary>
+	/// <param name="numberSubTexture">Correspond au numéro de la texture. Le premier numéro possible est 0 et va jusqu'au nombre de texture - 1. Si le numéro est non valide, le rectangle de texture reste inchangé.</param>
+	void changeTextureRect(int numberSubTexture);
 };
 
 void Tile::intializeVertexes()
@@ -168,7 +212,7 @@ Tile::Tile() : m_texture{nullptr}
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
 	const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount,
-	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture },
+	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture }, m_textureCount{subTextureCount},
 	m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{desiredSize}
@@ -178,7 +222,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
 
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
-	const sf::Vector2f& position, int subTextureCount, TextureRule textureRule) :
+	const sf::Vector2f& position, int subTextureCount, TextureRule textureRule) : m_textureCount{subTextureCount},
 	m_texture{ &texture }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{desiredSize}
@@ -312,6 +356,24 @@ void Tile::setScale(float x, float y)
 	intializeVertexes();
 }
 
+void Tile::setScale(const sf::Vector2f& scale, TextureRule textureRule)
+{
+	m_textureRule = textureRule;
+	setScale(scale);
+}
+
+void Tile::setScale(float scale, TextureRule textureRule)
+{
+	m_textureRule = textureRule;
+	setScale(scale);
+}
+
+void Tile::setScale(float x, float y, TextureRule textureRule)
+{
+	m_textureRule = textureRule;
+	setScale(x, y);
+}
+
 void Tile::resize(const sf::Vector2f& size)
 {
 	float scale{};
@@ -364,6 +426,26 @@ void Tile::resize(float x, float y)
 	intializeVertexes();
 }
 
+void Tile::resize(const sf::Vector2f& size, TextureRule textureRule)
+{
+	m_textureRule = textureRule;
+	resize(size);
+}
+
+void Tile::resize(float x, float y, TextureRule textureRule)
+{
+	m_textureRule = textureRule;
+	resize(x, y);
+}
+
+void Tile::changeTextureRect(int numberSubTexture)
+{
+	if (numberSubTexture >= 0 && numberSubTexture < m_textureCount)
+	{
+		m_texturePosition = sf::Vector2f(m_textureSize.x / m_textureCount * numberSubTexture, 0.f);
+		intializeVertexes();
+	}
+}
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Hériter de CaseOptimisee
 class PlateformeOptimisee {
@@ -377,7 +459,6 @@ public:
 	/// TODO : Méthode pour changer le comportement de la plateforme
 };
 
-/// TODO : Ajouter l'héritage des classe SFML de base
 class Niveau : sf::Drawable {
 private:
 	/// TODO : Membres privés à rajouter. Inclue le std::vector de CaseOptimisee et la texture globale
