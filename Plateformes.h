@@ -72,16 +72,23 @@ public:
 	sf::Vector2f bottomRightCorner() const;
 
 	/// <summary>
-	/// Mets la tuile à l'échelle spécifiée selon la règle de textures. Attention! Pour que le changement soit perceptible par l'utilisateur, l'ensemble des sommets doit être recopié dans une liste générique.
+	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, l'ensemble des sommets doit être recopié dans une liste générique.
 	/// </summary>
-	/// <param name="scale">Multiplicateur de taille</param>
+	/// <param name="scale">Facteur d'agrandissement en deux dimensions</param>
 	void setScale(const sf::Vector2f& scale);
 
 	/// <summary>
-	/// Mets la tuile à l'échelle spécifiée selon la règle de textures. Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
+	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
 	/// </summary>
-	/// <param name="scale">Échelle de texture appliquée aux ordonnées et aux abcisses</param>
+	/// <param name="scale">Facteur d'agrandissement appliqué en x et en y</param>
 	void setScale(float scale);
+
+	/// <summary>
+	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
+	/// </summary>
+	/// <param name="x">Facteur d'agrandissement horizontal</param>
+	/// <param name="y">Facteur d'agrandissement vertical</param>
+	void setScale(float x, float y);
 
 	/// <summary>
 	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille (voir la documentation des règles de textures pour plus de détails)
@@ -270,53 +277,36 @@ void Tile::setScale(float scale)
 	intializeVertexes();
 }
 
-void Tile::resize(const sf::Vector2f& size)
+void Tile::setScale(float x, float y)
 {
-	float scale{};
 	switch (m_textureRule)
 	{
 	case TextureRule::repeat_texture:
-	case TextureRule::adjustable_size:
 	case TextureRule::fill_space:
-		m_tileSize = size;
+		m_tileSize.x *= x;
+		m_tileSize.y *= y;
+		break;
+	case TextureRule::adjustable_size:
+		m_tileSize.x *= x;
+		m_tileSize.y *= y;
+		m_scale.x *= x;
+		m_scale.y *= y;
 		break;
 	case TextureRule::keep_height:
-		scale = size.y / m_tileSize.y;
-		m_tileSize *= scale;
-		m_scale *= scale;
+		m_tileSize.x *= y;
+		m_tileSize.y *= y;
+		m_scale.x *= y;
+		m_scale.y *= y;
 		break;
 	case TextureRule::keep_width:
-		scale = size.x / m_tileSize.y;
-		m_tileSize *= scale;
-		m_scale *= scale;
+		m_tileSize.x *= x;
+		m_tileSize.y *= x;
+		m_scale.x *= x;
+		m_scale.y *= x;
 		break;
 	case TextureRule::keep_size:
-		break;
-	}
-	intializeVertexes();
-}
-
-void Tile::resize(float x, float y)
-{
-	float scale{};
-	switch (m_textureRule)
-	{
-	case TextureRule::repeat_texture:
-	case TextureRule::adjustable_size:
-	case TextureRule::fill_space:
-		m_tileSize = sf::Vector2f(x, y);
-		break;
-	case TextureRule::keep_height:
-		scale = y / m_tileSize.y;
-		m_tileSize *= scale;
-		m_scale *= scale;
-		break;
-	case TextureRule::keep_width:
-		scale = x / m_textureSize.x;
-		m_tileSize *= scale;
-		m_scale *= scale;
-		break;
-	case TextureRule::keep_size:
+		m_scale.x *= x;
+		m_scale.y *= y;
 		break;
 	}
 	intializeVertexes();
@@ -373,6 +363,7 @@ void Tile::resize(float x, float y)
 	}
 	intializeVertexes();
 }
+
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Hériter de CaseOptimisee
 class PlateformeOptimisee {
