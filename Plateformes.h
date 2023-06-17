@@ -345,6 +345,7 @@ void Tile::resize(const sf::Vector2f& size)
 	case TextureRule::keep_size:
 		break;
 	}
+	intializeVertexes();
 }
 
 void Tile::resize(float x, float y)
@@ -370,6 +371,7 @@ void Tile::resize(float x, float y)
 	case TextureRule::keep_size:
 		break;
 	}
+	intializeVertexes();
 }
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Hériter de CaseOptimisee
