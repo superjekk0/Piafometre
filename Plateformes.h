@@ -321,6 +321,56 @@ void Tile::resize(float x, float y)
 	}
 	intializeVertexes();
 }
+
+void Tile::resize(const sf::Vector2f& size)
+{
+	float scale{};
+	switch (m_textureRule)
+	{
+	case TextureRule::repeat_texture:
+	case TextureRule::adjustable_size:
+	case TextureRule::fill_space:
+		m_tileSize = size;
+		break;
+	case TextureRule::keep_height:
+		scale = size.y / m_tileSize.y;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_width:
+		scale = size.x / m_tileSize.y;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_size:
+		break;
+	}
+}
+
+void Tile::resize(float x, float y)
+{
+	float scale{};
+	switch (m_textureRule)
+	{
+	case TextureRule::repeat_texture:
+	case TextureRule::adjustable_size:
+	case TextureRule::fill_space:
+		m_tileSize = sf::Vector2f(x, y);
+		break;
+	case TextureRule::keep_height:
+		scale = y / m_tileSize.y;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_width:
+		scale = x / m_textureSize.x;
+		m_tileSize *= scale;
+		m_scale *= scale;
+		break;
+	case TextureRule::keep_size:
+		break;
+	}
+}
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Hériter de CaseOptimisee
 class PlateformeOptimisee {
