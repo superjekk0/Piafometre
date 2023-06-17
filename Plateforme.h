@@ -1,8 +1,7 @@
-#pragma once
-#include "ressources.h"
-
 #ifndef PLATEFORME_H
 #define PLATEFORME_H
+
+#include "ressources.h"
 
 class Plateforme {
 public:

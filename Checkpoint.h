@@ -1,4 +1,3 @@
-#pragma once
 #ifndef CHECKPOINT_H
 #define CHECKPOINT_H
 

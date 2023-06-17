@@ -1,4 +1,3 @@
-#pragma once
 #ifndef MOTEURMENU_H
 #define MOTEURMENU_H
 
