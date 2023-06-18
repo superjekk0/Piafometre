@@ -13,7 +13,7 @@ enum class TextureRule {
 
 };
 
-class Tile : sf::Transformable {
+class Tile {
 private:
 	const sf::Texture* const m_texture;		// La texture héritée de la classe contenant la tuile
 	sf::Vector2f m_textureSize;				// Indique la taille de la sous-texture utilisée
@@ -239,7 +239,7 @@ void Tile::intializeVertexes()
 	}
 	for (sf::Vertex& point : m_vertexes)
 	{
-		point.position += getPosition();
+		point.position += m_position;
 		point.color = sf::Color::White;
 	}
 }
