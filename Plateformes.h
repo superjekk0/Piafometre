@@ -146,6 +146,43 @@ public:
 	/// </summary>
 	/// <param name="numberSubTexture">Correspond au numéro de la texture. Le premier numéro possible est 0 et va jusqu'au nombre de texture - 1. Si le numéro est non valide, le rectangle de texture reste inchangé.</param>
 	void changeTextureRect(int numberSubTexture);
+
+	/// <summary>
+	/// Sert à uniquement changer la règle de texture
+	/// </summary>
+	/// <param name="textureRule">Nouvelle règle de texture</param>
+	void setTextureRule(TextureRule textureRule);
+
+	/// <summary>
+	/// Sert à obtenir la règle de texture depuis l'extérieur de la tuile
+	/// </summary>
+	TextureRule getTextureRule();
+
+	/// <summary>
+	/// Bouge la tuile du vecteur rentré en paramètre de manière plus efficace que si rentré séparément
+	/// </summary>
+	/// <param name="offset">Déplacement à effectuer</param>
+	void move(const sf::Vector2f& offset);
+
+	/// <summary>
+	/// Bouge la tuile du vecteur horizontal et vertical rentrés en paramètres de manière plus efficace que si rentré séparément
+	/// </summary>
+	/// <param name="offsetX">Déplacement horizontal à effectuer</param>
+	/// <param name="offsetY">Déplacement vertical à effectuer</param>
+	void move(float offsetX, float offsetY);
+
+	/// <summary>
+	/// Met la tuile au coin supérieur gauche à la position rentrée en paramètre
+	/// </summary>
+	/// <param name="position">Nouvelle position de la tuile</param>
+	void setPosition(const sf::Vector2f& position);
+
+	/// <summary>
+	/// Met la tuile au coin supérieur gauche à la position rentrée en paramètre
+	/// </summary>
+	/// <param name="x">Nouvelle position horizontale</param>
+	/// <param name="y">Nouvelle position verticale</param>
+	void setPosition(float x, float y);
 };
 
 void Tile::intializeVertexes()
@@ -446,6 +483,41 @@ void Tile::changeTextureRect(int numberSubTexture)
 		intializeVertexes();
 	}
 }
+
+void Tile::setTextureRule(TextureRule textureRule)
+{
+	m_textureRule = textureRule;
+}
+
+TextureRule Tile::getTextureRule()
+{
+	return m_textureRule;
+}
+
+void Tile::move(const sf::Vector2f& offset)
+{
+	for (auto& sommet : m_vertexes)
+		sommet.position += offset;	
+}
+
+void Tile::move(float offsetX, float offsetY)
+{
+	sf::Vector2f offset{ offsetX, offsetY };
+	for (auto& sommet : m_vertexes)
+		sommet.position += offset;
+}
+
+void Tile::setPosition(const sf::Vector2f& position)
+{
+	m_position = position;
+	intializeVertexes();
+}
+
+void Tile::setPosition(float x, float y)
+{
+	m_position = sf::Vector2f(x, y);
+	intializeVertexes();
+}
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 /// TODO : Hériter de CaseOptimisee
 class PlateformeOptimisee {
@@ -454,8 +526,6 @@ private:
 public:
 	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide). Ça appellera la classe de base
 
-	/// TODO : Méthode pour changer la taille du carré de texture
-	/// TODO : Méthode pour changer la taille désirée de la plateforme
 	/// TODO : Méthode pour changer le comportement de la plateforme
 };
 
