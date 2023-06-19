@@ -23,7 +23,7 @@ private:
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
 	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
 	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
-	int m_textureCount{0};
+	int m_textureCount{0};					// Indique le nombre de textures dans la texture globale
 
 	void intializeVertexes();
 public:
@@ -519,8 +519,7 @@ void Tile::setPosition(float x, float y)
 	intializeVertexes();
 }
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
-/// TODO : Hériter de CaseOptimisee
-class PlateformeOptimisee {
+class PlateformeOptimisee : Tile {
 private:
 	/// TODO : Membres privés à rajouter. Le comportement
 public:
@@ -531,25 +530,112 @@ public:
 
 class Niveau : sf::Drawable {
 private:
-	/// TODO : Membres privés à rajouter. Inclue le std::vector de CaseOptimisee et la texture globale
 	std::vector<Tile> m_tiles;
-	sf::Texture m_texture;					// Texture utilisée pour toutes les cases
-	std::size_t m_nbTexture;				// Indique le nombre de sous-textures dans le fichier
+	sf::Texture m_texture;						// Texture utilisée pour toutes les cases
+	std::size_t m_nbTexture;					// Indique le nombre de sous-textures dans le fichier
+	std::vector<std::size_t> m_beginTileIndex;	// Indique l'index de commencement des sommets de chaque tuile
+	std::vector<sf::Vertex> m_vertexes;			// Ensemble des sommets copiés par valeur des tuiles. À n'utiliser que pour la méthode draw
 
+	/// <summary>
+	/// Recharge la liste générique de sommets et l'index de départ des tuiles par rapport aux sommets
+	/// </summary>
+	void reloadVertexes();
+
+	/// <summary>
+	/// Indique si on continue de mettre à jour les sommets
+	/// </summary>
+	/// <param name="index">Index de la tuile</param>
+	bool continueUpdate(std::size_t index, int itterator);
 public:
 	/// <summary>
 	/// Charge en mémoire la texture désirée et met le compteur de cases à 0
 	/// </summary>
 	/// <param name="pPathTexture"></param>
 	Niveau(const std::string& pPathTexture, std::size_t pNbTextures);
-	/// TODO : Surcharger la méthode draw avec la classe Niveau comme paramètre
 
 	/// <summary>
 	/// Retourne une référence de la case à l'index spécifié
 	/// </summary>
 	/// <param name="index">Index de case</param>
 	Tile& operator[](int index);
+
+	/// <summary>
+	/// Dessine le niveau sur l'élément SFML cible
+	/// </summary>
+	/// <param name="target">Élément SFML cible du rendu</param>
+	/// <param name="states">États à ajouter aux vecteurs</param>
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	/// <summary>
+	/// Bouge la tuile spécifiée à l'index au mouvement spécifié puis met à jour les sommets
+	/// </summary>
+	/// <param name="x">Mouvement horizontal</param>
+	/// <param name="y">Mouvement vertical</param>
+	/// <param name="index">Index de la tuile</param>
+	void move(float offsetX, float offsetY, std::size_t index);
+
+	/// <summary>
+	/// Bouge la tuile spécifiée par l'index au mouvement indiqué en paramètre puis met à jour les sommets
+	/// </summary>
+	/// <param name="offset">Mouvement à effectuer</param>
+	/// <param name="index">Index de la tuile</param>
+	void move(const sf::Vector2f& offset, std::size_t index);
+
+	/// <summary>
+	/// Permet de redimensionner la tuile et met à jour les sommets pour faire le rendu
+	/// </summary>
+	/// <param name="x">Nouvelle taille horizontale</param>
+	/// <param name="y">Nouvelle taille verticale</param>
+	/// <param name="index">Index de la tuile</param>
+	void resize(float x, float y, std::size_t index);
+
+	/// <summary>
+	/// Permet de redimensionner la tuile et met à jour les sommets pour faire le rendu
+	/// </summary>
+	/// <param name="size">Nouvelles dimensions de la tuile</param>
+	/// <param name="index">Index de la tuile</param>
+	void resize(const sf::Vector2f& size, std::size_t index);
+
+	/// <summary>
+	/// Permet de redimensionner la tuile, de changer la règle de texture et met à jour les sommets pour faire le rendu
+	/// </summary>
+	/// <param name="x">Nouvelle taille horizontale</param>
+	/// <param name="y">Nouvelle taille verticale</param>
+	/// <param name="textureRule">Nouvelle règle de texture de la tuile</param>
+	/// <param name="index">Index de la tuile</param>
+	void resize(float x, float y, TextureRule textureRule, std::size_t index);
+
+	/// <summary>
+	/// Permet de redimensionner la tuile, de changer la règle de texture et met à jour les sommets pour faire le rendu
+	/// </summary>
+	/// <param name="size">Nouvelles dimensions de la tuile</param>
+	/// <param name="textureRule">Nouvelle règle de texture de la tuile</param>
+	/// <param name="index">Index de la tuile</param>
+	void resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index);
 };
+
+void Niveau::reloadVertexes()
+{
+	m_vertexes.resize(0);
+	m_beginTileIndex.resize(m_tiles.size());
+	for (int i{0}; i < m_tiles.size(); ++i)
+	{
+		m_beginTileIndex[i] = m_vertexes.size();
+		auto& sommets{ m_tiles[i].vertexes() };
+		for (auto& sommet : sommets)
+		{
+			m_vertexes.push_back(sommet);
+		}
+	}
+}
+
+bool Niveau::continueUpdate(std::size_t index, int itterator)
+{
+	if (index == m_beginTileIndex.size() - 1)
+		return itterator < m_vertexes.size();
+	else
+		return itterator < m_beginTileIndex[index + 1];
+}
 
 Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 	m_nbTexture{ pNbTextures }
@@ -562,5 +648,56 @@ Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 Tile& Niveau::operator[](int index)
 {
 	return m_tiles[index];
+}
+
+void Niveau::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	states.texture = &m_texture;
+
+	//states.transform = m_transformations;
+
+	target.draw(&m_vertexes[0], m_vertexes.size(), sf::Triangles, states);
+}
+
+void Niveau::move(float offsetX, float offsetY, std::size_t index)
+{
+	m_tiles[index].move(offsetX, offsetY);
+	for (int i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
+	{
+		m_vertexes[i].position += sf::Vector2f(offsetX, offsetY);
+	}
+}
+
+void Niveau::move(const sf::Vector2f& offset, std::size_t index)
+{
+	m_tiles[index].move(offset);
+	for (int i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
+	{
+		m_vertexes[i].position += offset;
+	}
+}
+
+void Niveau::resize(float x, float y, std::size_t index)
+{
+	m_tiles[index].resize(x, y);
+	reloadVertexes();
+}
+
+void Niveau::resize(const sf::Vector2f& size, std::size_t index)
+{
+	m_tiles[index].resize(size);
+	reloadVertexes();
+}
+
+void Niveau::resize(float x, float y, TextureRule textureRule, std::size_t index)
+{
+	m_tiles[index].resize(x, y, textureRule);
+	reloadVertexes();
+}
+
+void Niveau::resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index)
+{
+	m_tiles[index].resize(size, textureRule);
+	reloadVertexes();
 }
 #endif 
