@@ -563,7 +563,8 @@ private:
 	/// Indique si on continue de mettre à jour les sommets
 	/// </summary>
 	/// <param name="index">Index de la tuile</param>
-	bool continueUpdate(std::size_t index, std::size_t itterator) const;
+	/// <param name="itterator">Index dans la liste générique de sommets</param>
+	bool continueUpdate(std::size_t index, std::size_t itterator);
 public:
 	/// <summary>
 	/// Charge en mémoire la texture désirée et met le compteur de cases à 0
@@ -638,6 +639,44 @@ public:
 	/// <param name="subTextureCount">Nombre de sous-textures dans la texture globale</param>
 	/// <returns>Indique si la texture a pu être chargée</returns>
 	bool loadTexture(const std::string& path, int subTextureCount);
+
+	/// <summary>
+	/// Recharge la texture gloable à la texture indiquée et redéfinis le nombre de sous-textures
+	/// </summary>
+	/// <param name="texture">Nouvelle texture globale</param>
+	/// <param name="subTextureCount">Nombre de sous-textures dans la nouvelle texture globale</param>
+	/// <returns>Indique si la texture a pu être chargée</returns>
+	void loadTexture(const sf::Texture& texture, int subTextureCount);
+
+	/// <summary>
+	/// Réinitialise la liste générique de sommets (pour le rendu) et la liste générique de tuiles
+	/// </summary>
+	void resetTiles();
+
+	/// <summary>
+	/// Rajoute une tuile à la liste générique de tuiles. Permet de rajouter dans la liste générique une classe dérivée de Tile
+	/// </summary>
+	/// <param name="tile">Tuile à rajouter</param>
+	void add(Tile tile);
+
+	/// <summary>
+	/// Construit une nouvelle tuile à la liste générique
+	/// </summary>
+	/// <param name="size">Taille de la nouvelle tuile</param>
+	/// <param name="position">Position de la nouvelle tuile</param>
+	/// <param name="numberSubTexture">Numéro de sous-texture</param>
+	/// <param name="textureRule">Règle appliquée à la sous-texture. Voir la documentation pour plus de détails</param>
+	void add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule);
+	
+	/// <summary>
+	/// Construit une nouvelle tuile à la liste générique
+	/// </summary>
+	/// <param name="size">Taille de la nouvelle tuile</param>
+	/// <param name="position">Position de la nouvelle tuile</param>
+	/// <param name="numberSubTexture">Numéro de sous-texture</param>
+	/// <param name="textureRule">Règle appliquée à la sous-texture. Voir la documentation pour plus de détails</param>
+	/// <param name="scale">Échelle appliquée à la texture</param>
+	void add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule, const sf::Vector2f& scale);
 };
 
 void Niveau::reloadVertexes()
@@ -655,7 +694,7 @@ void Niveau::reloadVertexes()
 	}
 }
 
-bool Niveau::continueUpdate(std::size_t index, std::size_t itterator) const
+bool Niveau::continueUpdate(std::size_t index, std::size_t itterator)
 {
 	if (index >= m_beginTileIndex.size() - 1)
 		return itterator < m_vertexes.size();
@@ -738,5 +777,45 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 	}
 	reloadVertexes();
 	return true;
+}
+
+void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
+{
+	m_texture = texture;
+	m_nbTexture = subTextureCount;
+	for (Tile& tuile : m_tiles)
+	{
+		tuile.reloadTexture();
+	}
+	reloadVertexes();
+}
+
+void Niveau::resetTiles()
+{
+	m_tiles.resize(0);
+	m_vertexes.resize(0);
+}
+
+void Niveau::add(Tile tile)
+{
+	m_tiles.push_back(tile);
+	for (const sf::Vertex& sommet : tile.vertexes())
+		m_vertexes.push_back(sommet);
+}
+
+void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule)
+{
+	Tile tuile{ Tile(m_texture, numberSubTexture, size, position, m_nbTexture, textureRule) };
+	m_tiles.push_back(tuile);
+	for (const sf::Vertex& sommet : tuile.vertexes())
+		m_vertexes.push_back(sommet);
+}
+
+void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule, const sf::Vector2f& scale)
+{
+	Tile tuile{ Tile(m_texture, numberSubTexture, size, position, m_nbTexture,textureRule, scale) };
+	m_tiles.push_back(tuile);
+	for (const sf::Vertex& sommet : tuile.vertexes())
+		m_vertexes.push_back(sommet);
 }
 #endif 
