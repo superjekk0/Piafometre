@@ -1,7 +1,10 @@
 #ifndef PLATEFORMES_H
 #define PLATEFORMES_H
 
-#include "Jeu.h"
+#include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
+#include <SFML/System.hpp>
+#include <cassert>
 
 enum class TextureRule {
 	repeat_texture,		// La texture sera répétée dans la tuile. Augmenter l'échelle augmentera simplement la taille de la tuile, sans augmenter la taille des textures
@@ -23,7 +26,8 @@ private:
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
 	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
 	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
-	int m_textureCount{0};					// Indique le nombre de textures dans la texture globale
+	const int* const m_textureCount;		// Indique le nombre de textures dans la texture globale
+	int m_numberSubTexture;					// Indique le numéro de sous-texture (utile lorsque la texture est changée)
 
 	void intializeVertexes();
 public:
@@ -33,9 +37,9 @@ public:
 	/// </summary>
 	Tile();
 
-	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount, TextureRule textureRule);
+	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule);
 
-	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount, TextureRule textureRule, const sf::Vector2f& scale);
+	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale);
 	
 	/// <summary>
 	/// Retourne une r�f�rence de la liste générique de sommets (pour pouvoir tout dessiner en un appel de la méthode draw)
@@ -144,7 +148,7 @@ public:
 	/// <summary>
 	/// Change la sous-texture de la tuile
 	/// </summary>
-	/// <param name="numberSubTexture">Correspond au num�ro de la texture. Le premier numéro possible est 0 et va jusqu'au nombre de texture - 1. Si le numéro est non valide, le rectangle de texture reste inchangé.</param>
+	/// <param name="numberSubTexture">Correspond au numéro de la texture. Le premier numéro possible est 0 et va jusqu'au nombre de texture - 1. Si le numéro est non valide, le rectangle de texture reste inchangé.</param>
 	void changeTextureRect(int numberSubTexture);
 
 	/// <summary>
@@ -183,6 +187,11 @@ public:
 	/// <param name="x">Nouvelle position horizontale</param>
 	/// <param name="y">Nouvelle position verticale</param>
 	void setPosition(float x, float y);
+
+	/// <summary>
+	/// Recharge les sommets pour que les tuiles suivent bien la nouvelle texture. Si le numéro de texture dépasse la nouvelle valeur maximale (contenue dans la classe Niveau), la sous-texture correspondra à la dernière disponible
+	/// </summary>
+	void reloadTexture();
 };
 
 void Tile::intializeVertexes()
@@ -244,12 +253,12 @@ void Tile::intializeVertexes()
 	}
 }
 
-Tile::Tile() : m_texture{nullptr}
+Tile::Tile() : m_texture{nullptr}, m_textureCount{nullptr}, m_numberSubTexture{0}, m_textureRule{TextureRule::repeat_texture}
 {}
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
-	const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount,
-	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture }, m_textureCount{subTextureCount},
+	const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount,
+	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture }, m_textureCount{&subTextureCount},
 	m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{desiredSize}
@@ -259,7 +268,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
 
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
-	const sf::Vector2f& position, int subTextureCount, TextureRule textureRule) : m_textureCount{subTextureCount},
+	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule) : m_textureCount{&subTextureCount},
 	m_texture{ &texture }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{desiredSize}
@@ -477,9 +486,10 @@ void Tile::resize(float x, float y, TextureRule textureRule)
 
 void Tile::changeTextureRect(int numberSubTexture)
 {
-	if (numberSubTexture >= 0 && numberSubTexture < m_textureCount)
+	if (numberSubTexture >= 0 && numberSubTexture < *m_textureCount)
 	{
-		m_texturePosition = sf::Vector2f(m_textureSize.x / m_textureCount * numberSubTexture, 0.f);
+		m_numberSubTexture = numberSubTexture;
+		m_texturePosition = sf::Vector2f(m_textureSize.x / *m_textureCount * m_numberSubTexture, 0.f);
 		intializeVertexes();
 	}
 }
@@ -518,12 +528,20 @@ void Tile::setPosition(float x, float y)
 	m_position = sf::Vector2f(x, y);
 	intializeVertexes();
 }
+
+void Tile::reloadTexture()
+{
+	if (m_numberSubTexture >= *m_textureCount)
+		m_numberSubTexture = *m_textureCount - 1;
+	changeTextureRect(m_numberSubTexture);
+}
+
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 class PlateformeOptimisee : Tile {
 private:
 	/// TODO : Membres privés à rajouter. Le comportement
 public:
-	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide). �a appellera la classe de base
+	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide). Ça appellera la classe de base
 
 	/// TODO : Méthode pour changer le comportement de la plateforme
 };
@@ -545,7 +563,7 @@ private:
 	/// Indique si on continue de mettre à jour les sommets
 	/// </summary>
 	/// <param name="index">Index de la tuile</param>
-	bool continueUpdate(std::size_t index, int itterator);
+	bool continueUpdate(std::size_t index, std::size_t itterator) const;
 public:
 	/// <summary>
 	/// Charge en mémoire la texture désirée et met le compteur de cases à 0
@@ -554,7 +572,7 @@ public:
 	Niveau(const std::string& pPathTexture, std::size_t pNbTextures);
 
 	/// <summary>
-	/// Retourne une référence de la case à l'index sp�cifi�
+	/// Retourne une référence de la case à l'index spécifié
 	/// </summary>
 	/// <param name="index">Index de case</param>
 	Tile& operator[](int index);
@@ -612,6 +630,14 @@ public:
 	/// <param name="textureRule">Nouvelle règle de texture de la tuile</param>
 	/// <param name="index">Index de la tuile</param>
 	void resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index);
+
+	/// <summary>
+	/// Recharge la texture globale au chemin indiqué et redéfinis le nombre de sous-textures
+	/// </summary>
+	/// <param name="path">Chemin de la texture</param>
+	/// <param name="subTextureCount">Nombre de sous-textures dans la texture globale</param>
+	/// <returns>Indique si la texture a pu être chargée</returns>
+	bool loadTexture(const std::string& path, int subTextureCount);
 };
 
 void Niveau::reloadVertexes()
@@ -629,9 +655,9 @@ void Niveau::reloadVertexes()
 	}
 }
 
-bool Niveau::continueUpdate(std::size_t index, int itterator)
+bool Niveau::continueUpdate(std::size_t index, std::size_t itterator) const
 {
-	if (index == m_beginTileIndex.size() - 1)
+	if (index >= m_beginTileIndex.size() - 1)
 		return itterator < m_vertexes.size();
 	else
 		return itterator < m_beginTileIndex[index + 1];
@@ -662,7 +688,7 @@ void Niveau::draw(sf::RenderTarget& target, sf::RenderStates states) const
 void Niveau::move(float offsetX, float offsetY, std::size_t index)
 {
 	m_tiles[index].move(offsetX, offsetY);
-	for (int i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
+	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
 	{
 		m_vertexes[i].position += sf::Vector2f(offsetX, offsetY);
 	}
@@ -671,7 +697,7 @@ void Niveau::move(float offsetX, float offsetY, std::size_t index)
 void Niveau::move(const sf::Vector2f& offset, std::size_t index)
 {
 	m_tiles[index].move(offset);
-	for (int i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
+	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
 	{
 		m_vertexes[i].position += offset;
 	}
@@ -699,5 +725,18 @@ void Niveau::resize(const sf::Vector2f& size, TextureRule textureRule, std::size
 {
 	m_tiles[index].resize(size, textureRule);
 	reloadVertexes();
+}
+
+bool Niveau::loadTexture(const std::string& path, int subTextureCount)
+{
+	if (!m_texture.loadFromFile(path))
+		return false;
+	m_nbTexture = subTextureCount;
+	for (Tile& tuile : m_tiles)
+	{
+		tuile.reloadTexture();
+	}
+	reloadVertexes();
+	return true;
 }
 #endif 
