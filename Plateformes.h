@@ -23,7 +23,7 @@ private:
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
 	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
 	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
-	int m_textureCount{0};
+	int m_textureCount{0};					// Indique le nombre de textures dans la texture globale
 
 	void intializeVertexes();
 public:
@@ -519,8 +519,7 @@ void Tile::setPosition(float x, float y)
 	intializeVertexes();
 }
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
-/// TODO : Hériter de CaseOptimisee
-class PlateformeOptimisee {
+class PlateformeOptimisee : Tile {
 private:
 	/// TODO : Membres privés à rajouter. Le comportement
 public:
@@ -531,10 +530,11 @@ public:
 
 class Niveau : sf::Drawable {
 private:
-	/// TODO : Membres privés à rajouter. Inclue le std::vector de CaseOptimisee et la texture globale
 	std::vector<Tile> m_tiles;
-	sf::Texture m_texture;					// Texture utilisée pour toutes les cases
-	std::size_t m_nbTexture;				// Indique le nombre de sous-textures dans le fichier
+	sf::Texture m_texture;						// Texture utilisée pour toutes les cases
+	std::size_t m_nbTexture;					// Indique le nombre de sous-textures dans le fichier
+	std::vector<std::size_t> m_beginTileIndex;	// Indique l'index de commencement des sommets de chaque tuile
+	std::vector<sf::Vertex> m_vertexes;			// Ensemble des sommets copiés par valeur des tuiles. À n'utiliser que pour la méthode draw
 
 public:
 	/// <summary>
@@ -542,13 +542,27 @@ public:
 	/// </summary>
 	/// <param name="pPathTexture"></param>
 	Niveau(const std::string& pPathTexture, std::size_t pNbTextures);
-	/// TODO : Surcharger la méthode draw avec la classe Niveau comme paramètre
 
 	/// <summary>
 	/// Retourne une référence de la case à l'index spécifié
 	/// </summary>
 	/// <param name="index">Index de case</param>
 	Tile& operator[](int index);
+
+	/// <summary>
+	/// Dessine le niveau sur l'élément SFML cible
+	/// </summary>
+	/// <param name="target">Élément SFML cible du rendu</param>
+	/// <param name="states">États à ajouter aux vecteurs</param>
+	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
+
+	/// <summary>
+	/// Bouge la tuile spécifiée à l'index au mouvement spécifié puis met à jour les sommets
+	/// </summary>
+	/// <param name="x">Mouvement horizontal</param>
+	/// <param name="y">Mouvement vertical</param>
+	/// <param name="index">Index de la tuile</param>
+	void move(float x, float y, int index);
 };
 
 Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
@@ -562,5 +576,14 @@ Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 Tile& Niveau::operator[](int index)
 {
 	return m_tiles[index];
+}
+
+void Niveau::draw(sf::RenderTarget& target, sf::RenderStates states) const
+{
+	states.texture = &m_texture;
+
+	//states.transform = m_transformations;
+
+	target.draw(&m_vertexes[0], m_vertexes.size(), sf::Triangles, states);
 }
 #endif 
