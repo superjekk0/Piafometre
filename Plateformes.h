@@ -4,32 +4,32 @@
 #include "Jeu.h"
 
 enum class TextureRule {
-	repeat_texture,		// La texture sera répétée dans la tuile. Augmenter l'échelle augmentera simplement la taille de la tuile, sans augmenter la taille des textures
-	keep_height,		// La texture sera transformée en mettant la hauteur en priorité. Ex: l'échelle de la tuile au début est de 1:1, puis devient 2:1, ça va être 1:1, puisque la hauteur a priorité. Le rectangle de texture n'est pas affecté (si une texture se répétait 2 fois, elle restera répétée 2 fois)
-	keep_width,			// La texture sera transformée en mettant la largeur en priorité. Ex: l'échelle de la tuile au début est de 1:1 (100x100), puis devient 2:1. La tuile aura l'échelle 2:2 (200x200), puisque la largeur a priorité. Le rectangle de texture n'est pas affecté (si une texture se répète 2 fois, elle restera répétée 2 fois)
-	keep_size,			// La texture sera plus grosse, mais l'objet gardera la même taille
-	adjustable_size,	// Aucune tentative n'est faite pour garder la même taille que celle passée auparavant, tout sera transformée selon ce qui est donné, sans garder les proportions
-	fill_space			// La texture prend l'entièreté de l'espace sans se répéter. La taille de la case a donc priorité sur son échelle
+	repeat_texture,		// La texture sera rï¿½pï¿½tï¿½e dans la tuile. Augmenter l'ï¿½chelle augmentera simplement la taille de la tuile, sans augmenter la taille des textures
+	keep_height,		// La texture sera transformï¿½e en mettant la hauteur en prioritï¿½. Ex: l'ï¿½chelle de la tuile au dï¿½but est de 1:1, puis devient 2:1, ï¿½a va ï¿½tre 1:1, puisque la hauteur a prioritï¿½. Le rectangle de texture n'est pas affectï¿½ (si une texture se rï¿½pï¿½tait 2 fois, elle restera rï¿½pï¿½tï¿½e 2 fois)
+	keep_width,			// La texture sera transformï¿½e en mettant la largeur en prioritï¿½. Ex: l'ï¿½chelle de la tuile au dï¿½but est de 1:1 (100x100), puis devient 2:1. La tuile aura l'ï¿½chelle 2:2 (200x200), puisque la largeur a prioritï¿½. Le rectangle de texture n'est pas affectï¿½ (si une texture se rï¿½pï¿½te 2 fois, elle restera rï¿½pï¿½tï¿½e 2 fois)
+	keep_size,			// La texture sera plus grosse, mais l'objet gardera la mï¿½me taille
+	adjustable_size,	// Aucune tentative n'est faite pour garder la mï¿½me taille que celle passï¿½e auparavant, tout sera transformï¿½e selon ce qui est donnï¿½, sans garder les proportions
+	fill_space			// La texture prend l'entiï¿½retï¿½ de l'espace sans se rï¿½pï¿½ter. La taille de la case a donc prioritï¿½ sur son ï¿½chelle
 
 };
 
 class Tile {
 private:
-	const sf::Texture* const m_texture;		// La texture héritée de la classe contenant la tuile
-	sf::Vector2f m_textureSize;				// Indique la taille de la sous-texture utilisée
-	sf::Vector2f m_texturePosition;			// Indique la position de départ de la sous-texture
-	sf::Vector2f m_position;				// Donne la position de la case au coin supérieur gauche
+	const sf::Texture* const m_texture;		// La texture hï¿½ritï¿½e de la classe contenant la tuile
+	sf::Vector2f m_textureSize;				// Indique la taille de la sous-texture utilisï¿½e
+	sf::Vector2f m_texturePosition;			// Indique la position de dï¿½part de la sous-texture
+	sf::Vector2f m_position;				// Donne la position de la case au coin supï¿½rieur gauche
 	sf::Vector2f m_tileSize;				// Donne la taille de la case
 	std::vector<sf::Vertex> m_vertexes;		// L'ensemble des points qui composent l'objet dessinable
-	TextureRule m_textureRule;				// Règle régissant le comportement d'une texture lorsque la taille ou l'échelle est changée
-	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandée (lorsque l'objet est instancié, il équivaut à 1:1 par défaut)
+	TextureRule m_textureRule;				// Rï¿½gle rï¿½gissant le comportement d'une texture lorsque la taille ou l'ï¿½chelle est changï¿½e
+	sf::Vector2f m_scale{ 1.f, 1.f };		// Indique le rapport entre la texture et taille demandï¿½e (lorsque l'objet est instanciï¿½, il ï¿½quivaut ï¿½ 1:1 par dï¿½faut)
 	int m_textureCount{0};					// Indique le nombre de textures dans la texture globale
 
 	void intializeVertexes();
 public:
 
 	/// <summary>
-	/// Ce constructeur ne devrait jamais être utilisé autrement que pour changer la taille du std::vector
+	/// Ce constructeur ne devrait jamais ï¿½tre utilisï¿½ autrement que pour changer la taille du std::vector
 	/// </summary>
 	Tile();
 
@@ -38,7 +38,7 @@ public:
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, int subTextureCount, TextureRule textureRule, const sf::Vector2f& scale);
 	
 	/// <summary>
-	/// Retourne une référence de la liste générique de sommets (pour pouvoir tout dessiner en un appel de la méthode draw)
+	/// Retourne une rï¿½fï¿½rence de la liste gï¿½nï¿½rique de sommets (pour pouvoir tout dessiner en un appel de la mï¿½thode draw)
 	/// </summary>
 	const std::vector<sf::Vertex>& vertexes() const;
 
@@ -53,132 +53,132 @@ public:
 	float width() const;
 
 	/// <summary>
-	/// Retourne les coordonnées du coin supérieur gauche de la tuile
+	/// Retourne les coordonnï¿½es du coin supï¿½rieur gauche de la tuile
 	/// </summary>
 	sf::Vector2f topLeftCorner() const;
 
 	/// <summary>
-	/// Retourne les coordonnées du coin supérieur droit de la tuile
+	/// Retourne les coordonnï¿½es du coin supï¿½rieur droit de la tuile
 	/// </summary>
 	sf::Vector2f topRightCorner() const;
 
 	/// <summary>
-	/// Retourne les coordonnées du coin inférieur gauche de la tuile
+	/// Retourne les coordonnï¿½es du coin infï¿½rieur gauche de la tuile
 	/// </summary>
 	sf::Vector2f bottomLeftCorner() const;
 
 	/// <summary>
-	/// Retourne les coordonnées du coin inférieur droit de la tuile
+	/// Retourne les coordonnï¿½es du coin infï¿½rieur droit de la tuile
 	/// </summary>
 	sf::Vector2f bottomRightCorner() const;
 
 	/// <summary>
-	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, l'ensemble des sommets doit être recopié dans une liste générique.
+	/// Mets la tuile ï¿½ l'ï¿½chelle spï¿½cifiï¿½e selon la rï¿½gle de textures (voir la documentation pour plus de dï¿½tails). Attention! Pour que le changement soit perceptible par l'utilisateur, l'ensemble des sommets doit ï¿½tre recopiï¿½ dans une liste gï¿½nï¿½rique.
 	/// </summary>
 	/// <param name="scale">Facteur d'agrandissement en deux dimensions</param>
 	void setScale(const sf::Vector2f& scale);
 
 	/// <summary>
-	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
+	/// Mets la tuile ï¿½ l'ï¿½chelle spï¿½cifiï¿½e selon la rï¿½gle de textures (voir la documentation pour plus de dï¿½tails). Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entiï¿½retï¿½ des sommets dans une liste gï¿½nï¿½rique.
 	/// </summary>
-	/// <param name="scale">Facteur d'agrandissement appliqué en x et en y</param>
+	/// <param name="scale">Facteur d'agrandissement appliquï¿½ en x et en y</param>
 	void setScale(float scale);
 
 	/// <summary>
-	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entièreté des sommets dans une liste générique.
+	/// Mets la tuile ï¿½ l'ï¿½chelle spï¿½cifiï¿½e selon la rï¿½gle de textures (voir la documentation pour plus de dï¿½tails). Attention! Pour que le changement soit perceptible par l'utilisateur, il faut recopier l'entiï¿½retï¿½ des sommets dans une liste gï¿½nï¿½rique.
 	/// </summary>
 	/// <param name="x">Facteur d'agrandissement horizontal</param>
 	/// <param name="y">Facteur d'agrandissement vertical</param>
 	void setScale(float x, float y);
 
 	/// <summary>
-	/// Met l'échelle de la texture à l'échelle spécifée selon la règle de texture ou change la taille autrement (voir la documentation pour plus de détails)
+	/// Met l'ï¿½chelle de la texture ï¿½ l'ï¿½chelle spï¿½cifï¿½e selon la rï¿½gle de texture ou change la taille autrement (voir la documentation pour plus de dï¿½tails)
 	/// </summary>
 	/// <param name="scale">Facteur d'agrandissement de la texture</param>
-	/// <param name="textureRule">Nouvelle règle de texture</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture</param>
 	void setScale(const sf::Vector2f& scale, TextureRule textureRule);
 
 	/// <summary>
-	/// Met l'échelle de la texture à l'échelle spécifiée dans les deux axes selon la règle de texture (ou change la taille autrement). Voir la documentation pour plus de détails.
+	/// Met l'ï¿½chelle de la texture ï¿½ l'ï¿½chelle spï¿½cifiï¿½e dans les deux axes selon la rï¿½gle de texture (ou change la taille autrement). Voir la documentation pour plus de dï¿½tails.
 	/// </summary>
-	/// <param name="scale">Facteur d'agrandissement de la texture à l'horizontal et à la verticale</param>
-	/// <param name="textureRule">Nouvelle règle de texture</param>
+	/// <param name="scale">Facteur d'agrandissement de la texture ï¿½ l'horizontal et ï¿½ la verticale</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture</param>
 	void setScale(float scale, TextureRule textureRule);
 
 	/// <summary>
-	/// Met l'échelle de la texture à l'échelle spécifié à l'axe spécifié en paramètre selon la règle de texture (ou change la taille, autrement). Voir la documentation pour plus de détails.
+	/// Met l'ï¿½chelle de la texture ï¿½ l'ï¿½chelle spï¿½cifiï¿½ ï¿½ l'axe spï¿½cifiï¿½ en paramï¿½tre selon la rï¿½gle de texture (ou change la taille, autrement). Voir la documentation pour plus de dï¿½tails.
 	/// </summary>
 	/// <param name="x">Facteur d'agrandissement horizontal</param>
 	/// <param name="y">Facteur d'agrandissement vertical</param>
-	/// <param name="textureRule">Nouvelle règle de texture</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture</param>
 	void setScale(float x, float y, TextureRule textureRule);
 
 	/// <summary>
-	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation des règles de textures pour plus de détails.
+	/// Si la rï¿½gle le permet, la taille de la tuile sera mise ï¿½ jour selon la nouvelle taille. Voir la documentation des rï¿½gles de textures pour plus de dï¿½tails.
 	/// </summary>
-	/// <param name="size">Nouvelle taille demandée</param>
+	/// <param name="size">Nouvelle taille demandï¿½e</param>
 	void resize(const sf::Vector2f& size);
 
 	/// <summary>
-	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation des règles de textures pour plus de détails.
+	/// Si la rï¿½gle le permet, la taille de la tuile sera mise ï¿½ jour selon la nouvelle taille. Voir la documentation des rï¿½gles de textures pour plus de dï¿½tails.
 	/// </summary>
-	/// <param name="x">Nouvelle taille horizontale demandée</param>
-	/// <param name="y">Nouvelle taille verticale demandée</param>
+	/// <param name="x">Nouvelle taille horizontale demandï¿½e</param>
+	/// <param name="y">Nouvelle taille verticale demandï¿½e</param>
 	void resize(float x, float y);
 
 	/// <summary>
-	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation des règles de textures pour plus de détails.
+	/// Si la rï¿½gle le permet, la taille de la tuile sera mise ï¿½ jour selon la nouvelle taille. Voir la documentation des rï¿½gles de textures pour plus de dï¿½tails.
 	/// </summary>
-	/// <param name="size">Nouvelle taille demandée</param>
-	/// <param name="textureRule">Nouvelle règle de texture</param>
+	/// <param name="size">Nouvelle taille demandï¿½e</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture</param>
 	void resize(const sf::Vector2f& size, TextureRule textureRule);
 
 	/// <summary>
-	/// Si la règle le permet, la taille de la tuile sera mise à jour selon la nouvelle taille. Voir la documentation pour plus de détails.
+	/// Si la rï¿½gle le permet, la taille de la tuile sera mise ï¿½ jour selon la nouvelle taille. Voir la documentation pour plus de dï¿½tails.
 	/// </summary>
-	/// <param name="x">Nouvelle taille horizontale demandée</param>
-	/// <param name="y">Nouvelle taille verticale demandée</param>
-	/// <param name="textureRule">Nouvelle règle de texture</param>
+	/// <param name="x">Nouvelle taille horizontale demandï¿½e</param>
+	/// <param name="y">Nouvelle taille verticale demandï¿½e</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture</param>
 	void resize(float x, float y, TextureRule textureRule);
 
 	/// <summary>
 	/// Change la sous-texture de la tuile
 	/// </summary>
-	/// <param name="numberSubTexture">Correspond au numéro de la texture. Le premier numéro possible est 0 et va jusqu'au nombre de texture - 1. Si le numéro est non valide, le rectangle de texture reste inchangé.</param>
+	/// <param name="numberSubTexture">Correspond au numï¿½ro de la texture. Le premier numï¿½ro possible est 0 et va jusqu'au nombre de texture - 1. Si le numï¿½ro est non valide, le rectangle de texture reste inchangï¿½.</param>
 	void changeTextureRect(int numberSubTexture);
 
 	/// <summary>
-	/// Sert à uniquement changer la règle de texture
+	/// Sert ï¿½ uniquement changer la rï¿½gle de texture
 	/// </summary>
-	/// <param name="textureRule">Nouvelle règle de texture</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture</param>
 	void setTextureRule(TextureRule textureRule);
 
 	/// <summary>
-	/// Sert à obtenir la règle de texture depuis l'extérieur de la tuile
+	/// Sert ï¿½ obtenir la rï¿½gle de texture depuis l'extï¿½rieur de la tuile
 	/// </summary>
 	TextureRule getTextureRule();
 
 	/// <summary>
-	/// Bouge la tuile du vecteur rentré en paramètre de manière plus efficace que si rentré séparément
+	/// Bouge la tuile du vecteur rentrï¿½ en paramï¿½tre de maniï¿½re plus efficace que si rentrï¿½ sï¿½parï¿½ment
 	/// </summary>
-	/// <param name="offset">Déplacement à effectuer</param>
+	/// <param name="offset">Dï¿½placement ï¿½ effectuer</param>
 	void move(const sf::Vector2f& offset);
 
 	/// <summary>
-	/// Bouge la tuile du vecteur horizontal et vertical rentrés en paramètres de manière plus efficace que si rentré séparément
+	/// Bouge la tuile du vecteur horizontal et vertical rentrï¿½s en paramï¿½tres de maniï¿½re plus efficace que si rentrï¿½ sï¿½parï¿½ment
 	/// </summary>
-	/// <param name="offsetX">Déplacement horizontal à effectuer</param>
-	/// <param name="offsetY">Déplacement vertical à effectuer</param>
+	/// <param name="offsetX">Dï¿½placement horizontal ï¿½ effectuer</param>
+	/// <param name="offsetY">Dï¿½placement vertical ï¿½ effectuer</param>
 	void move(float offsetX, float offsetY);
 
 	/// <summary>
-	/// Met la tuile au coin supérieur gauche à la position rentrée en paramètre
+	/// Met la tuile au coin supï¿½rieur gauche ï¿½ la position rentrï¿½e en paramï¿½tre
 	/// </summary>
 	/// <param name="position">Nouvelle position de la tuile</param>
 	void setPosition(const sf::Vector2f& position);
 
 	/// <summary>
-	/// Met la tuile au coin supérieur gauche à la position rentrée en paramètre
+	/// Met la tuile au coin supï¿½rieur gauche ï¿½ la position rentrï¿½e en paramï¿½tre
 	/// </summary>
 	/// <param name="x">Nouvelle position horizontale</param>
 	/// <param name="y">Nouvelle position verticale</param>
@@ -518,56 +518,56 @@ void Tile::setPosition(float x, float y)
 	m_position = sf::Vector2f(x, y);
 	intializeVertexes();
 }
-/// TODO : Changer le nom de PlateformeOptimisee à Plateforme
+/// TODO : Changer le nom de PlateformeOptimisee ï¿½ Plateforme
 class PlateformeOptimisee : Tile {
 private:
-	/// TODO : Membres privés à rajouter. Le comportement
+	/// TODO : Membres privï¿½s ï¿½ rajouter. Le comportement
 public:
-	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide). Ça appellera la classe de base
+	/// TODO : Constructeur ï¿½ quatre paramï¿½tres. D'abord la texture, puis le rectangle de texture, puis les coordonnï¿½es au coin supï¿½rieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donnï¿½, la plateforme a le comportement solide). ï¿½a appellera la classe de base
 
-	/// TODO : Méthode pour changer le comportement de la plateforme
+	/// TODO : Mï¿½thode pour changer le comportement de la plateforme
 };
 
 class Niveau : sf::Drawable {
 private:
 	std::vector<Tile> m_tiles;
-	sf::Texture m_texture;						// Texture utilisée pour toutes les cases
+	sf::Texture m_texture;						// Texture utilisï¿½e pour toutes les cases
 	std::size_t m_nbTexture;					// Indique le nombre de sous-textures dans le fichier
 	std::vector<std::size_t> m_beginTileIndex;	// Indique l'index de commencement des sommets de chaque tuile
-	std::vector<sf::Vertex> m_vertexes;			// Ensemble des sommets copiés par valeur des tuiles. À n'utiliser que pour la méthode draw
+	std::vector<sf::Vertex> m_vertexes;			// Ensemble des sommets copiï¿½s par valeur des tuiles. ï¿½ n'utiliser que pour la mï¿½thode draw
 
 	/// <summary>
-	/// Recharge la liste générique de sommets et l'index de départ des tuiles par rapport aux sommets
+	/// Recharge la liste gï¿½nï¿½rique de sommets et l'index de dï¿½part des tuiles par rapport aux sommets
 	/// </summary>
 	void reloadVertexes();
 
 	/// <summary>
-	/// Indique si on continue de mettre à jour les sommets
+	/// Indique si on continue de mettre ï¿½ jour les sommets
 	/// </summary>
 	/// <param name="index">Index de la tuile</param>
 	bool continueUpdate(std::size_t index, int itterator);
 public:
 	/// <summary>
-	/// Charge en mémoire la texture désirée et met le compteur de cases à 0
+	/// Charge en mï¿½moire la texture dï¿½sirï¿½e et met le compteur de cases ï¿½ 0
 	/// </summary>
 	/// <param name="pPathTexture"></param>
 	Niveau(const std::string& pPathTexture, std::size_t pNbTextures);
 
 	/// <summary>
-	/// Retourne une référence de la case à l'index spécifié
+	/// Retourne une rï¿½fï¿½rence de la case ï¿½ l'index spï¿½cifiï¿½
 	/// </summary>
 	/// <param name="index">Index de case</param>
 	Tile& operator[](int index);
 
 	/// <summary>
-	/// Dessine le niveau sur l'élément SFML cible
+	/// Dessine le niveau sur l'ï¿½lï¿½ment SFML cible
 	/// </summary>
-	/// <param name="target">Élément SFML cible du rendu</param>
-	/// <param name="states">États à ajouter aux vecteurs</param>
+	/// <param name="target">ï¿½lï¿½ment SFML cible du rendu</param>
+	/// <param name="states">ï¿½tats ï¿½ ajouter aux vecteurs</param>
 	virtual void draw(sf::RenderTarget& target, sf::RenderStates states) const;
 
 	/// <summary>
-	/// Bouge la tuile spécifiée à l'index au mouvement spécifié puis met à jour les sommets
+	/// Bouge la tuile spï¿½cifiï¿½e ï¿½ l'index au mouvement spï¿½cifiï¿½ puis met ï¿½ jour les sommets
 	/// </summary>
 	/// <param name="x">Mouvement horizontal</param>
 	/// <param name="y">Mouvement vertical</param>
@@ -575,14 +575,14 @@ public:
 	void move(float offsetX, float offsetY, std::size_t index);
 
 	/// <summary>
-	/// Bouge la tuile spécifiée par l'index au mouvement indiqué en paramètre puis met à jour les sommets
+	/// Bouge la tuile spï¿½cifiï¿½e par l'index au mouvement indiquï¿½ en paramï¿½tre puis met ï¿½ jour les sommets
 	/// </summary>
-	/// <param name="offset">Mouvement à effectuer</param>
+	/// <param name="offset">Mouvement ï¿½ effectuer</param>
 	/// <param name="index">Index de la tuile</param>
 	void move(const sf::Vector2f& offset, std::size_t index);
 
 	/// <summary>
-	/// Permet de redimensionner la tuile et met à jour les sommets pour faire le rendu
+	/// Permet de redimensionner la tuile et met ï¿½ jour les sommets pour faire le rendu
 	/// </summary>
 	/// <param name="x">Nouvelle taille horizontale</param>
 	/// <param name="y">Nouvelle taille verticale</param>
@@ -590,26 +590,26 @@ public:
 	void resize(float x, float y, std::size_t index);
 
 	/// <summary>
-	/// Permet de redimensionner la tuile et met à jour les sommets pour faire le rendu
+	/// Permet de redimensionner la tuile et met ï¿½ jour les sommets pour faire le rendu
 	/// </summary>
 	/// <param name="size">Nouvelles dimensions de la tuile</param>
 	/// <param name="index">Index de la tuile</param>
 	void resize(const sf::Vector2f& size, std::size_t index);
 
 	/// <summary>
-	/// Permet de redimensionner la tuile, de changer la règle de texture et met à jour les sommets pour faire le rendu
+	/// Permet de redimensionner la tuile, de changer la rï¿½gle de texture et met ï¿½ jour les sommets pour faire le rendu
 	/// </summary>
 	/// <param name="x">Nouvelle taille horizontale</param>
 	/// <param name="y">Nouvelle taille verticale</param>
-	/// <param name="textureRule">Nouvelle règle de texture de la tuile</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture de la tuile</param>
 	/// <param name="index">Index de la tuile</param>
 	void resize(float x, float y, TextureRule textureRule, std::size_t index);
 
 	/// <summary>
-	/// Permet de redimensionner la tuile, de changer la règle de texture et met à jour les sommets pour faire le rendu
+	/// Permet de redimensionner la tuile, de changer la rï¿½gle de texture et met ï¿½ jour les sommets pour faire le rendu
 	/// </summary>
 	/// <param name="size">Nouvelles dimensions de la tuile</param>
-	/// <param name="textureRule">Nouvelle règle de texture de la tuile</param>
+	/// <param name="textureRule">Nouvelle rï¿½gle de texture de la tuile</param>
 	/// <param name="index">Index de la tuile</param>
 	void resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index);
 };
