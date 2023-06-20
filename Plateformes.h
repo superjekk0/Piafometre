@@ -17,7 +17,7 @@ enum class TextureRule {
 };
 
 class Tile {
-private:
+protected:
 	const sf::Texture* const m_texture;		// La texture héritée de la classe contenant la tuile
 	sf::Vector2f m_textureSize;				// Indique la taille de la sous-texture utilisée
 	sf::Vector2f m_texturePosition;			// Indique la position de départ de la sous-texture
@@ -40,7 +40,7 @@ public:
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule);
 
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale);
-	
+
 	/// <summary>
 	/// Retourne une r�f�rence de la liste générique de sommets (pour pouvoir tout dessiner en un appel de la méthode draw)
 	/// </summary>
@@ -192,6 +192,16 @@ public:
 	/// Recharge les sommets pour que les tuiles suivent bien la nouvelle texture. Si le numéro de texture dépasse la nouvelle valeur maximale (contenue dans la classe Niveau), la sous-texture correspondra à la dernière disponible
 	/// </summary>
 	void reloadTexture();
+
+	/// <summary>
+	/// Permet d'obtenir l'adresse de l'objet
+	/// </summary>
+	virtual Tile* getThis();
+
+	/// <summary>
+	/// Crée un clone de l'objet pouvant contenir tous les champs de classe dérivée quelconque. Pour pouvoir permettre le clonage de classe dérivée, il faut surcharger cette méthode
+	/// </summary>
+	virtual std::unique_ptr<Tile> clone() const; 
 };
 
 void Tile::intializeVertexes()
@@ -253,25 +263,25 @@ void Tile::intializeVertexes()
 	}
 }
 
-Tile::Tile() : m_texture{nullptr}, m_textureCount{nullptr}, m_numberSubTexture{0}, m_textureRule{TextureRule::repeat_texture}
+Tile::Tile() : m_texture{ nullptr }, m_textureCount{ nullptr }, m_numberSubTexture{ 0 }, m_textureRule{ TextureRule::repeat_texture }
 {}
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture,
 	const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount,
-	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture }, m_textureCount{&subTextureCount},
+	TextureRule textureRule, const sf::Vector2f& scale) : m_texture{ &texture }, m_textureCount{ &subTextureCount },
 	m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
-	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{desiredSize}
+	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{ desiredSize }
 {
 	intializeVertexes();
 }
 
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
-	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule) : m_textureCount{&subTextureCount},
+	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule) : m_textureCount{ &subTextureCount },
 	m_texture{ &texture }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
-	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{desiredSize}
+	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{ desiredSize }
 {
 	intializeVertexes();
 }
@@ -507,7 +517,7 @@ TextureRule Tile::getTextureRule()
 void Tile::move(const sf::Vector2f& offset)
 {
 	for (auto& sommet : m_vertexes)
-		sommet.position += offset;	
+		sommet.position += offset;
 }
 
 void Tile::move(float offsetX, float offsetY)
@@ -536,8 +546,18 @@ void Tile::reloadTexture()
 	changeTextureRect(m_numberSubTexture);
 }
 
+Tile* Tile::getThis()
+{
+	return this;
+}
+
+std::unique_ptr<Tile> Tile::clone() const
+{
+	return std::make_unique<Tile>(*this);
+}
+
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
-class PlateformeOptimisee : Tile {
+class PlateformeOptimisee : public Tile {
 private:
 	/// TODO : Membres privés à rajouter. Le comportement
 public:
@@ -546,18 +566,13 @@ public:
 	/// TODO : Méthode pour changer le comportement de la plateforme
 };
 
-class Niveau : sf::Drawable {
+class Niveau : public sf::Drawable {
 private:
-	std::vector<Tile> m_tiles;
+	std::vector<std::unique_ptr<Tile>> m_tiles;
 	sf::Texture m_texture;						// Texture utilisée pour toutes les cases
 	std::size_t m_nbTexture;					// Indique le nombre de sous-textures dans le fichier
 	std::vector<std::size_t> m_beginTileIndex;	// Indique l'index de commencement des sommets de chaque tuile
 	std::vector<sf::Vertex> m_vertexes;			// Ensemble des sommets copiés par valeur des tuiles. À n'utiliser que pour la méthode draw et ce qui aide à faire le rendu
-
-	/// <summary>
-	/// Recharge la liste générique de sommets et l'index de départ des tuiles par rapport aux sommets
-	/// </summary>
-	void reloadVertexes();
 
 	/// <summary>
 	/// Indique si on continue de mettre à jour les sommets
@@ -565,7 +580,14 @@ private:
 	/// <param name="index">Index de la tuile</param>
 	/// <param name="itterator">Index dans la liste générique de sommets</param>
 	bool continueUpdate(std::size_t index, std::size_t itterator);
+
+	/// <summary>
+	/// Recharge la liste générique de sommets et l'index de départ des tuiles par rapport aux sommets
+	/// </summary>
+	void reloadVertexes();
+
 public:
+
 	/// <summary>
 	/// Charge en mémoire la texture désirée et met le compteur de cases à 0
 	/// </summary>
@@ -575,8 +597,8 @@ public:
 	/// <summary>
 	/// Retourne une référence de la case à l'index spécifié
 	/// </summary>
-	/// <param name="index">Index de case</param>
-	Tile& operator[](int index);
+	/// <param name="index">Index de la tuile</param>
+	auto& operator[](int index);
 
 	/// <summary>
 	/// Dessine le niveau sur l'élément SFML cible
@@ -657,7 +679,7 @@ public:
 	/// Rajoute une tuile à la liste générique de tuiles. Permet de rajouter dans la liste générique une classe dérivée de Tile
 	/// </summary>
 	/// <param name="tile">Tuile à rajouter</param>
-	void add(Tile tile);
+	void add(const Tile& tile);
 
 	/// <summary>
 	/// Construit une nouvelle tuile à la liste générique
@@ -667,7 +689,7 @@ public:
 	/// <param name="numberSubTexture">Numéro de sous-texture</param>
 	/// <param name="textureRule">Règle appliquée à la sous-texture. Voir la documentation pour plus de détails</param>
 	void add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule);
-	
+
 	/// <summary>
 	/// Construit une nouvelle tuile à la liste générique
 	/// </summary>
@@ -677,16 +699,25 @@ public:
 	/// <param name="textureRule">Règle appliquée à la sous-texture. Voir la documentation pour plus de détails</param>
 	/// <param name="scale">Échelle appliquée à la texture</param>
 	void add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule, const sf::Vector2f& scale);
+
+	/// <summary>
+	/// Retourne un pointeur d'un objet d'une classe spécifiée
+	/// </summary>
+	/// <typeparam name="T">Type de l'objet dérivé</typeparam>
+	/// <param name="index">Index de l'objet à vérifier</param>
+	/// <returns>Si null, l'objet à l'index spécifié n'est pas de ce type</returns>
+	template <class T>
+	T* derivedPointer(int index);
 };
 
 void Niveau::reloadVertexes()
 {
 	m_vertexes.resize(0);
 	m_beginTileIndex.resize(m_tiles.size());
-	for (int i{0}; i < m_tiles.size(); ++i)
+	for (int i{ 0 }; i < m_tiles.size(); ++i)
 	{
 		m_beginTileIndex[i] = m_vertexes.size();
-		auto& sommets{ m_tiles[i].vertexes() };
+		auto& sommets{ m_tiles[i]->vertexes() };
 		for (auto& sommet : sommets)
 		{
 			m_vertexes.push_back(sommet);
@@ -705,12 +736,17 @@ bool Niveau::continueUpdate(std::size_t index, std::size_t itterator)
 Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 	m_nbTexture{ pNbTextures }
 {
-	bool loaded{ m_texture.loadFromFile(pPathTexture) };
-	assert(loaded && "Unable to load the texture file");
+	/*bool loaded{ m_texture.loadFromFile(pPathTexture) };
+	assert(loaded && "Unable to load the texture file");*/
+	if (!m_texture.loadFromFile(pPathTexture))
+		PLOGE << "Unable to load the following texture file: " << pPathTexture;
 	m_tiles.resize(0);
+	//m_tiles.push_back(std::unique_ptr<Tile>(new Tile(m_texture, 0, sf::Vector2f(200.f, 400.f), sf::Vector2f(100.f, 100.f), m_nbTexture, TextureRule::repeat_texture)));
+	//m_tiles.push_back(A());
+	//reloadVertexes();
 }
 
-Tile& Niveau::operator[](int index)
+auto& Niveau::operator[](int index)
 {
 	return m_tiles[index];
 }
@@ -726,7 +762,7 @@ void Niveau::draw(sf::RenderTarget& target, sf::RenderStates states) const
 
 void Niveau::move(float offsetX, float offsetY, std::size_t index)
 {
-	m_tiles[index].move(offsetX, offsetY);
+	m_tiles[index]->move(offsetX, offsetY);
 	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
 	{
 		m_vertexes[i].position += sf::Vector2f(offsetX, offsetY);
@@ -735,7 +771,7 @@ void Niveau::move(float offsetX, float offsetY, std::size_t index)
 
 void Niveau::move(const sf::Vector2f& offset, std::size_t index)
 {
-	m_tiles[index].move(offset);
+	m_tiles[index]->move(offset);
 	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
 	{
 		m_vertexes[i].position += offset;
@@ -744,25 +780,25 @@ void Niveau::move(const sf::Vector2f& offset, std::size_t index)
 
 void Niveau::resize(float x, float y, std::size_t index)
 {
-	m_tiles[index].resize(x, y);
+	m_tiles[index]->resize(x, y);
 	reloadVertexes();
 }
 
 void Niveau::resize(const sf::Vector2f& size, std::size_t index)
 {
-	m_tiles[index].resize(size);
+	m_tiles[index]->resize(size);
 	reloadVertexes();
 }
 
 void Niveau::resize(float x, float y, TextureRule textureRule, std::size_t index)
 {
-	m_tiles[index].resize(x, y, textureRule);
+	m_tiles[index]->resize(x, y, textureRule);
 	reloadVertexes();
 }
 
 void Niveau::resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index)
 {
-	m_tiles[index].resize(size, textureRule);
+	m_tiles[index]->resize(size, textureRule);
 	reloadVertexes();
 }
 
@@ -771,9 +807,9 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 	if (!m_texture.loadFromFile(path))
 		return false;
 	m_nbTexture = subTextureCount;
-	for (Tile& tuile : m_tiles)
+	for (auto& tuile : m_tiles)
 	{
-		tuile.reloadTexture();
+		tuile->reloadTexture();
 	}
 	reloadVertexes();
 	return true;
@@ -783,9 +819,9 @@ void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
 {
 	m_texture = texture;
 	m_nbTexture = subTextureCount;
-	for (Tile& tuile : m_tiles)
+	for (auto& tuile : m_tiles)
 	{
-		tuile.reloadTexture();
+		tuile->reloadTexture();
 	}
 	reloadVertexes();
 }
@@ -796,9 +832,9 @@ void Niveau::resetTiles()
 	m_vertexes.resize(0);
 }
 
-void Niveau::add(Tile tile)
+void Niveau::add(const Tile& tile)
 {
-	m_tiles.push_back(tile);
+	m_tiles.push_back(tile.clone());
 	for (const sf::Vertex& sommet : tile.vertexes())
 		m_vertexes.push_back(sommet);
 }
@@ -806,7 +842,7 @@ void Niveau::add(Tile tile)
 void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule)
 {
 	Tile tuile{ Tile(m_texture, numberSubTexture, size, position, m_nbTexture, textureRule) };
-	m_tiles.push_back(tuile);
+	m_tiles.push_back(std::make_unique<Tile>(Tile(tuile)));
 	for (const sf::Vertex& sommet : tuile.vertexes())
 		m_vertexes.push_back(sommet);
 }
@@ -814,8 +850,14 @@ void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int num
 void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule, const sf::Vector2f& scale)
 {
 	Tile tuile{ Tile(m_texture, numberSubTexture, size, position, m_nbTexture,textureRule, scale) };
-	m_tiles.push_back(tuile);
+	m_tiles.push_back(std::make_unique<Tile>(Tile(tuile)));
 	for (const sf::Vertex& sommet : tuile.vertexes())
 		m_vertexes.push_back(sommet);
+}
+
+template <class T>
+T* Niveau::derivedPointer(int index)
+{
+	return dynamic_cast<T*>(m_tiles[index].get());
 }
 #endif 
