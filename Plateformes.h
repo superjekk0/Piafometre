@@ -37,10 +37,30 @@ public:
 	/// </summary>
 	Tile();
 
+	/// <summary>
+	/// Constructeur d'une tuile mettant par défaut le ratio de la texture à 1:1 (même si la sous-texture n'est pas carrée)
+	/// </summary>
+	/// <param name="texture">Référence de la texture utilisée (provenant souvent du niveau)</param>
+	/// <param name="noTuileDebutTexture">Numéro de sous-texture utilisé</param>
+	/// <param name="desiredSize">Taille de la tuile</param>
+	/// <param name="position">Position au coin supérieur gauche de la texture</param>
+	/// <param name="subTextureCount">Nombre de sous-textures</param>
+	/// <param name="textureRule">Règle appliquée à la texture</param>
+	/// <param name="subTextures">Les positions et tailles des sous-textures</param>
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures);
 
+	/// <summary>
+	/// Constructeur d'une tuile mettant le ratio de la texture par rapport à la texture à l'échelle demandée
+	/// </summary>
+	/// <param name="texture">Référence de la texture utilisée (provenant probablement du niveau)</param>
+	/// <param name="noTuileDebutTexture">Numéro de sous-texture utilisé</param>
+	/// <param name="desiredSize">Taille de la tuile</param>
+	/// <param name="position">Position au coin supérieur gauche de la texture</param>
+	/// <param name="subTextureCount">Nombre de sous-textures</param>
+	/// <param name="textureRule">Règle appliquée à la sous-texture</param>
+	/// <param name="scale">Échelle de la sous-texture</param>
+	/// <param name="subTextures">Les positions et tailles des sous-textures</param>
 	Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale, const std::vector<sf::FloatRect>& subTextures);
-
 
 	/// <summary>
 	/// Retourne une référence de la liste générique de sommets (pour pouvoir tout dessiner en un appel de la méthode draw)
@@ -203,6 +223,21 @@ public:
 	/// Crée un clone de l'objet pouvant contenir tous les champs de classe dérivée quelconque. Pour pouvoir permettre le clonage de classe dérivée, il faut surcharger cette méthode
 	/// </summary>
 	virtual std::unique_ptr<Tile> clone() const; 
+
+	/// <summary>
+	/// Donne la hauteur de la sous-texture (utile si on veut limiter une tuile à une fois sa hauteur)
+	/// </summary>
+	float subTextureHeight() const;
+
+	/// <summary>
+	/// Donne la largeur de la sous-texture (utile si on veut répéter une texture un certain nombre de fois)
+	/// </summary>
+	float subTextureWidth() const;
+
+	/// <summary>
+	/// Donne les dimensions de la sous-texture
+	/// </summary>
+	sf::Vector2f subTextureSize() const;
 };
 
 void Tile::intializeVertexes()
@@ -273,7 +308,7 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector
 	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale ,const	std::vector<sf::FloatRect>& subTextures) :
 	m_texture{&texture}, m_textureCount{ &subTextureCount }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
 	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
-	m_textureRule{ textureRule }, m_scale{ m_scale }, m_tileSize{ desiredSize }, m_subTextures{&subTextures}
+	m_textureRule{ textureRule }, m_scale{ scale }, m_tileSize{ desiredSize }, m_subTextures{&subTextures}
 {
 	intializeVertexes();
 }
@@ -558,6 +593,20 @@ std::unique_ptr<Tile> Tile::clone() const
 	return std::make_unique<Tile>(*this);
 }
 
+float Tile::subTextureHeight() const
+{
+	return m_subTextures->at(m_numberSubTexture).height;
+}
+
+float Tile::subTextureWidth() const
+{
+	return m_subTextures->at(m_numberSubTexture).width;
+}
+
+sf::Vector2f Tile::subTextureSize() const
+{
+	return sf::Vector2f(m_subTextures->at(m_numberSubTexture).width, m_subTextures->at(m_numberSubTexture).height);
+}
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 class PlateformeOptimisee : public Tile {
 private:
@@ -720,7 +769,7 @@ public:
 	/// <summary>
 	/// Indique le nombre de sous-textures dans la texture 
 	/// </summary>
-	int subTextureCount() const;
+	const int& subTextureCount() const;
 
 	/// <summary>
 	/// Change le rectangle de texture (par exemple, pour faire de l'animation) et met à jour les sommets. Il est possible que la méthode ne soit pas optimisée
@@ -889,7 +938,7 @@ const sf::Texture& Niveau::texture() const
 	return m_texture;
 }
 
-int Niveau::subTextureCount() const
+const int& Niveau::subTextureCount() const
 {
 	return m_nbTexture;
 }
