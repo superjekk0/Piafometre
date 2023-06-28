@@ -714,6 +714,14 @@ public:
 	/// <returns>Indique si la texture a pu être chargée</returns>
 	bool loadTexture(const std::string& path, int subTextureCount);
 
+    /// <summary>
+    /// Recharge la texture globale au chemin indiqué, redéfinis le nombre de textures et les rectangles de sous-textures
+    /// </summary>
+    /// <param name="path">Chemin de la texture</param>
+    /// <param name="subTextureCount">Nombre de sous-textures</param>
+    /// <param name="subTextures">Rectangles définissant les sous-textures</param>
+    bool loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect>& subTextures);
+
 	/// <summary>
 	/// Recharge la texture gloable à la texture indiquée et redéfinis le nombre de sous-textures
 	/// </summary>
@@ -879,6 +887,20 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 	if (!m_texture.loadFromFile(path))
 		return false;
 	m_nbTexture = subTextureCount;
+	for (auto& tuile : m_tiles)
+	{
+		tuile->reloadTexture();
+	}
+	reloadVertexes();
+	return true;
+}
+
+bool Niveau:: loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect> subTextures)
+{
+    if (!m_textures.loadFromFile(path))
+		return false;
+	m_nbTextures = subTextureCount;
+	m_subTextures = subTextures;
 	for (auto& tuile : m_tiles)
 	{
 		tuile->reloadTexture();
