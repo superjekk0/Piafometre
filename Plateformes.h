@@ -18,8 +18,8 @@ enum class TextureRule {
 class Tile {
 protected:
 	const sf::Texture* const m_texture;						// La texture héritée de la classe contenant la tuile
-	sf::Vector2f m_textureSize;								// Indique la taille de la sous-texture utilisée
-	sf::Vector2f m_texturePosition;							// Indique la position de départ de la sous-texture
+	//sf::Vector2f m_textureSize;								// Indique la taille de la sous-texture utilisée
+	//sf::Vector2f m_texturePosition;							// Indique la position de départ de la sous-texture
 	sf::Vector2f m_position;								// Donne la position de la case au coin supérieur gauche
 	sf::Vector2f m_tileSize;								// Donne la taille de la case
 	std::vector<sf::Vertex> m_vertexes;						// L'ensemble des points qui composent l'objet dessinable
@@ -222,7 +222,7 @@ public:
 	/// <summary>
 	/// Crée un clone de l'objet pouvant contenir tous les champs de classe dérivée quelconque. Pour pouvoir permettre le clonage de classe dérivée, il faut surcharger cette méthode
 	/// </summary>
-	virtual std::unique_ptr<Tile> clone() const; 
+	virtual std::unique_ptr<Tile> clone() const;
 
 	/// <summary>
 	/// Donne la hauteur de la sous-texture (utile si on veut limiter une tuile à une fois sa hauteur)
@@ -242,17 +242,17 @@ public:
 
 void Tile::intializeVertexes()
 {
-	if (m_textureRule == TextureRule::fill_space)
-	{
-		m_scale.x = m_tileSize.x / m_textureSize.x;
-		m_scale.y = m_tileSize.y / m_textureSize.y;
-	}
-
 	sf::Vector2f coinGaucheSommet;
 	m_vertexes.resize(6);
 	std::size_t indexSommet{ 0 };
 	sf::Vector2f textureSize{m_subTextures->at(m_numberSubTexture).width, m_subTextures->at(m_numberSubTexture).height};
 	sf::Vector2f texturePosition{m_subTextures->at(m_numberSubTexture).left, m_subTextures->at(m_numberSubTexture).top};
+	
+	if (m_textureRule == TextureRule::fill_space)
+	{
+		m_scale.x = m_tileSize.x / textureSize.x;
+		m_scale.y = m_tileSize.y / textureSize.y;
+	}
 
 	while (coinGaucheSommet.y < m_tileSize.y)
 	{
@@ -261,7 +261,7 @@ void Tile::intializeVertexes()
 			indexSommet = m_vertexes.size(), m_vertexes.resize(m_vertexes.size() + 6))
 		{
 			m_vertexes[indexSommet].position = coinGaucheSommet;
-			m_vertexes[indexSommet].texCoords = sf::Vector2f(m_texturePosition.x, 0.f);
+			m_vertexes[indexSommet].texCoords = sf::Vector2f(texturePosition.x, 0.f);
 
 			if (coinGaucheSommet.y + textureSize.y * m_scale.y > m_tileSize.y)
 			{
@@ -277,7 +277,7 @@ void Tile::intializeVertexes()
 			if (coinGaucheSommet.x + textureSize.x * m_scale.x > m_tileSize.y)
 			{
 				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(m_tileSize.x - coinGaucheSommet.x, 0.f);
-				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(m_texturePosition.x + (m_tileSize.x - coinGaucheSommet.x), 0.f);
+				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(texturePosition.x + (m_tileSize.x - coinGaucheSommet.x), 0.f);
 			}
 			else
 			{
@@ -301,14 +301,14 @@ void Tile::intializeVertexes()
 	}
 }
 
-Tile::Tile() : m_texture{ nullptr }, m_textureCount{ nullptr }, m_numberSubTexture{ 0 }, m_textureRule{ TextureRule::repeat_texture }, m_subTextures{nullptr}
+Tile::Tile() : m_texture{ nullptr }, m_textureCount{ nullptr }, m_numberSubTexture{ 0 }, m_textureRule{ TextureRule::repeat_texture }, m_subTextures{ nullptr }
 {}
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
-	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale ,const	std::vector<sf::FloatRect>& subTextures) :
-	m_texture{&texture}, m_textureCount{ &subTextureCount }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
-	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
-	m_textureRule{ textureRule }, m_scale{ scale }, m_tileSize{ desiredSize }, m_subTextures{&subTextures}
+	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale, const	std::vector<sf::FloatRect>& subTextures) :
+	m_texture{ &texture }, m_textureCount{ &subTextureCount }, //m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
+	//m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
+	m_textureRule{ textureRule }, m_scale{ scale }, m_tileSize{ desiredSize }, m_subTextures{ &subTextures }
 {
 	intializeVertexes();
 }
@@ -316,8 +316,8 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector
 
 Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
 	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures) :
-	m_textureCount{ &subTextureCount },	m_texture{ &texture }, m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
-	m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
+	m_textureCount{ &subTextureCount }, m_texture{ &texture }, //m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
+	//m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{ desiredSize }, m_subTextures{ &subTextures }
 {
 	intializeVertexes();
@@ -509,7 +509,7 @@ void Tile::resize(float x, float y)
 		m_scale *= scale;
 		break;
 	case TextureRule::keep_width:
-		scale = x / m_textureSize.x;
+		scale = x / m_tileSize.x;
 		m_tileSize *= scale;
 		m_scale *= scale;
 		break;
@@ -536,7 +536,7 @@ void Tile::changeTextureRect(int numberSubTexture)
 	if (numberSubTexture >= 0 && numberSubTexture < *m_textureCount)
 	{
 		m_numberSubTexture = numberSubTexture;
-		m_texturePosition = sf::Vector2f(m_textureSize.x / *m_textureCount * m_numberSubTexture, 0.f);
+		//m_texturePosition = sf::Vector2f(m_textureSize.x / *m_textureCount * m_numberSubTexture, 0.f);
 		intializeVertexes();
 	}
 }
@@ -714,13 +714,13 @@ public:
 	/// <returns>Indique si la texture a pu être chargée</returns>
 	bool loadTexture(const std::string& path, int subTextureCount);
 
-    /// <summary>
-    /// Recharge la texture globale au chemin indiqué, redéfinis le nombre de textures et les rectangles de sous-textures
-    /// </summary>
-    /// <param name="path">Chemin de la texture</param>
-    /// <param name="subTextureCount">Nombre de sous-textures</param>
-    /// <param name="subTextures">Rectangles définissant les sous-textures</param>
-    bool loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect>& subTextures);
+	/// <summary>
+	/// Recharge la texture globale au chemin indiqué, redéfinis le nombre de textures et les rectangles de sous-textures
+	/// </summary>
+	/// <param name="path">Chemin de la texture</param>
+	/// <param name="subTextureCount">Nombre de sous-textures</param>
+	/// <param name="subTextures">Rectangles définissant les sous-textures</param>
+	bool loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect>& subTextures);
 
 	/// <summary>
 	/// Recharge la texture gloable à la texture indiquée et redéfinis le nombre de sous-textures
@@ -817,7 +817,7 @@ Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 		PLOGE << "Unable to load the following texture file: " << pPathTexture;
 	m_tiles.resize(0);
 	m_subTextures.resize(m_nbTexture);
-	for (int i{0}; i < m_subTextures.size(); ++i)
+	for (int i{ 0 }; i < m_subTextures.size(); ++i)
 	{
 		m_subTextures[i].height = m_texture.getSize().y;
 		m_subTextures[i].width = m_texture.getSize().x / m_nbTexture;
@@ -895,11 +895,11 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 	return true;
 }
 
-bool Niveau:: loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect> subTextures)
+bool Niveau::loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect>& subTextures)
 {
-    if (!m_textures.loadFromFile(path))
+	if (!m_texture.loadFromFile(path))
 		return false;
-	m_nbTextures = subTextureCount;
+	m_nbTexture = subTextureCount;
 	m_subTextures = subTextures;
 	for (auto& tuile : m_tiles)
 	{
