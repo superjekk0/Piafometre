@@ -18,8 +18,8 @@ enum class TextureRule {
 class Tile {
 protected:
 	const sf::Texture* const m_texture;						// La texture héritée de la classe contenant la tuile
-	//sf::Vector2f m_textureSize;								// Indique la taille de la sous-texture utilisée
-	//sf::Vector2f m_texturePosition;							// Indique la position de départ de la sous-texture
+	//sf::Vector2f m_textureSize;							// Indique la taille de la sous-texture utilisée
+	//sf::Vector2f m_texturePosition;						// Indique la position de départ de la sous-texture
 	sf::Vector2f m_position;								// Donne la position de la case au coin supérieur gauche
 	sf::Vector2f m_tileSize;								// Donne la taille de la case
 	std::vector<sf::Vertex> m_vertexes;						// L'ensemble des points qui composent l'objet dessinable
@@ -28,6 +28,7 @@ protected:
 	const int* const m_textureCount;						// Indique le nombre de textures dans la texture globale
 	int m_numberSubTexture;									// Indique le numéro de sous-texture (utile lorsque la texture est changée)
 	const std::vector<sf::FloatRect>* const m_subTextures;	// Indique les rectangles de sous-textures (peuvent être asymétriques
+	sf::Color m_color;										// Indique la couleur appliquée aux sommets
 
 	void intializeVertexes();
 public:
@@ -238,6 +239,22 @@ public:
 	/// Donne les dimensions de la sous-texture
 	/// </summary>
 	sf::Vector2f subTextureSize() const;
+
+	/// <summary>
+	/// Change la couleur de la tuile
+	/// </summary>
+	/// <param name="color">Nouvelle couleur à appliquer</param>
+	void changeColor(const sf::Color& color);
+
+	/// <summary>
+	/// Réinitialise la couleur de la tuile (met la couleur à blanc)
+	/// </summary>
+	void resetColor();
+
+	/// <summary>
+	/// Retourne la couleur de la tuile
+	/// </summary>
+	sf::Color getColor() const;
 };
 
 void Tile::intializeVertexes()
@@ -607,6 +624,25 @@ sf::Vector2f Tile::subTextureSize() const
 {
 	return sf::Vector2f(m_subTextures->at(m_numberSubTexture).width, m_subTextures->at(m_numberSubTexture).height);
 }
+
+void Tile::changeColor(const sf::Color& color)
+{
+	m_color = color;
+	for (auto& sommet : m_vertexes)
+		sommet.color = m_color;
+}
+
+void Tile::resetColor()
+{
+	m_color = sf::Color(0xFFFFFFFF);
+	for (auto& sommet : m_vertexes)
+		sommet.color = m_color;
+}
+
+sf::Color Tile::getColor() const
+{
+	return m_color;
+}
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
 class PlateformeOptimisee : public Tile {
 private:
@@ -633,12 +669,12 @@ private:
 	/// <param name="itterator">Index dans la liste générique de sommets</param>
 	bool continueUpdate(std::size_t index, std::size_t itterator);
 
+public:
+
 	/// <summary>
-	/// Recharge la liste générique de sommets et l'index de départ des tuiles par rapport aux sommets
+	/// Recharge la liste générique de sommets et l'index de départ des tuiles par rapport aux sommets. Utile lorsque plusieurs tuiles ont été modifiées directement
 	/// </summary>
 	void reloadVertexes();
-
-public:
 
 	/// <summary>
 	/// Charge en mémoire la texture désirée et met le compteur de cases à 0
@@ -731,6 +767,14 @@ public:
 	void loadTexture(const sf::Texture& texture, int subTextureCount);
 
 	/// <summary>
+	/// Recharge la texture globale à la texture indiquée, redéfinis le nombre de sous-textures et les rectangles de sous-textures
+	/// </summary>
+	/// <param name="texture">Nouvelle texture globale</param>
+	/// <param name="subTextureCount">Nombre de sous textures dans la nouvelle texture globale</param>
+	/// <param name="subTextures">Rectangles définissant les sous-textures</param>
+	void loadTexture(const sf::Texture& texture, int subTextureCount, std::vector<sf::FloatRect>& subTextures);
+
+	/// <summary>
 	/// Réinitialise la liste générique de sommets (pour le rendu) et la liste générique de tuiles
 	/// </summary>
 	void resetTiles();
@@ -772,12 +816,12 @@ public:
 	/// <summary>
 	/// Retourne une référence constante de la texture utilisée dans le niveau
 	/// </summary>
-	const sf::Texture& texture() const;
+	const sf::Texture& getTexture() const;
 
 	/// <summary>
 	/// Indique le nombre de sous-textures dans la texture 
 	/// </summary>
-	const int& subTextureCount() const;
+	const int& getSubTextureCount() const;
 
 	/// <summary>
 	/// Change le rectangle de texture (par exemple, pour faire de l'animation) et met à jour les sommets. Il est possible que la méthode ne soit pas optimisée
@@ -785,6 +829,25 @@ public:
 	/// <param name="numberTexture">Numéro de la nouvelle sous-texture</param>
 	/// <param name="index">Index de la tuile</param>
 	void changeTextureRect(int numberTexture, int index);
+
+	/// <summary>
+	/// Change la couleur des points d'une tuile
+	/// </summary>
+	/// <param name="color">Nouvelle couleur de la tuile (pour appliquer un effet de couleur)</param>
+	/// <param name="index">Index de la tuile</param>
+	void changeColor(const sf::Color& color, int index);
+
+	/// <summary>
+	/// Réinitialise la couleur des points d'une tuile
+	/// </summary>
+	/// <param name="index">Index de la tuile</param>
+	void resetColor(int index);
+
+	/// <summary>
+	/// Retourne la couleur d'une tuile
+	/// </summary>
+	/// <param name="index">Index de la tuile</param>
+	sf::Color getColor(int index) const;
 };
 
 void Niveau::reloadVertexes()
@@ -920,6 +983,12 @@ void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
 	reloadVertexes();
 }
 
+void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount, std::vector<sf::FloatRect>& subTextures)
+{
+	m_texture = texture;
+	m_nbTexture = subTextureCount;
+}
+
 void Niveau::resetTiles()
 {
 	m_tiles.resize(0);
@@ -955,12 +1024,12 @@ T* Niveau::derivedPointer(int index)
 	return dynamic_cast<T*>(m_tiles[index].get());
 }
 
-const sf::Texture& Niveau::texture() const
+const sf::Texture& Niveau::getTexture() const
 {
 	return m_texture;
 }
 
-const int& Niveau::subTextureCount() const
+const int& Niveau::getSubTextureCount() const
 {
 	return m_nbTexture;
 }
@@ -969,5 +1038,24 @@ void Niveau::changeTextureRect(int numberTexture, int index)
 {
 	m_tiles[index]->changeTextureRect(numberTexture);
 	reloadVertexes();
+}
+
+void Niveau::changeColor(const sf::Color& color, int index)
+{
+	m_tiles[index]->changeColor(color);
+	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(static_cast<std::size_t>(index), i); ++i)
+		m_vertexes[i].color = color;
+}
+
+void Niveau::resetColor(int index)
+{
+	m_tiles[index]->resetColor();
+	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(static_cast<std::size_t>(index), i); ++i)
+		m_vertexes[i].color = sf::Color(0xFFFFFFFF);
+}
+
+sf::Color Niveau::getColor(int index) const
+{
+	return m_tiles[index]->getColor();
 }
 #endif 
