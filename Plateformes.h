@@ -5,6 +5,38 @@
 #include <SFML/Window.hpp>
 #include <SFML/System.hpp>
 #include <cassert>
+#include <fstream>
+#include <string>
+#include <sstream>
+
+/// <summary>
+/// Retourne une liste de chaînes de caractères après une filtration
+/// </summary>
+/// <param name="str">Chaîne de caractères de base</param>
+/// <param name="separator">Caractère servant à séparer</param>
+std::vector<std::string> splitString(std::string str, const char separator)
+{
+	std::vector<std::string> listStrings{};
+	listStrings.reserve(4);
+	for (size_t indexSeparateur{ str.find(separator) }; indexSeparateur != str.npos; indexSeparateur = str.find(separator))
+	{
+		listStrings.push_back(str.substr(0, indexSeparateur));
+		str = str.substr(indexSeparateur + 1, str.size() - indexSeparateur);
+	}
+	if (str != "")
+		listStrings.push_back(str);
+	return listStrings;
+}
+
+template <typename T>
+T parse(const std::string& line)
+{
+	T valeur;
+	std::stringstream conversion{line};
+	if (!(conversion >> valeur))
+		throw "Unable to parse the line";
+	return valeur;
+}
 
 enum class TextureRule {
 	repeat_texture,		// La texture sera répétée dans la tuile. Augmenter l'échelle augmentera simplement la taille de la tuile, sans augmenter la taille des textures
@@ -756,7 +788,14 @@ public:
 	/// <param name="path">Chemin de la texture</param>
 	/// <param name="subTextureCount">Nombre de sous-textures</param>
 	/// <param name="subTextures">Rectangles définissant les sous-textures</param>
-	bool loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect>& subTextures);
+	bool loadTexture(const std::string& path, std::vector<sf::FloatRect>& subTextures);
+
+	/// <summary>
+	/// Recharge la texture globale au chemin indiqué
+	/// </summary>
+	/// <param name="path">Chemin de la texture</param>
+	/// <param name="subTexturePath">Chemin de la règle régissant les sous-textures. Le fichier doit être ordonné de même : left, top, width, height</param>
+	bool loadTexture(const std::string& path, const std::string& subTexturePath);
 
 	/// <summary>
 	/// Recharge la texture gloable à la texture indiquée et redéfinis le nombre de sous-textures
@@ -772,7 +811,7 @@ public:
 	/// <param name="texture">Nouvelle texture globale</param>
 	/// <param name="subTextureCount">Nombre de sous textures dans la nouvelle texture globale</param>
 	/// <param name="subTextures">Rectangles définissant les sous-textures</param>
-	void loadTexture(const sf::Texture& texture, int subTextureCount, std::vector<sf::FloatRect>& subTextures);
+	void loadTexture(const sf::Texture& texture, std::vector<sf::FloatRect>& subTextures);
 
 	/// <summary>
 	/// Réinitialise la liste générique de sommets (pour le rendu) et la liste générique de tuiles
@@ -958,11 +997,11 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 	return true;
 }
 
-bool Niveau::loadTexture(const std::string& path, int subTextureCount, std::vector<sf::FloatRect>& subTextures)
+bool Niveau::loadTexture(const std::string& path, std::vector<sf::FloatRect>& subTextures)
 {
 	if (!m_texture.loadFromFile(path))
 		return false;
-	m_nbTexture = subTextureCount;
+	m_nbTexture = subTextures.size();
 	m_subTextures = subTextures;
 	for (auto& tuile : m_tiles)
 	{
@@ -970,6 +1009,30 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount, std::vect
 	}
 	reloadVertexes();
 	return true;
+}
+
+bool Niveau::loadTexture(const std::string& path, const std::string& subTexturePath)
+{
+	if (!m_texture.loadFromFile(path))
+		return false;
+	std::fstream fichier{subTexturePath};
+	std::vector<std::string> lignes;
+	for (int i{0}; fichier;++i)
+	{
+		lignes.push_back("");
+		std::getline(fichier, lignes[i]);
+	}
+	if (lignes.empty())
+		throw "No data was within the file";
+	m_subTextures.resize(lignes.size());
+	for (int i{0}; i < m_subTextures.size(); ++i)
+	{
+		std::vector<std::string> donnees{splitString(lignes[i], ',') };
+		m_subTextures[i].left = parse<float>(donnees[0]);
+		m_subTextures[i].top = parse<float>(donnees[1]);
+		m_subTextures[i].width = parse<float>(donnees[2]);
+		m_subTextures[i].height = parse<float>(donnees[3]);
+	}
 }
 
 void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
@@ -983,10 +1046,10 @@ void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
 	reloadVertexes();
 }
 
-void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount, std::vector<sf::FloatRect>& subTextures)
+void Niveau::loadTexture(const sf::Texture& texture, std::vector<sf::FloatRect>& subTextures)
 {
 	m_texture = texture;
-	m_nbTexture = subTextureCount;
+	m_nbTexture = subTextures.size();
 }
 
 void Niveau::resetTiles()

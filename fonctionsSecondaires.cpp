@@ -10,26 +10,6 @@ void verifFichierExiste(const std::string& chemin)
 	//Ça fonctionne très bien!
 }
 
-/// <summary>
-/// Retourne une liste de chaînes de caractères après une filtration
-/// </summary>
-/// <param name="str">Chaîne de caractères de base</param>
-/// <param name="separator">Caractère servant à séparer</param>
-std::vector<std::string> splitString(std::string str, const char separator)
-{
-	std::vector<std::string> listStrings{};
-	listStrings.reserve(4);
-	for (size_t indexSeparateur{ str.find(separator) }; indexSeparateur != str.npos; indexSeparateur = str.find(separator))
-	{
-		listStrings.push_back(str.substr(0, indexSeparateur));
-		str = str.substr(indexSeparateur + 1, str.size() - indexSeparateur);
-	}
-	if (str != "")
-		listStrings.push_back(str);
-	return listStrings;
-}
-
-
 Clv::Key tradToucheCode(Clv::Key pTouche)
 {
 	switch (pTouche)
