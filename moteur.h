@@ -1,3 +1,4 @@
+#pragma once
 #ifndef MOTEUR_H
 #define MOTEUR_H
 
@@ -5,7 +6,7 @@
 #include "MoteurMenu.h"
 #include "Plateforme.h"
 #include "Checkpoint.h"
-#include "Plateformes.h"
+//#include "Plateformes.h"
 
 constexpr int finTempsSaut{ 30 }; //30 dixièmes de secondes (3 secondes)
 constexpr int finPeutSauter{ 150 };//150 dixièmes de seconde (15 secondes)
@@ -32,18 +33,18 @@ enum class PositionCollision {
 /// </summary>
 class InfosCollision {
 private:
-	const Plateforme* const m_plateforme;
+	const PlateformeOptimisee* const m_plateforme;
 	const PositionCollision m_positionColision;
 	const Collision m_collision;
 	const int m_indexPlateforme;
 public:
-	InfosCollision(const Plateforme& pPlateforme, const PositionCollision pPositionCollision, const Collision pCollision, const int pIndex) : m_plateforme{ &pPlateforme }, m_collision{ pCollision }, m_positionColision{ pPositionCollision }, m_indexPlateforme{ pIndex }
+	InfosCollision(const PlateformeOptimisee& pPlateforme, const PositionCollision pPositionCollision, const Collision pCollision, const int pIndex) : m_plateforme{ &pPlateforme }, m_collision{ pCollision }, m_positionColision{ pPositionCollision }, m_indexPlateforme{ pIndex }
 	{}
 
 	InfosCollision() : m_plateforme{ nullptr }, m_positionColision{ PositionCollision::bas }, m_collision{ Collision::aucune }, m_indexPlateforme{ -1 }
 	{}
 
-	const Plateforme& plateforme() const
+	const PlateformeOptimisee& plateforme() const
 	{
 		return *m_plateforme;
 	}
@@ -104,6 +105,10 @@ bool procheSol(const sf::Sprite& joueur, const sf::Sprite& bloc)
 {
 	return joueur.getPosition().y + getHeight(joueur) - utilitaire::deplacement <= bloc.getPosition().y;
 }
+bool procheSol(const sf::Sprite& joueur, const Tile& bloc)
+{
+	return joueur.getPosition().y + getHeight(joueur) - utilitaire::deplacement <= bloc.getPosition().y;
+}
 bool cameraToucheBordDroite(const sf::View& camera, const Moteur& moteur)
 {
 	return (camera.getCenter().x + camera.getSize().x / 2 >= moteur.maxCameraX);
@@ -146,6 +151,15 @@ bool collisionBas(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y + getHeight(joueur) >= bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y + getHeight(joueur) <= bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
+
+bool collisionBas(const sf::Sprite& joueur, const Tile& bloc)
+{
+	return (joueur.getPosition().x + getWidth(joueur) > bloc.getPosition().x)
+		&& (joueur.getPosition().x < bloc.getPosition().x + bloc.width())
+		&& (joueur.getPosition().y + getHeight(joueur) >= bloc.getPosition().y)
+		&& (joueur.getPosition().y + getHeight(joueur) <= bloc.getPosition().y + bloc.height());
+}
+
 /// <summary>
 /// Le joueur entre en collision avec le bloc par son côté haut
 /// </summary>
@@ -156,6 +170,14 @@ bool collisionHaut(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y > bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
+
+bool collisionHaut(const sf::Sprite& joueur, const Tile& bloc)
+{
+	return (joueur.getPosition().x + getWidth(joueur) > bloc.getPosition().x)
+		&& (joueur.getPosition().x < bloc.getPosition().x + bloc.width())
+		&& (joueur.getPosition().y > bloc.getPosition().y)
+		&& (joueur.getPosition().y < bloc.getPosition().y + bloc.height());
+}
 /// <summary>
 /// Le joueur entre en collision avec le bloc par son côté droit
 /// </summary>
@@ -165,6 +187,14 @@ bool collisionDroite(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().x + getWidth(joueur) <= bloc.sprite.getPosition().x + getWidth(bloc.sprite))
 		&& (joueur.getPosition().y + getHeight(joueur) > bloc.sprite.getPosition().y)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
+}
+
+bool collisionDroite(const sf::Sprite& joueur, const Tile& bloc)
+{
+	return (joueur.getPosition().x + getWidth(joueur) >= bloc.getPosition().x)
+		&& (joueur.getPosition().x + getWidth(joueur) <= bloc.getPosition().x + bloc.width())
+		&& (joueur.getPosition().y + getHeight(joueur) > bloc.getPosition().y)
+		&& (joueur.getPosition().y < bloc.getPosition().y + bloc.height());
 }
 /// <summary>
 /// Le joueur entre en collision avec le bloc par son côté gauche
@@ -177,6 +207,14 @@ bool collisionGauche(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
 
+bool collisionGauche(const sf::Sprite& joueur, const Tile& bloc)
+{
+	return (joueur.getPosition().x >= bloc.getPosition().x)
+		&& (joueur.getPosition().x <= bloc.getPosition().x + bloc.width())
+		&& (joueur.getPosition().y + getHeight(joueur) > bloc.getPosition().y)
+		&& (joueur.getPosition().y < bloc.getPosition().y + bloc.height());
+}
+
 bool dansEcran(const sf::View& camera, const sf::Sprite& plateforme)
 {
 	static constexpr int longueurSecurite{ 50 }; //Je charge tout objet qui est dans une portée de 50 pixels en plus de la zone de caméra
@@ -186,30 +224,44 @@ bool dansEcran(const sf::View& camera, const sf::Sprite& plateforme)
 		&& (plateforme.getPosition().y + getHeight(plateforme) > camera.getCenter().y - camera.getSize().y / 2 - longueurSecurite));
 }
 
-void doitAfficher(const sf::View& camera, std::vector<Plateforme>& plateformes, const bool& threadsActifs, const bool& pPeutDeplacer)
-{
-	sf::Clock cycle{};
-	while (threadsActifs && pPeutDeplacer)
-	{
-		for (auto& plateforme : plateformes)
-		{
-			plateforme.visible = (plateforme.comportement == TypePlateforme::objet) ? dansEcran(camera, plateforme.sprite) && !plateforme.touche : dansEcran(camera, plateforme.sprite);
-		}
-		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - cycle.restart().asMicroseconds()));
-	}
-}
+//void doitAfficher(const sf::View& camera, std::vector<Plateforme>& plateformes, const bool& threadsActifs, const bool& pPeutDeplacer)
+//{
+//	sf::Clock cycle{};
+//	while (threadsActifs && pPeutDeplacer)
+//	{
+//		for (auto& plateforme : plateformes)
+//		{
+//			plateforme.visible = (plateforme.comportement == TypePlateforme::objet) ? dansEcran(camera, plateforme.sprite) && !plateforme.touche : dansEcran(camera, plateforme.sprite);
+//		}
+//		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - cycle.restart().asMicroseconds()));
+//	}
+//}
 
-void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs, const bool& pPeutDeplacer)
+//void rendreObjetVisible(Plateforme& plateforme, const bool& threadsActifs, const bool& pPeutDeplacer)
+//{
+//	sf::Clock minuterie;
+//	while (threadsActifs && pPeutDeplacer)
+//	{
+//		if (plateforme.touche)
+//		{
+//			std::this_thread::sleep_for(std::chrono::seconds(3));
+//			if (!(&plateforme))
+//				return;
+//			plateforme.touche = false;
+//		}
+//		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage));
+//	}
+//}
+
+void rendreObjetVisible(PlateformeOptimisee& plateforme, const bool& threadsActifs, const bool& peutDeplacer)
 {
 	sf::Clock minuterie;
-	while (threadsActifs && pPeutDeplacer)
+	while (threadsActifs && peutDeplacer)
 	{
-		if (plateforme.touche)
+		if (plateforme.getColor() == sf::Color(0x0))
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(3));
-			if (!(&plateforme))
-				return;
-			plateforme.touche = false;
+			plateforme.resetColor();
 		}
 		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage));
 	}
@@ -263,16 +315,17 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (!collisionPresente(i) && collisionBas(m_sprites.joueur, m_sprites.avantPlan[i]) && procheSol(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
+			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			if (plateforme && !collisionPresente(i) && collisionBas(m_sprites.joueur, *plateforme) && procheSol(m_sprites.joueur, *plateforme))
 			{
-				switch (m_sprites.avantPlan[i].comportement)
+				switch (plateforme->comportement())
 				{
 				case TypePlateforme::solide:
 				case TypePlateforme::semiSolide:
 					//if (procheSol(m_sprites.joueur, plateforme.sprite))
 					//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
 					//return Collision::normale;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::normale, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::normale, i));
 					break;
 				case TypePlateforme::pics:
 					//if (procheSol(m_sprites.joueur, plateforme.sprite))
@@ -280,11 +333,11 @@ private:
 						//--m_moteur.nbVie;
 						//return Collision::pics;
 					//}
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::pics, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::pics, i));
 					break;
 				case TypePlateforme::checkPoint:
 					//return Collision::checkpoint;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::checkpoint, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::checkpoint, i));
 					break;
 				case TypePlateforme::objet:
 					//if (!plateforme.touche)
@@ -294,11 +347,11 @@ private:
 					//	m_DixiemeSecondePeutSauter = 0;
 					//	plateforme.touche = true;
 					//}
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::objet, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::objet, i));
 					break;
 				case TypePlateforme::finTableau:
 					//return Collision::fin;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::bas, Collision::fin, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::fin, i));
 					break;
 				default:
 					break;
@@ -314,20 +367,21 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (!collisionPresente(i) && collisionGauche(m_sprites.joueur, m_sprites.avantPlan[i]))
+			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			if (plateforme && !collisionPresente(i) && collisionGauche(m_sprites.joueur, *plateforme))
 			{
-				switch (m_sprites.avantPlan[i].comportement)
+				switch (plateforme->comportement())
 				{
 				case TypePlateforme::solide:
 				case TypePlateforme::pics:
 					//if (procheBordGauche(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
 					//	m_sprites.joueur.setPosition(m_sprites.avantPlan[i].sprite.getPosition().x + getWidth(m_sprites.avantPlan[i].sprite), m_sprites.joueur.getPosition().y);
 					//return Collision::normale;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::normale, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::normale, i));
 					break;
 				case TypePlateforme::checkPoint:
 					//return Collision::checkpoint;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::checkpoint, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::checkpoint, i));
 					break;
 				case TypePlateforme::objet:
 					//if (!m_sprites.avantPlan[i].touche)
@@ -337,11 +391,11 @@ private:
 					//	m_DixiemeSecondePeutSauter = 0;
 					//	m_sprites.avantPlan[i].touche = true;
 					//}
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::objet, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::objet, i));
 					break;
 				case TypePlateforme::finTableau:
 					//return Collision::fin;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::gauche, Collision::fin, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::fin, i));
 					break;
 				default:
 					break;
@@ -356,9 +410,10 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (!collisionPresente(i) && collisionDroite(m_sprites.joueur, m_sprites.avantPlan[i]))
+			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			if (plateforme && !collisionPresente(i) && collisionDroite(m_sprites.joueur, *plateforme))
 			{
-				switch (m_sprites.avantPlan[i].comportement)
+				switch (plateforme->comportement())
 				{
 				case TypePlateforme::solide:
 				case TypePlateforme::pics:
@@ -366,11 +421,11 @@ private:
 					//	m_sprites.joueur.setPosition(m_sprites.avantPlan[i].sprite.getPosition().x - getWidth(m_sprites.joueur),
 					//		m_sprites.joueur.getPosition().y);
 					//return Collision::normale;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::normale, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::droite, Collision::normale, i));
 					break;
 				case TypePlateforme::checkPoint:
 					//return Collision::checkpoint;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::checkpoint, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::droite, Collision::checkpoint, i));
 					break;
 				case TypePlateforme::objet:
 					//if (!m_sprites.avantPlan[i].touche)
@@ -380,11 +435,11 @@ private:
 					//	m_DixiemeSecondePeutSauter = 0;
 					//	m_sprites.avantPlan[i].touche = true;
 					//}
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::objet, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::droite, Collision::objet, i));
 					break;
 				case TypePlateforme::finTableau:
 					//return Collision::fin;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::droite, Collision::fin, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::droite, Collision::fin, i));
 					break;
 				default:
 					break;
@@ -398,20 +453,21 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (!collisionPresente(i) && collisionHaut(m_sprites.joueur, m_sprites.avantPlan[i]))
+			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			if (plateforme && !collisionPresente(i) && collisionHaut(m_sprites.joueur, *plateforme))
 			{
-				switch (m_sprites.avantPlan[i].comportement)
+				switch (plateforme->comportement())
 				{
 				case TypePlateforme::solide:
 					//m_tempsDixiemeSeconde = finTempsSaut + 1;
 					//if (prochePlafond(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
 					//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, m_sprites.avantPlan[i].sprite.getPosition().y + getHeight(m_sprites.avantPlan[i].sprite));
 					//return Collision::normale;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::normale, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::haut, Collision::normale, i));
 					break;
 				case TypePlateforme::pics:
 					//return Collision::pics;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::pics, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::haut, Collision::pics, i));
 					break;
 				case TypePlateforme::objet:
 					//if (!m_sprites.avantPlan[i].touche)
@@ -421,15 +477,15 @@ private:
 					//	m_DixiemeSecondePeutSauter = 0;
 					//	m_sprites.avantPlan[i].touche = true;
 					//}
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::objet, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::haut, Collision::objet, i));
 					break;
 				case TypePlateforme::checkPoint:
 					//return Collision::checkpoint;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::checkpoint, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::haut, Collision::checkpoint, i));
 					break;
 				case TypePlateforme::finTableau:
 					//return Collision::fin;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[i], PositionCollision::haut, Collision::fin, i));
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::haut, Collision::fin, i));
 					break;
 				default:
 					break;
@@ -514,14 +570,14 @@ private:
 		}
 	}
 
-	void animationCheckpoint(sf::Sprite& pSpriteCheckpoint, long pFrameAnimation)
+	void animationCheckpoint(int indexCheckpoint, long pFrameAnimation)
 	{
 		//À chaque 1/6 d'image, on change de frame
 		static int frame{ 0 };
 		if (pFrameAnimation % 15 == 0)
 			if (m_moteur.checkpoint.checkpointActif())
 			{
-				pSpriteCheckpoint.setTextureRect(sf::IntRect(getWidth(*pSpriteCheckpoint.getTexture()) / 3 + getWidth(*pSpriteCheckpoint.getTexture()) / 3 * (frame % 2), 0, getWidth(*pSpriteCheckpoint.getTexture()) / 3, getHeight(*pSpriteCheckpoint.getTexture())));
+				m_sprites.avantPlan.changeTextureRect(5 + frame % 2, indexCheckpoint);
 				++frame;
 			}
 	}
@@ -549,7 +605,8 @@ private:
 		//Il regarde quel objet a le comportement Checkpoint. Puis, une fois qu'il l'a trouvé, il vérifie quel est l'index de la texture correspondante au checkpoint
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			if (m_sprites.avantPlan[i].comportement == TypePlateforme::checkPoint)
+			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			if (plateforme->comportement() == TypePlateforme::checkPoint)
 			{
 				return i;
 			}
@@ -593,7 +650,7 @@ private:
 	{
 		for (auto& collision : m_collisions)
 		{
-			Plateforme& plateforme = m_sprites.avantPlan[collision.indexPlateforme()];
+			PlateformeOptimisee* plateforme = m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(collision.indexPlateforme());
 			switch (collision.collision())
 			{
 			case Collision::pics:
@@ -603,15 +660,15 @@ private:
 			case Collision::checkpoint:
 				m_moteur.checkpoint.miseAJourCheckpoint(m_sprites.camera.getCenter(),
 					m_sprites.joueur, m_sprites.arrierePlan,
-					m_sprites.avantPlan[pIndexCheckpoint]);
+					*plateforme);
 				break;
 			case Collision::objet:
-				if (!plateforme.touche)
+				if (plateforme->getColor() != sf::Color(0x0))
 				{
 					m_autorisationsSaut.set(3);
 					m_autorisationsSaut.set(1);
 					m_DixiemeSecondePeutSauter = 0;
-					plateforme.touche = true;
+					m_sprites.avantPlan.changeColor(sf::Color(0x0), collision.indexPlateforme());
 				}
 				break;
 			case Collision::normale:
@@ -629,8 +686,8 @@ private:
 					m_autorisationsSaut.reset(2);
 					break;
 				case PositionCollision::bas:
-					if (procheSol(m_sprites.joueur, plateforme.sprite))
-						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
+					if (procheSol(m_sprites.joueur, *plateforme))
+						m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme->getPosition().y - getHeight(m_sprites.joueur));
 
 					m_autorisationsSaut.set(0);
 					m_autorisationsSaut.set(1);
@@ -670,7 +727,7 @@ public:
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
 		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); }} };
-		std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)} };
+		//std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)} };
 		std::vector<std::thread> minuterieObjetsTouches;
 		//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
 		//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
@@ -690,7 +747,8 @@ public:
 				{
 					if (m_collisions.size() > 0) m_collisions.pop_back();
 					deplacementVectoriel.y = 0.f;
-					m_collisions.push_back(InfosCollision(m_sprites.avantPlan[0], PositionCollision::bas, Collision::normale, 0));
+					PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(0) };
+					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::normale, 0));
 					m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
 					m_sprites.camera.move(deplacementVectoriel.x, 0.f);
 				}
@@ -725,17 +783,17 @@ public:
 					m_sprites.couleur = sf::Color(0x808080FF);
 					m_sprites.camera.setSize(1280.f, 720.f);
 					m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
-					reglerVisible.release();
+					//reglerVisible.release();
 					sautEffectif.release();
 					joueurPeutSauter.release();
 					m_sprites.hud.resize(4);
 					m_sprites.arrierePlan.resize(0);
-					m_sprites.avantPlan.resize(0);
+					m_sprites.avantPlan.resetTiles();
 					return;
 				}
 				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 			}
-			reglerVisible.release();
+			//reglerVisible.release();
 			sautEffectif.release();
 			joueurPeutSauter.release();
 			std::this_thread::sleep_for(std::chrono::milliseconds(500));
@@ -743,14 +801,17 @@ public:
 		}
 		else
 		{
-			for (auto& plateforme : m_sprites.avantPlan)
-				if (plateforme.comportement == TypePlateforme::objet)
-					minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
+			for (int i {0}; i < m_sprites.avantPlan.size(); ++i)
+			{
+				PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+				if (plateforme && plateforme->comportement() == TypePlateforme::objet)
+					minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(*plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
+			}
 
 			for (auto& minuterie : minuterieObjetsTouches)
 				minuterie.detach();
 
-			reglerVisible->detach();
+			//reglerVisible->detach();
 			joueurPeutSauter->detach();
 			sautEffectif->detach();
 		}
@@ -855,7 +916,7 @@ public:
 			m_sprites.joueur.move(deplacementVectoriel);
 			m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
 			if (positionTableauCheckpoint != -1)
-				animationCheckpoint(m_sprites.avantPlan[positionTableauCheckpoint].sprite, frameAnimation);
+				animationCheckpoint(positionTableauCheckpoint, frameAnimation);
 			animationJoueur(deplacementVectoriel, frameAnimation);
 			++frameAnimation;
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
@@ -864,7 +925,7 @@ public:
 		m_tempsDixiemeSeconde = 31;
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
 		//tempsDixiemeSeconde.release();
-		reglerVisible.release();
+		//reglerVisible.release();
 		sautEffectif.release();
 	}
 

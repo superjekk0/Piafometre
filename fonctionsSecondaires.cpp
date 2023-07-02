@@ -1,5 +1,5 @@
 #include "ressources.h"
-#include "Jeu.h"
+//#include "Jeu.h"
 
 void verifFichierExiste(const std::string& chemin)
 {
@@ -312,7 +312,3 @@ bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle)
 		std::this_thread::sleep_for(std::chrono::milliseconds(50 - cycle.restart().asMilliseconds()));
 	}
 }
-
-
-
-

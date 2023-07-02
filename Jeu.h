@@ -1,3 +1,4 @@
+#pragma once
 #ifndef JEU_H
 #define JEU_H
 
@@ -37,7 +38,7 @@ private:
 	//index 7: indique lorsque le programme doit arrêter
 	touchesActives touchesActionnees{ false, false, false, false, false, false, false, false };
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
-	std::unique_ptr<ObjetADessiner> sprites{ new (std::nothrow) ObjetADessiner };
+	std::unique_ptr<ObjetADessiner> sprites{ std::make_unique<ObjetADessiner>() };
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
 
 	void rendu()
@@ -48,11 +49,12 @@ private:
 		{
 			fenetre->draw(sprites->arrierePlan[i]);
 		}
-		for (int i{ 0 }; i < sprites->avantPlan.size(); ++i)
-		{
-			if (sprites->avantPlan[i].visible)
-				fenetre->draw(sprites->avantPlan[i].sprite);
-		}
+		//for (int i{ 0 }; i < sprites->avantPlan.size(); ++i)
+		//{
+		//	if (sprites->avantPlan[i].visible)
+		//		fenetre->draw(sprites->avantPlan[i].sprite);
+		//}
+		fenetre->draw(sprites->avantPlan);
 		if (deplacementActif)
 			fenetre->draw(sprites->joueur);
 		fenetre->draw(sprites->ecranNoir);
@@ -234,7 +236,7 @@ public:
 		}
 
 		sprites->arrierePlan.resize(0);
-		sprites->avantPlan.resize(0);
+		sprites->avantPlan.resetTiles();
 		sprites->hud.resize(4);
 		sprites->police.loadFromFile("resources/font/verdanai.ttf");
 

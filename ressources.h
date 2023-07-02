@@ -1,3 +1,4 @@
+#pragma once
 #ifndef RESSOURCES_H
 #define RESSOURCES_H
 
@@ -83,7 +84,7 @@ namespace utilitaire {
 
 bool verifTouches(const ensembleTouches& pTouches);
 void resetTouches(ensembleTouches& pTouches);
-void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
+//void detectionEvenement(sf::Event& evenementJeu, bool& threadsActifs, bool& peutDeplacer, touchesActives& touchesActionnees, const ensembleTouches& pTouches, sf::RenderWindow& pFenetre, std::bitset<3>& touchesNonRepetables);
 std::wstring nomFichierImageTouches(const Clv::Key pTouche, const Langue langue);
 std::string chargementTextures(const std::string& langue, const PositionJeu position);
 float getWidth(const sf::Texture& texture);
@@ -94,6 +95,13 @@ float getHeight(const sf::Sprite& sprite);
 void verifFichierExiste(const std::string& chemin);
 sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keyboard::Key& toucheExclue, sf::Clock& cycle);
 bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle);
-std::vector<std::string> splitString(std::string str, const char separator);
+//std::vector<std::string> splitString(std::string str, const char separator);
+//template <typename T>
+//T parse(const std::string& line);
+
+inline std::vector<std::string> splitString(std::string str, const char separator);
+
+template <typename T>
+T parse(const std::string& line);
 
 #endif 

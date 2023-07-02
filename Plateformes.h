@@ -1,3 +1,4 @@
+#pragma once
 #ifndef PLATEFORMES_H
 #define PLATEFORMES_H
 
@@ -9,12 +10,22 @@
 #include <string>
 #include <sstream>
 
+template <typename T>
+inline T parse(const std::string& line)
+{
+	T valeur;
+	std::stringstream conversion{line};
+	if (!(conversion >> valeur))
+		throw "Unable to parse the line";
+	return valeur;
+}
+
 /// <summary>
 /// Retourne une liste de chaînes de caractères après une filtration
 /// </summary>
 /// <param name="str">Chaîne de caractères de base</param>
 /// <param name="separator">Caractère servant à séparer</param>
-std::vector<std::string> splitString(std::string str, const char separator)
+inline std::vector<std::string> splitString(std::string str, const char separator)
 {
 	std::vector<std::string> listStrings{};
 	listStrings.reserve(4);
@@ -26,16 +37,6 @@ std::vector<std::string> splitString(std::string str, const char separator)
 	if (str != "")
 		listStrings.push_back(str);
 	return listStrings;
-}
-
-template <typename T>
-T parse(const std::string& line)
-{
-	T valeur;
-	std::stringstream conversion{line};
-	if (!(conversion >> valeur))
-		throw "Unable to parse the line";
-	return valeur;
 }
 
 enum class TextureRule {
@@ -129,6 +130,11 @@ public:
 	/// Retourne les coordonnées du coin inférieur droit de la tuile
 	/// </summary>
 	sf::Vector2f bottomRightCorner() const;
+
+	/// <summary>
+	/// Retourne les coordonnées du coin supérieur gauche de la tuile
+	/// </summary>
+	sf::Vector2f getPosition() const;
 
 	/// <summary>
 	/// Mets la tuile à l'échelle spécifiée selon la règle de textures (voir la documentation pour plus de détails). Attention! Pour que le changement soit perceptible par l'utilisateur, l'ensemble des sommets doit être recopié dans une liste générique.
@@ -289,7 +295,7 @@ public:
 	sf::Color getColor() const;
 };
 
-void Tile::intializeVertexes()
+inline void Tile::intializeVertexes()
 {
 	sf::Vector2f coinGaucheSommet;
 	m_vertexes.resize(6);
@@ -350,12 +356,12 @@ void Tile::intializeVertexes()
 	}
 }
 
-Tile::Tile() : m_texture{ nullptr }, m_textureCount{ nullptr }, m_numberSubTexture{ 0 }, m_textureRule{ TextureRule::repeat_texture }, m_subTextures{ nullptr }
+inline Tile::Tile() : m_texture{ nullptr }, m_textureCount{ nullptr }, m_numberSubTexture{ 0 }, m_textureRule{ TextureRule::repeat_texture }, m_subTextures{ nullptr }
 {}
 
-Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
+inline Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
 	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const sf::Vector2f& scale, const	std::vector<sf::FloatRect>& subTextures) :
-	m_texture{ &texture }, m_textureCount{ &subTextureCount }, //m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
+	m_texture{ &texture }, m_textureCount{ &subTextureCount }, m_numberSubTexture{noTuileDebutTexture}, //m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture ,0.f },
 	//m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ scale }, m_tileSize{ desiredSize }, m_subTextures{ &subTextures }
 {
@@ -363,51 +369,56 @@ Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector
 }
 
 
-Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
+inline Tile::Tile(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize,
 	const sf::Vector2f& position, const int& subTextureCount, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures) :
-	m_textureCount{ &subTextureCount }, m_texture{ &texture }, //m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
+	m_textureCount{ &subTextureCount }, m_texture{ &texture }, m_numberSubTexture{noTuileDebutTexture}, //m_texturePosition{ texture.getSize().x / static_cast<float>(subTextureCount) * noTuileDebutTexture , 0.f },
 	//m_textureSize{ static_cast<float>(texture.getSize().x / subTextureCount) , static_cast<float>(texture.getSize().y) },
 	m_textureRule{ textureRule }, m_scale{ 1.f, 1.f }, m_tileSize{ desiredSize }, m_subTextures{ &subTextures }
 {
 	intializeVertexes();
 }
 
-float Tile::height() const
+inline float Tile::height() const
 {
 	return m_tileSize.y;
 }
 
-float Tile::width() const
+inline float Tile::width() const
 {
 	return m_tileSize.x;
 }
 
-const std::vector<sf::Vertex>& Tile::vertexes() const
+inline const std::vector<sf::Vertex>& Tile::vertexes() const
 {
 	return m_vertexes;
 }
 
-sf::Vector2f Tile::topLeftCorner() const
+inline sf::Vector2f Tile::topLeftCorner() const
 {
 	return m_position;
 }
 
-sf::Vector2f Tile::topRightCorner() const
+inline sf::Vector2f Tile::topRightCorner() const
 {
 	return m_position + sf::Vector2f(this->width(), 0.f);
 }
 
-sf::Vector2f Tile::bottomLeftCorner() const
+inline sf::Vector2f Tile::bottomLeftCorner() const
 {
 	return m_position + sf::Vector2f(0.f, this->height());
 }
 
-sf::Vector2f Tile::bottomRightCorner() const
+inline sf::Vector2f Tile::bottomRightCorner() const
 {
 	return m_position + this->m_tileSize;
 }
 
-void Tile::setScale(const sf::Vector2f& scale)
+inline sf::Vector2f Tile::getPosition() const
+{
+	return topLeftCorner();
+}
+
+inline void Tile::setScale(const sf::Vector2f& scale)
 {
 	switch (m_textureRule)
 	{
@@ -442,7 +453,7 @@ void Tile::setScale(const sf::Vector2f& scale)
 	intializeVertexes();
 }
 
-void Tile::setScale(float scale)
+inline void Tile::setScale(float scale)
 {
 	switch (m_textureRule)
 	{
@@ -463,7 +474,7 @@ void Tile::setScale(float scale)
 	intializeVertexes();
 }
 
-void Tile::setScale(float x, float y)
+inline void Tile::setScale(float x, float y)
 {
 	switch (m_textureRule)
 	{
@@ -498,25 +509,25 @@ void Tile::setScale(float x, float y)
 	intializeVertexes();
 }
 
-void Tile::setScale(const sf::Vector2f& scale, TextureRule textureRule)
+inline void Tile::setScale(const sf::Vector2f& scale, TextureRule textureRule)
 {
 	m_textureRule = textureRule;
 	setScale(scale);
 }
 
-void Tile::setScale(float scale, TextureRule textureRule)
+inline void Tile::setScale(float scale, TextureRule textureRule)
 {
 	m_textureRule = textureRule;
 	setScale(scale);
 }
 
-void Tile::setScale(float x, float y, TextureRule textureRule)
+inline void Tile::setScale(float x, float y, TextureRule textureRule)
 {
 	m_textureRule = textureRule;
 	setScale(x, y);
 }
 
-void Tile::resize(const sf::Vector2f& size)
+inline void Tile::resize(const sf::Vector2f& size)
 {
 	float scale{};
 	switch (m_textureRule)
@@ -542,7 +553,7 @@ void Tile::resize(const sf::Vector2f& size)
 	intializeVertexes();
 }
 
-void Tile::resize(float x, float y)
+inline void Tile::resize(float x, float y)
 {
 	float scale{};
 	switch (m_textureRule)
@@ -568,19 +579,19 @@ void Tile::resize(float x, float y)
 	intializeVertexes();
 }
 
-void Tile::resize(const sf::Vector2f& size, TextureRule textureRule)
+inline void Tile::resize(const sf::Vector2f& size, TextureRule textureRule)
 {
 	m_textureRule = textureRule;
 	resize(size);
 }
 
-void Tile::resize(float x, float y, TextureRule textureRule)
+inline void Tile::resize(float x, float y, TextureRule textureRule)
 {
 	m_textureRule = textureRule;
 	resize(x, y);
 }
 
-void Tile::changeTextureRect(int numberSubTexture)
+inline void Tile::changeTextureRect(int numberSubTexture)
 {
 	if (numberSubTexture >= 0 && numberSubTexture < *m_textureCount)
 	{
@@ -590,100 +601,91 @@ void Tile::changeTextureRect(int numberSubTexture)
 	}
 }
 
-void Tile::setTextureRule(TextureRule textureRule)
+inline void Tile::setTextureRule(TextureRule textureRule)
 {
 	m_textureRule = textureRule;
 }
 
-TextureRule Tile::getTextureRule()
+inline TextureRule Tile::getTextureRule()
 {
 	return m_textureRule;
 }
 
-void Tile::move(const sf::Vector2f& offset)
+inline void Tile::move(const sf::Vector2f& offset)
 {
 	for (auto& sommet : m_vertexes)
 		sommet.position += offset;
 }
 
-void Tile::move(float offsetX, float offsetY)
+inline void Tile::move(float offsetX, float offsetY)
 {
 	sf::Vector2f offset{ offsetX, offsetY };
 	for (auto& sommet : m_vertexes)
 		sommet.position += offset;
 }
 
-void Tile::setPosition(const sf::Vector2f& position)
+inline void Tile::setPosition(const sf::Vector2f& position)
 {
 	m_position = position;
 	intializeVertexes();
 }
 
-void Tile::setPosition(float x, float y)
+inline void Tile::setPosition(float x, float y)
 {
 	m_position = sf::Vector2f(x, y);
 	intializeVertexes();
 }
 
-void Tile::reloadTexture()
+inline void Tile::reloadTexture()
 {
 	if (m_numberSubTexture >= *m_textureCount)
 		m_numberSubTexture = *m_textureCount - 1;
 	changeTextureRect(m_numberSubTexture);
 }
 
-Tile* Tile::getThis()
+inline Tile* Tile::getThis()
 {
 	return this;
 }
 
-std::unique_ptr<Tile> Tile::clone() const
+inline std::unique_ptr<Tile> Tile::clone() const
 {
 	return std::make_unique<Tile>(*this);
 }
 
-float Tile::subTextureHeight() const
+inline float Tile::subTextureHeight() const
 {
 	return m_subTextures->at(m_numberSubTexture).height;
 }
 
-float Tile::subTextureWidth() const
+inline float Tile::subTextureWidth() const
 {
 	return m_subTextures->at(m_numberSubTexture).width;
 }
 
-sf::Vector2f Tile::subTextureSize() const
+inline sf::Vector2f Tile::subTextureSize() const
 {
 	return sf::Vector2f(m_subTextures->at(m_numberSubTexture).width, m_subTextures->at(m_numberSubTexture).height);
 }
 
-void Tile::changeColor(const sf::Color& color)
+inline void Tile::changeColor(const sf::Color& color)
 {
 	m_color = color;
 	for (auto& sommet : m_vertexes)
 		sommet.color = m_color;
 }
 
-void Tile::resetColor()
+inline void Tile::resetColor()
 {
 	m_color = sf::Color(0xFFFFFFFF);
 	for (auto& sommet : m_vertexes)
 		sommet.color = m_color;
 }
 
-sf::Color Tile::getColor() const
+inline sf::Color Tile::getColor() const
 {
 	return m_color;
 }
-/// TODO : Changer le nom de PlateformeOptimisee à Plateforme
-class PlateformeOptimisee : public Tile {
-private:
-	/// TODO : Membres privés à rajouter. Le comportement
-public:
-	/// TODO : Constructeur à quatre paramètres. D'abord la texture, puis le rectangle de texture, puis les coordonnées au coin supérieur gauche de la plateforme et finalement, le comportement de la plateforme (si non donné, la plateforme a le comportement solide). Ça appellera la classe de base
-
-	/// TODO : Méthode pour changer le comportement de la plateforme
-};
 
 class Niveau : public sf::Drawable {
 private:
@@ -713,6 +715,11 @@ public:
 	/// </summary>
 	/// <param name="pPathTexture"></param>
 	Niveau(const std::string& pPathTexture, std::size_t pNbTextures);
+
+	/// <summary>
+	/// Constructeur par défaut. Utile lors de la création d'une structure contenant un niveau
+	/// </summary>
+	Niveau();
 
 	/// <summary>
 	/// Retourne une référence de la case à l'index spécifié
@@ -814,6 +821,13 @@ public:
 	void loadTexture(const sf::Texture& texture, std::vector<sf::FloatRect>& subTextures);
 
 	/// <summary>
+	/// Recharge la texture depuis une texture déjà en mémoire et lit les dimensions de chaque sous-texture
+	/// </summary>
+	/// <param name="texture">Référence de texture utilisée</param>
+	/// <param name="subTexturePath">Chemin du fichier régissant les sous-textures</param>
+	void loadTexture(const sf::Texture& texture, const std::string& subTexturePath);
+
+	/// <summary>
 	/// Réinitialise la liste générique de sommets (pour le rendu) et la liste générique de tuiles
 	/// </summary>
 	void resetTiles();
@@ -863,6 +877,12 @@ public:
 	const int& getSubTextureCount() const;
 
 	/// <summary>
+	/// Retourne une référence de la liste générique. Ne devrait être utilisé que pour faire des objets dérivés de Tile
+	/// </summary>
+	/// <returns></returns>
+	const std::vector<sf::FloatRect>& getSubTextures() const;
+
+	/// <summary>
 	/// Change le rectangle de texture (par exemple, pour faire de l'animation) et met à jour les sommets. Il est possible que la méthode ne soit pas optimisée
 	/// </summary>
 	/// <param name="numberTexture">Numéro de la nouvelle sous-texture</param>
@@ -887,9 +907,21 @@ public:
 	/// </summary>
 	/// <param name="index">Index de la tuile</param>
 	sf::Color getColor(int index) const;
+
+	/// <summary>
+	/// Retourne le rectangle de sous-texture à l'index indiqué
+	/// </summary>
+	/// <param name="index">Index de la sous-texture</param>
+	sf::FloatRect getSubTexture(int index) const;
+
+	/// <summary>
+	/// Retourne le nombre de tuiles dans le niveau
+	/// </summary>
+	/// <returns></returns>
+	std::size_t size() const;
 };
 
-void Niveau::reloadVertexes()
+inline void Niveau::reloadVertexes()
 {
 	m_vertexes.resize(0);
 	m_beginTileIndex.resize(m_tiles.size());
@@ -904,7 +936,7 @@ void Niveau::reloadVertexes()
 	}
 }
 
-bool Niveau::continueUpdate(std::size_t index, std::size_t itterator)
+inline bool Niveau::continueUpdate(std::size_t index, std::size_t itterator)
 {
 	if (index >= m_beginTileIndex.size() - 1)
 		return itterator < m_vertexes.size();
@@ -912,7 +944,12 @@ bool Niveau::continueUpdate(std::size_t index, std::size_t itterator)
 		return itterator < m_beginTileIndex[index + 1];
 }
 
-Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
+inline Niveau::Niveau() : m_nbTexture{ 0 }
+{
+
+}
+
+inline Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 	m_nbTexture{ pNbTextures }
 {
 	if (!m_texture.loadFromFile(pPathTexture))
@@ -928,21 +965,22 @@ Niveau::Niveau(const std::string& pPathTexture, std::size_t pNbTextures) :
 	}
 }
 
-auto& Niveau::operator[](int index)
+inline auto& Niveau::operator[](int index)
 {
 	return m_tiles[index];
 }
 
-void Niveau::draw(sf::RenderTarget& target, sf::RenderStates states) const
+inline void Niveau::draw(sf::RenderTarget& target, sf::RenderStates states) const
 {
 	states.texture = &m_texture;
 
 	//states.transform = m_transformations;
 
-	target.draw(&m_vertexes[0], m_vertexes.size(), sf::Triangles, states);
+	if (m_vertexes.size() > 0)
+		target.draw(&m_vertexes[0], m_vertexes.size(), sf::Triangles, states);
 }
 
-void Niveau::move(float offsetX, float offsetY, std::size_t index)
+inline void Niveau::move(float offsetX, float offsetY, std::size_t index)
 {
 	m_tiles[index]->move(offsetX, offsetY);
 	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
@@ -951,7 +989,7 @@ void Niveau::move(float offsetX, float offsetY, std::size_t index)
 	}
 }
 
-void Niveau::move(const sf::Vector2f& offset, std::size_t index)
+inline void Niveau::move(const sf::Vector2f& offset, std::size_t index)
 {
 	m_tiles[index]->move(offset);
 	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(index, i); ++i)
@@ -960,31 +998,31 @@ void Niveau::move(const sf::Vector2f& offset, std::size_t index)
 	}
 }
 
-void Niveau::resize(float x, float y, std::size_t index)
+inline void Niveau::resize(float x, float y, std::size_t index)
 {
 	m_tiles[index]->resize(x, y);
 	reloadVertexes();
 }
 
-void Niveau::resize(const sf::Vector2f& size, std::size_t index)
+inline void Niveau::resize(const sf::Vector2f& size, std::size_t index)
 {
 	m_tiles[index]->resize(size);
 	reloadVertexes();
 }
 
-void Niveau::resize(float x, float y, TextureRule textureRule, std::size_t index)
+inline void Niveau::resize(float x, float y, TextureRule textureRule, std::size_t index)
 {
 	m_tiles[index]->resize(x, y, textureRule);
 	reloadVertexes();
 }
 
-void Niveau::resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index)
+inline void Niveau::resize(const sf::Vector2f& size, TextureRule textureRule, std::size_t index)
 {
 	m_tiles[index]->resize(size, textureRule);
 	reloadVertexes();
 }
 
-bool Niveau::loadTexture(const std::string& path, int subTextureCount)
+inline bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 {
 	if (!m_texture.loadFromFile(path))
 		return false;
@@ -997,7 +1035,7 @@ bool Niveau::loadTexture(const std::string& path, int subTextureCount)
 	return true;
 }
 
-bool Niveau::loadTexture(const std::string& path, std::vector<sf::FloatRect>& subTextures)
+inline bool Niveau::loadTexture(const std::string& path, std::vector<sf::FloatRect>& subTextures)
 {
 	if (!m_texture.loadFromFile(path))
 		return false;
@@ -1011,7 +1049,7 @@ bool Niveau::loadTexture(const std::string& path, std::vector<sf::FloatRect>& su
 	return true;
 }
 
-bool Niveau::loadTexture(const std::string& path, const std::string& subTexturePath)
+inline bool Niveau::loadTexture(const std::string& path, const std::string& subTexturePath)
 {
 	if (!m_texture.loadFromFile(path))
 		return false;
@@ -1033,9 +1071,10 @@ bool Niveau::loadTexture(const std::string& path, const std::string& subTextureP
 		m_subTextures[i].width = parse<float>(donnees[2]);
 		m_subTextures[i].height = parse<float>(donnees[3]);
 	}
+	return true;
 }
 
-void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
+inline void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
 {
 	m_texture = texture;
 	m_nbTexture = subTextureCount;
@@ -1046,79 +1085,122 @@ void Niveau::loadTexture(const sf::Texture& texture, int subTextureCount)
 	reloadVertexes();
 }
 
-void Niveau::loadTexture(const sf::Texture& texture, std::vector<sf::FloatRect>& subTextures)
+inline void Niveau::loadTexture(const sf::Texture& texture, std::vector<sf::FloatRect>& subTextures)
 {
 	m_texture = texture;
 	m_nbTexture = subTextures.size();
 }
 
-void Niveau::resetTiles()
+inline void Niveau::loadTexture(const sf::Texture& texture, const std::string& subTexturePath)
+{
+	std::fstream fichier{subTexturePath};
+	std::vector<std::string> lignes;
+	for (int i{ 0 }; fichier; ++i)
+	{
+		lignes.push_back("");
+		std::getline(fichier, lignes[i]);
+	}
+	if (lignes[lignes.size() - 1] == "")
+		lignes.pop_back();
+	if (lignes.empty())
+		throw "No data was within the file";
+	m_subTextures.resize(lignes.size());
+	for (int i{ 0 }; i < m_subTextures.size(); ++i)
+	{
+		std::vector<std::string> donnees{splitString(lignes[i], ',') };
+		m_subTextures[i].left = parse<float>(donnees[0]);
+		m_subTextures[i].top = parse<float>(donnees[1]);
+		m_subTextures[i].width = parse<float>(donnees[2]);
+		m_subTextures[i].height = parse<float>(donnees[3]);
+	}
+	m_nbTexture = m_subTextures.size();
+}
+
+inline void Niveau::resetTiles()
 {
 	m_tiles.resize(0);
 	m_vertexes.resize(0);
 }
 
-void Niveau::add(const Tile& tile)
+inline void Niveau::add(const Tile& tile)
 {
 	m_tiles.push_back(tile.clone());
+	m_beginTileIndex.push_back(m_vertexes.size());
 	for (const sf::Vertex& sommet : tile.vertexes())
 		m_vertexes.push_back(sommet);
 }
 
-void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule)
+inline void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule)
 {
 	Tile tuile{ Tile(m_texture, numberSubTexture, size, position, m_nbTexture, textureRule, m_subTextures) };
 	m_tiles.push_back(std::make_unique<Tile>(Tile(tuile)));
+	m_beginTileIndex.push_back(m_vertexes.size());
 	for (const sf::Vertex& sommet : tuile.vertexes())
 		m_vertexes.push_back(sommet);
 }
 
-void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule, const sf::Vector2f& scale)
+inline void Niveau::add(const sf::Vector2f& size, const sf::Vector2f& position, int numberSubTexture, TextureRule textureRule, const sf::Vector2f& scale)
 {
 	Tile tuile{ Tile(m_texture, numberSubTexture, size, position, m_nbTexture,textureRule, scale, m_subTextures) };
 	m_tiles.push_back(std::make_unique<Tile>(Tile(tuile)));
+	m_beginTileIndex.push_back(m_vertexes.size());
 	for (const sf::Vertex& sommet : tuile.vertexes())
 		m_vertexes.push_back(sommet);
 }
 
 template <class T>
-T* Niveau::derivedPointer(int index)
+inline T* Niveau::derivedPointer(int index)
 {
 	return dynamic_cast<T*>(m_tiles[index].get());
 }
 
-const sf::Texture& Niveau::getTexture() const
+inline const sf::Texture& Niveau::getTexture() const
 {
 	return m_texture;
 }
 
-const int& Niveau::getSubTextureCount() const
+inline const int& Niveau::getSubTextureCount() const
 {
 	return m_nbTexture;
 }
 
-void Niveau::changeTextureRect(int numberTexture, int index)
+inline const std::vector<sf::FloatRect>& Niveau::getSubTextures() const
+{
+	return m_subTextures;
+}
+
+inline void Niveau::changeTextureRect(int numberTexture, int index)
 {
 	m_tiles[index]->changeTextureRect(numberTexture);
 	reloadVertexes();
 }
 
-void Niveau::changeColor(const sf::Color& color, int index)
+inline void Niveau::changeColor(const sf::Color& color, int index)
 {
 	m_tiles[index]->changeColor(color);
 	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(static_cast<std::size_t>(index), i); ++i)
 		m_vertexes[i].color = color;
 }
 
-void Niveau::resetColor(int index)
+inline void Niveau::resetColor(int index)
 {
 	m_tiles[index]->resetColor();
 	for (std::size_t i{ m_beginTileIndex[index] }; continueUpdate(static_cast<std::size_t>(index), i); ++i)
 		m_vertexes[i].color = sf::Color(0xFFFFFFFF);
 }
 
-sf::Color Niveau::getColor(int index) const
+inline sf::Color Niveau::getColor(int index) const
 {
 	return m_tiles[index]->getColor();
+}
+
+inline sf::FloatRect Niveau::getSubTexture(int index) const
+{
+	return m_subTextures[index];
+}
+
+inline std::size_t Niveau::size() const
+{
+	return m_tiles.size();
 }
 #endif 
