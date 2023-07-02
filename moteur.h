@@ -316,6 +316,7 @@ private:
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
 			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			assert(plateforme);
 			if (plateforme && !collisionPresente(i) && collisionBas(m_sprites.joueur, *plateforme) && procheSol(m_sprites.joueur, *plateforme))
 			{
 				switch (plateforme->comportement())

@@ -10678,3 +10678,14 @@ $  B   �P@ @ B  @ B� �$ �       @       @  h    
 2023-07-01 23:17:29.282 INFO  [26244] [WinMain@11] Program started
 2023-07-01 23:17:29.611 INFO  [26244] [Jeu::Jeu@194] Main object initialized
 2023-07-01 23:17:30.814 INFO  [23472] [MoteurMenu::ecranChargement@1109] Launching level 1
+2023-07-01 23:20:27.048 INFO  [19424] [WinMain@11] Program started
+2023-07-01 23:20:27.448 INFO  [19424] [Jeu::Jeu@194] Main object initialized
+2023-07-01 23:20:29.880 INFO  [19424] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-01 23:20:29.880 INFO  [19424] [Jeu::~Jeu@207] Main object deleted
+2023-07-01 23:20:29.921 INFO  [19424] [WinMain@23] Program shut down
+2023-07-01 23:53:12.109 INFO  [20732] [WinMain@11] Program started
+2023-07-01 23:53:12.473 INFO  [20732] [Jeu::Jeu@194] Main object initialized
+2023-07-01 23:53:13.358 INFO  [25660] [MoteurMenu::ecranChargement@1109] Launching level 1
+2023-07-01 23:53:23.787 INFO  [20732] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-01 23:53:23.788 INFO  [20732] [Jeu::~Jeu@207] Main object deleted
+2023-07-01 23:53:23.801 INFO  [20732] [WinMain@23] Program shut down

@@ -65,6 +65,11 @@ public:
 	/// </summary>
 	/// <param name="nouvComportement">Nouveau comportement donné à la plateforme</param>
 	void comportement(TypePlateforme nouvComportement);
+
+	/// <summary>
+	/// Permet d'accéder aux objets polymorphiques PlateformeOptimisee depuis le niveau
+	/// </summary>
+	std::unique_ptr<Tile> clone() const override;
 };
 
 inline PlateformeOptimisee::PlateformeOptimisee() : Tile(), m_comportement{ TypePlateforme::solide }
@@ -98,6 +103,11 @@ inline TypePlateforme PlateformeOptimisee::comportement() const
 inline void PlateformeOptimisee::comportement(TypePlateforme nouvComportement)
 {
 	m_comportement = nouvComportement;
+}
+
+inline std::unique_ptr<Tile> PlateformeOptimisee::clone() const
+{
+	return std::make_unique<PlateformeOptimisee>(*this);
 }
 
 class Plateforme {
