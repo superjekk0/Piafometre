@@ -313,7 +313,6 @@ private:
 				1,
 				sf::Vector2f(3000.f, m_sprites.avantPlan.getSubTexture(1).height),
 				sf::Vector2f(0.f, 720.f - m_sprites.avantPlan.getSubTexture(1).height),
-				m_sprites.avantPlan.getSubTextureCount(),
 				TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::solide));
@@ -325,40 +324,77 @@ private:
 			//m_sprites.avantPlan[1].sprite.setPosition(3 * getWidth(m_sprites.textures[2]),
 			//	m_sprites.avantPlan[0].sprite.getPosition().y + getHeight(m_sprites.avantPlan[0].sprite) - getHeight(m_sprites.avantPlan[1].sprite));
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
-				1, sf::Vector2f(m_sprites.avantPlan.getSubTexture(0).width, m_sprites.avantPlan.getSubTexture(0).height * 2.5f)
-				, sf::Vector2f(m_sprites.avantPlan.getSubTexture(1).width * 3.f
-				,m_sprites.avantPlan[0]->getPosition().y + m_sprites.avantPlan[0]->height()),
-				m_sprites.avantPlan.getSubTextureCount(), TextureRule::repeat_texture,
-				m_sprites.avantPlan.getSubTextures()));
+				0, sf::Vector2f(m_sprites.avantPlan.getSubTexture(0).width, m_sprites.avantPlan.getSubTexture(0).height * 2.5f)
+				, sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()
+				, TypePlateforme::solide));
 			m_sprites.avantPlan[1]->setScale(0.75f, 0.75f, TextureRule::adjustable_size);
+			m_sprites.avantPlan[1]->setPosition(3 * m_sprites.avantPlan[1]->subTextureSize().x,
+				m_sprites.avantPlan[0]->getPosition().y + m_sprites.avantPlan[0]->height() - m_sprites.avantPlan[1]->height());
 			//m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[3], true);
 			//m_sprites.avantPlan[2].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[3]) * 4, getHeight(m_sprites.textures[3])));
 			//m_sprites.avantPlan[2].sprite.setPosition(m_sprites.avantPlan[1].sprite.getPosition().x + getWidth(m_sprites.avantPlan[1].sprite),
 			//	m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.avantPlan[2].sprite));
 			//m_sprites.avantPlan[2].comportement = TypePlateforme::pics;
 
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				2,
+				sf::Vector2f(m_sprites.avantPlan.getSubTexture(2).width * 4.f, m_sprites.avantPlan.getSubTexture(2).height),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::pics));
+			m_sprites.avantPlan[2]->setPosition(m_sprites.avantPlan[1]->getPosition().x + m_sprites.avantPlan[1]->width(), m_sprites.avantPlan[0]->getPosition().y - m_sprites.avantPlan[2]->height());
 			//m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[1], true);
 			//m_sprites.avantPlan[3].sprite.setScale(0.75f, .75f);
 			//m_sprites.avantPlan[3].sprite.setTextureRect(sf::IntRect(0, 0, m_sprites.avantPlan[0].sprite.getTextureRect().width, getHeight(m_sprites.textures[1]) * 3));
 			//m_sprites.avantPlan[3].sprite.setPosition(m_sprites.avantPlan[0].sprite.getPosition().x,
 			//	m_sprites.avantPlan[0].sprite.getPosition().y + getHeight(m_sprites.avantPlan[0].sprite));
 
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(m_sprites.avantPlan[0]->width(), m_sprites.avantPlan.getSubTexture(0).height * 3.f),
+				m_sprites.avantPlan[0]->getPosition() + sf::Vector2f(0.f, m_sprites.avantPlan[0]->height()),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
+			m_sprites.avantPlan[3]->setScale(0.75f, 0.75f, TextureRule::adjustable_size);
 			//m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[2], true);
 			//m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 3000, getHeight(m_sprites.textures[2])));
 			//m_sprites.avantPlan[4].sprite.setPosition(0,
 			//	m_sprites.avantPlan[3].sprite.getPosition().y + getHeight(m_sprites.avantPlan[3].sprite) + 500);
 
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				1,
+				sf::Vector2f(3000.f, m_sprites.avantPlan.getSubTexture(1).height),
+				sf::Vector2f(0.f, m_sprites.avantPlan[3]->getPosition().y + m_sprites.avantPlan[3]->height() + 500.f),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
 			//m_sprites.avantPlan[5].sprite.setTexture(m_sprites.textures[3], true);
 			//m_sprites.avantPlan[5].sprite.setTextureRect(sf::IntRect(0, 0, m_sprites.textures[3].getSize().x, m_sprites.textures[3].getSize().y));
 			//m_sprites.avantPlan[5].sprite.setPosition(1500,
 			//	m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[5].sprite));
 			//m_sprites.avantPlan[5].comportement = TypePlateforme::pics;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				2,
+				sf::Vector2f(m_sprites.avantPlan.getSubTextureSize(2)),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
+			m_sprites.avantPlan[5]->setPosition(1500.f, m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[5]->height());
 
 			//m_sprites.avantPlan[6].sprite.setTexture(m_sprites.textures[3], true);
 			//m_sprites.avantPlan[6].sprite.setTextureRect(m_sprites.avantPlan[5].sprite.getTextureRect());
 			//m_sprites.avantPlan[6].sprite.setPosition(m_sprites.avantPlan[5].sprite.getPosition().x - 750,
 			//	m_sprites.avantPlan[5].sprite.getPosition().y);
 			//m_sprites.avantPlan[6].comportement = TypePlateforme::pics;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				2,
+				m_sprites.avantPlan[5]->getSize(),
+				m_sprites.avantPlan[5]->getPosition() - sf::Vector2f(-750.f, 0.f),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::pics));
 
 			//m_sprites.avantPlan[7].sprite.setTexture(m_sprites.textures[5], true);
 			//m_sprites.avantPlan[7].sprite.setTextureRect(sf::IntRect(0, 0, getWidth(m_sprites.textures[5]) / 3, getHeight(m_sprites.textures[5])));
@@ -366,12 +402,29 @@ private:
 			//m_sprites.avantPlan[7].sprite.setPosition(m_sprites.avantPlan[5].sprite.getPosition().x + 500,
 			//	m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[7].sprite));
 			//m_sprites.avantPlan[7].comportement = TypePlateforme::checkPoint;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				4,
+				sf::Vector2f(m_sprites.avantPlan.getSubTextureSize(4)),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::checkPoint));
+			m_sprites.avantPlan[7]->setScale(2.f, TextureRule::keep_height);
+			m_sprites.avantPlan[7]->setPosition(m_sprites.avantPlan[5]->getPosition().x + 500.f,
+				m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[7]->height());
 
 			//m_sprites.avantPlan[8].sprite.setTexture(m_sprites.textures[6], true);
 			//m_sprites.avantPlan[8].sprite.setPosition(m_sprites.avantPlan[1].sprite.getPosition().x - 100 - getWidth(m_sprites.avantPlan[8].sprite),
 			//	m_sprites.avantPlan[0].sprite.getPosition().y - getHeight(m_sprites.avantPlan[8].sprite));
 			//m_sprites.avantPlan[8].comportement = TypePlateforme::objet;
-
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				7,
+				m_sprites.avantPlan.getSubTextureSize(7),
+				sf::Vector2f(),
+				TextureRule::fill_space,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::objet));
+			m_sprites.avantPlan[8]->setPosition(m_sprites.avantPlan[1]->getPosition() - m_sprites.avantPlan[8]->getSize() + sf::Vector2f(-100.f, 0.f));
 			//m_sprites.avantPlan[9].sprite.setTexture(m_sprites.textures[6], true);
 			//m_sprites.avantPlan[9].sprite.setPosition(m_sprites.avantPlan[7].sprite.getPosition().x - getWidth(m_sprites.avantPlan[9].sprite) - 40,
 			//	m_sprites.avantPlan[4].sprite.getPosition().y - getHeight(m_sprites.avantPlan[9].sprite));
@@ -393,6 +446,7 @@ private:
 			//m_sprites.arrierePlan[1].setScale(7, 7);
 			//m_sprites.arrierePlan[1].setPosition(0, -150);
 
+			m_sprites.avantPlan.reloadVertexes();
 			break;
 		//case 2:
 		//	m_sprites.couleur = sf::Color(0x2D100DFF);
