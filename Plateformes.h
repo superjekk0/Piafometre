@@ -334,7 +334,7 @@ inline void Tile::intializeVertexes()
 				m_vertexes[indexSommet + 1].texCoords = sf::Vector2f(texturePosition.x, textureSize.y);
 			}
 
-			if (coinGaucheSommet.x + textureSize.x * m_scale.x > m_tileSize.y)
+			if (coinGaucheSommet.x + textureSize.x * m_scale.x > m_tileSize.x)
 			{
 				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(m_tileSize.x - coinGaucheSommet.x, 0.f);
 				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(texturePosition.x + (m_tileSize.x - coinGaucheSommet.x), 0.f);
@@ -342,7 +342,7 @@ inline void Tile::intializeVertexes()
 			else
 			{
 				m_vertexes[indexSommet + 2].position = coinGaucheSommet + sf::Vector2f(textureSize.x * m_scale.x, 0.f);
-				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(texturePosition.x + textureSize.x, 0.f);
+				m_vertexes[indexSommet + 2].texCoords = sf::Vector2f(texturePosition.x + textureSize.x - 1.f, 0.f);
 			}
 
 			m_vertexes[indexSommet + 3] = m_vertexes[indexSommet + 1];
@@ -354,6 +354,7 @@ inline void Tile::intializeVertexes()
 		}
 		coinGaucheSommet.y += textureSize.y * m_scale.y;
 	}
+	m_vertexes.resize(m_vertexes.size() - 6);
 	for (sf::Vertex& point : m_vertexes)
 	{
 		point.position += m_position;
@@ -880,11 +881,6 @@ public:
 	/// Retourne une référence constante de la texture utilisée dans le niveau
 	/// </summary>
 	const sf::Texture& getTexture() const;
-
-	/// <summary>
-	/// Indique le nombre de sous-textures dans la texture 
-	/// </summary>
-	const int& getSubTextureCount() const;
 
 	/// <summary>
 	/// Retourne une référence de la liste générique. Ne devrait être utilisé que pour faire des objets dérivés de Tile
