@@ -298,6 +298,11 @@ public:
 	/// Retourne la taille de la tuile
 	/// </summary>
 	sf::Vector2f getSize() const;
+
+	/// <summary>
+	/// Retourne l'index de la sous-texture
+	/// </summary>
+	int subTextureIndex() const;
 };
 
 inline void Tile::intializeVertexes()
@@ -704,6 +709,11 @@ inline sf::Color Tile::getColor() const
 inline sf::Vector2f Tile::getSize() const
 {
 	return m_tileSize;
+}
+
+inline int Tile::subTextureIndex() const
+{
+	return m_numberSubTexture;
 }
 
 class Niveau : public sf::Drawable {

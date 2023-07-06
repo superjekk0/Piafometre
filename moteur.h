@@ -571,14 +571,14 @@ private:
 		}
 	}
 
-	void animationCheckpoint(int indexCheckpoint, long pFrameAnimation)
+	void animationCheckpoint(int indexCheckpoint, long pFrameAnimation, const int& subTexture)
 	{
 		//À chaque 1/6 d'image, on change de frame
 		static int frame{ 0 };
 		if (pFrameAnimation % 15 == 0)
 			if (m_moteur.checkpoint.checkpointActif())
 			{
-				m_sprites.avantPlan.changeTextureRect(5 + frame % 2, indexCheckpoint);
+				m_sprites.avantPlan.changeTextureRect(subTexture + 1 + frame % 2, indexCheckpoint);
 				++frame;
 			}
 	}
@@ -735,6 +735,7 @@ public:
 		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{[&]() {peutSauter(); }} };
 		sf::Clock debutCycle;
 		long frameAnimation{ 0 };
+		int checkpointSubTexture{ (positionTableauCheckpoint < 0) ? -1 : m_sprites.avantPlan[positionTableauCheckpoint]->subTextureIndex() };
 		if (m_sprites.positionDansJeu == PositionJeu::fin)
 		{
 			//m_sprites.camera.zoom(3.f);
@@ -917,7 +918,7 @@ public:
 			m_sprites.joueur.move(deplacementVectoriel);
 			m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
 			if (positionTableauCheckpoint != -1)
-				animationCheckpoint(positionTableauCheckpoint, frameAnimation);
+				animationCheckpoint(positionTableauCheckpoint, frameAnimation, checkpointSubTexture);
 			animationJoueur(deplacementVectoriel, frameAnimation);
 			++frameAnimation;
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
