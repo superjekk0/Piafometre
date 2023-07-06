@@ -632,14 +632,22 @@ inline void Tile::move(float offsetX, float offsetY)
 
 inline void Tile::setPosition(const sf::Vector2f& position)
 {
+	//m_position = position;
+	// intializeVertexes();
+	sf::Vector2f deplacement{position - m_position};
 	m_position = position;
-	intializeVertexes();
+	for (auto& sommet : m_vertexes)
+		sommet.position += deplacement;
 }
 
 inline void Tile::setPosition(float x, float y)
 {
+	sf::Vector2f deplacement{sf::Vector2f(x, y) - m_position};
 	m_position = sf::Vector2f(x, y);
-	intializeVertexes();
+	for (auto& sommet : m_vertexes)
+		sommet.position += deplacement;
+	//m_position = sf::Vector2f(x, y);
+	//intializeVertexes();
 }
 
 inline void Tile::reloadTexture()
