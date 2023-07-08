@@ -1110,6 +1110,8 @@ inline bool Niveau::loadTexture(const std::string& path, const std::string& subT
 	}
 	if (lignes.empty())
 		throw "No data was within the file";
+	if (lignes[lignes.size() - 1] == "")
+		lignes.pop_back();
 	m_subTextures.resize(lignes.size());
 	for (int i{ 0 }; i < m_subTextures.size(); ++i)
 	{

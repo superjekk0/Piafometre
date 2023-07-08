@@ -302,7 +302,7 @@ private:
 
 			//m_sprites.avantPlan.resize(13);
 			m_sprites.avantPlan.resetTiles();
-			m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level1.txt");
+			//m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level1.txt");
 			m_sprites.arrierePlan.resize(2);
 
 			//m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[2], true);
@@ -460,11 +460,11 @@ private:
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0]->getPosition().x,
 				m_sprites.avantPlan[0]->topLeftCorner().y - getHeight(m_sprites.joueur));
 
-			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[2], true);
+			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1], true);
 			m_sprites.arrierePlan[0].setScale(7, 7);
 			m_sprites.arrierePlan[0].setPosition(0, -200);
 
-			m_sprites.arrierePlan[1].setTexture(m_sprites.textures[3], true);
+			m_sprites.arrierePlan[1].setTexture(m_sprites.textures[2], true);
 			m_sprites.arrierePlan[1].setScale(7, 7);
 			m_sprites.arrierePlan[1].setPosition(0, -150);
 
@@ -476,7 +476,7 @@ private:
 		//	m_sprites.avantPlan.resize(22);
 			m_sprites.arrierePlan.resize(1);
 			m_sprites.avantPlan.resetTiles();
-			m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level2.txt");
+			//m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level2.txt");
 
 		//	m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 500, getHeight(m_sprites.textures[2])));
@@ -758,29 +758,43 @@ private:
 
 			m_sprites.joueur.setPosition(m_sprites.avantPlan[0]->topLeftCorner() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 
-			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[8], true);
-			m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 8000, getHeight(m_sprites.textures[8])));
+			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1], true);
+			m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 8000, getHeight(m_sprites.textures[1])));
 			m_sprites.arrierePlan[0].setPosition(-100.f, -250.f);
 			m_sprites.arrierePlan[0].setScale(0.25f, 0.25f);
 			break;
-		//case 3:
-		//	m_sprites.couleur = sf::Color(0xD4E7FFFF);
-		//	m_sprites.positionDansJeu = PositionJeu::jeu;
-		//	
+		case 3:
+			m_sprites.couleur = sf::Color(0xD4E7FFFF);
+			m_sprites.positionDansJeu = PositionJeu::jeu;
+			
 
-		//	m_sprites.arrierePlan.resize(1);
+			m_sprites.arrierePlan.resize(1);
 		//	m_sprites.avantPlan.resize(13);
-
+			m_sprites.avantPlan.resetTiles();
 		//	m_sprites.avantPlan[0].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[0].sprite.setTextureRect(sf::IntRect(0, 0, 1280, 200));
 		//	m_sprites.avantPlan[0].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[0].sprite.setPosition(0.f, 550.f);
 		//	m_sprites.avantPlan[0].comportement = TypePlateforme::solide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(1280.f, 200.f),
+				sf::Vector2f(0.f, 550.f),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
 
 		//	m_sprites.avantPlan[1].sprite.setTexture(m_sprites.textures[3], true);
 		//	m_sprites.avantPlan[1].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[1].sprite.setPosition(m_sprites.avantPlan[0].coinSpriteDroitHaut() + sf::Vector2f(-getWidth(m_sprites.avantPlan[1].sprite) - 120.f, -getHeight(m_sprites.avantPlan[1].sprite)));
 		//	m_sprites.avantPlan[1].comportement = TypePlateforme::objet;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				2,
+				m_sprites.avantPlan.getSubTextureSize(2),
+				sf::Vector2f(),
+				TextureRule::fill_space,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::objet));
+			m_sprites.avantPlan[1]->setPosition(m_sprites.avantPlan[0]->topRightCorner() - m_sprites.avantPlan[1]->getSize() + sf::Vector2f(-120.f, 0.f));
 
 		//	m_sprites.avantPlan[2].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[2].sprite.setColor(sf::Color(0xAAAAAAFF));
@@ -788,23 +802,52 @@ private:
 		//	m_sprites.avantPlan[2].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[2].sprite.setPosition((m_sprites.avantPlan[0].coinSpriteDroitHaut() + m_sprites.avantPlan[0].coinSpriteGaucheHaut()) / 2.f + sf::Vector2f(0.f, -getHeight(m_sprites.avantPlan[2].sprite)));
 		//	m_sprites.avantPlan[2].comportement = TypePlateforme::semiSolide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(300.f, 500.f),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::semiSolide));
+			m_sprites.avantPlan[2]->changeColor(sf::Color(0xAAAAAAFF));
+			m_sprites.avantPlan[2]->setPosition((m_sprites.avantPlan[0]->topRightCorner() + m_sprites.avantPlan[0]->topLeftCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[2]->height()));
 
 		//	m_sprites.avantPlan[3].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[3].sprite.setTextureRect(sf::IntRect(0, 0, 400, 150));
 		//	m_sprites.avantPlan[3].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[3].sprite.setPosition(m_sprites.avantPlan[2].coinSpriteDroitHaut());
 		//	m_sprites.avantPlan[3].comportement = TypePlateforme::solide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(400.f, 150.f),
+				m_sprites.avantPlan[2]->topRightCorner(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
 
 		//	m_sprites.avantPlan[4].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[4].sprite.setTextureRect(sf::IntRect(0, 0, 500, 250));
 		//	m_sprites.avantPlan[4].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[4].sprite.setPosition(0.f, 0.f);
 		//	m_sprites.avantPlan[4].comportement = TypePlateforme::solide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(500.f, 250.f),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
 
 		//	m_sprites.avantPlan[5].sprite.setTexture(m_sprites.textures[3], true);
 		//	m_sprites.avantPlan[5].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[5].sprite.setPosition(m_sprites.avantPlan[4].coinSpriteGaucheHaut() + sf::Vector2f(200.f, -getHeight(m_sprites.avantPlan[5].sprite)));
 		//	m_sprites.avantPlan[5].comportement = TypePlateforme::objet;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				2,
+				m_sprites.avantPlan.getSubTextureSize(2),
+				sf::Vector2f(),
+				TextureRule::fill_space,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::objet));
+			m_sprites.avantPlan[5]->setPosition(m_sprites.avantPlan[4]->getPosition() + sf::Vector2f(200.f, -m_sprites.avantPlan[5]->height()));
 
 		//	m_sprites.avantPlan[6].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[6].sprite.setScale(1.f, 1.f);
@@ -812,47 +855,98 @@ private:
 		//	m_sprites.avantPlan[6].sprite.setTextureRect(sf::IntRect(0, 0, 300, 500));
 		//	m_sprites.avantPlan[6].sprite.setPosition(m_sprites.avantPlan[4].coinSpriteDroitHaut() + sf::Vector2f(-150.f, -getHeight(m_sprites.avantPlan[6].sprite)));
 		//	m_sprites.avantPlan[6].comportement = TypePlateforme::semiSolide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(300.f, 500.f),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::semiSolide));
+			m_sprites.avantPlan[6]->setPosition(m_sprites.avantPlan[4]->topRightCorner() - sf::Vector2f(150.f, m_sprites.avantPlan[6]->height()));
 
 		//	m_sprites.avantPlan[7].sprite.setTexture(m_sprites.textures[1], true);
 		//	m_sprites.avantPlan[7].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[7].sprite.setTextureRect(sf::IntRect(0, 0, 300, 150));
 		//	m_sprites.avantPlan[7].sprite.setPosition(m_sprites.avantPlan[6].coinSpriteDroitHaut());
 		//	m_sprites.avantPlan[7].comportement = TypePlateforme::solide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				0,
+				sf::Vector2f(300.f, 150.f),
+				m_sprites.avantPlan[6]->topRightCorner(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
 
 		//	m_sprites.avantPlan[8].sprite.setTexture(m_sprites.textures[2], true);
 		//	m_sprites.avantPlan[8].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[8].sprite.setTextureRect(sf::IntRect(0, 0, 350, getHeight(m_sprites.avantPlan[8].sprite)));
 		//	m_sprites.avantPlan[8].sprite.setPosition(m_sprites.avantPlan[3].coinSpriteDroitHaut() + sf::Vector2f(-getWidth(m_sprites.avantPlan[8].sprite), -getHeight(m_sprites.avantPlan[8].sprite)));
 		//	m_sprites.avantPlan[8].comportement = TypePlateforme::pics;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				1,
+				sf::Vector2f(350.f, m_sprites.avantPlan.getSubTextureSize(1).y),
+				sf::Vector2f(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::pics));
+			m_sprites.avantPlan[8]->setPosition(m_sprites.avantPlan[3]->topRightCorner() - m_sprites.avantPlan[8]->getSize());
 
 		//	m_sprites.avantPlan[9].sprite.setTexture(m_sprites.textures[4], true);
 		//	m_sprites.avantPlan[9].sprite.setScale(10.f, 5.f);
 		//	m_sprites.avantPlan[9].sprite.setPosition(m_sprites.avantPlan[7].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -350.f));
 		//	m_sprites.avantPlan[9].comportement = TypePlateforme::semiSolide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				3,
+				m_sprites.avantPlan.getSubTextureSize(3),
+				m_sprites.avantPlan[7]->topLeftCorner() + sf::Vector2f(0.f, -350.f),
+				TextureRule::fill_space,
+				m_sprites.avantPlan.getSubTextures(),
+				TypePlateforme::semiSolide));
+			m_sprites.avantPlan[9]->setScale(10.f, 5.f);
 
 		//	m_sprites.avantPlan[10].sprite.setTexture(m_sprites.textures[5], true);
 		//	m_sprites.avantPlan[10].sprite.setTextureRect(sf::IntRect(0, 0, 400, 180));
 		//	m_sprites.avantPlan[10].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[10].sprite.setPosition(m_sprites.avantPlan[9].coinSpriteDroitHaut());
 		//	m_sprites.avantPlan[10].comportement = TypePlateforme::solide;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				4,
+				sf::Vector2f(400.f, 180.f),
+				m_sprites.avantPlan[9]->topRightCorner(),
+				TextureRule::repeat_texture,
+				m_sprites.avantPlan.getSubTextures()));
 
 		//	m_sprites.avantPlan[11].sprite.setTexture(m_sprites.textures[3], true);
 		//	m_sprites.avantPlan[11].sprite.setScale(1.f, 1.f);
 		//	m_sprites.avantPlan[11].sprite.setPosition((m_sprites.avantPlan[7].coinSpriteGaucheHaut() + m_sprites.avantPlan[7].coinSpriteDroitHaut()) / 2.f + sf::Vector2f(0.f, -getHeight(m_sprites.avantPlan[11].sprite)));
 		//	m_sprites.avantPlan[11].comportement = TypePlateforme::objet;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				2,
+				m_sprites.avantPlan.getSubTextureSize(2),
+				sf::Vector2f(),
+				TextureRule::fill_space,
+				m_sprites.avantPlan.getSubTextures()));
+			m_sprites.avantPlan[11]->setPosition((m_sprites.avantPlan[7]->topLeftCorner() + m_sprites.avantPlan[7]->topRightCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[11]->height()));
 
 		//	m_sprites.avantPlan[12].sprite.setTexture(m_sprites.textures[6], true);
 		//	m_sprites.avantPlan[12].sprite.setScale(2.f, 2.f);
 		//	m_sprites.avantPlan[12].sprite.setPosition(m_sprites.avantPlan[10].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.avantPlan[12].sprite)));
 		//	m_sprites.avantPlan[12].comportement = TypePlateforme::finTableau;
+			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
+				5,
+				m_sprites.avantPlan.getSubTextureSize(5) * 2.f,
+				sf::Vector2f(),
+				TextureRule::fill_space,
+				m_sprites.avantPlan.getSubTextures()));
+			m_sprites.avantPlan[12]->setPosition(m_sprites.avantPlan[10]->topLeftCorner() + sf::Vector2f(0.f, -m_sprites.avantPlan[12]->height()));
 
 		//	m_sprites.joueur.setPosition(m_sprites.avantPlan[0].coinSpriteGaucheHaut() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
+			m_sprites.joueur.setPosition(m_sprites.avantPlan[0]->topLeftCorner() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 
-		//	m_sprites.arrierePlan[0].setTexture(m_sprites.textures[7]);
-		//	m_sprites.arrierePlan[0].setScale(4.25f, 4.25f);
-		//	m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 1500, getHeight(m_sprites.textures[7])));
-		//	m_sprites.arrierePlan[0].setPosition(0.f, -400.f);
-		//	break;
+			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1]);
+			m_sprites.arrierePlan[0].setScale(4.25f, 4.25f);
+			m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 1500, getHeight(m_sprites.textures[2])));
+			m_sprites.arrierePlan[0].setPosition(0.f, -400.f);
+			break;
 		//case 4:
 		//	m_sprites.couleur = sf::Color(0xFEFEE2FF);
 		//	m_sprites.positionDansJeu = PositionJeu::jeu;
@@ -1019,7 +1113,7 @@ private:
 		switch (m_moteur.niveau)
 		{
 		case 1:
-			m_sprites.textures.resize(4);
+			m_sprites.textures.resize(3);
 			//avant-plan
 			//verifFichierDisponible("resources/textures/dirt.png", 1);
 			//verifFichierDisponible("resources/textures/grass.png", 2);
@@ -1028,17 +1122,21 @@ private:
 			//verifFichierDisponible("resources/sprites/checkpoint.png", 5);
 			//verifFichierDisponible("resources/sprites/powerUp.png", 6);
 
+			m_sprites.avantPlan.loadTexture("resources/textures/Niveau1.png", "resources/textures/Level1.txt");
+
 			//m_sprites.textures[1].setRepeated(true);
 			//m_sprites.textures[2].setRepeated(true);
 			//m_sprites.textures[3].setRepeated(true);
-			verifFichierDisponible("resources/textures/Niveau1.png", 1);
+			//verifFichierDisponible("resources/textures/Niveau1.png", 1);
 			//arrière-plan
-			verifFichierDisponible("resources/textures/sky.png", 2);
-			verifFichierDisponible("resources/textures/mountain.png", 3);
+			verifFichierDisponible("resources/textures/sky.png", 1);
+			verifFichierDisponible("resources/textures/mountain.png", 2);
+
+			//m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level1.txt");
 			break;
 		case 2:
 			//avant-plan
-			m_sprites.textures.resize(9);
+			m_sprites.textures.resize(2);
 			//verifFichierDisponible("resources/textures/caveGround.png", 1);
 			//verifFichierDisponible("resources/textures/caveRoof.png", 2);
 			//verifFichierDisponible("resources/textures/caveSoil.png", 3);
@@ -1051,31 +1149,36 @@ private:
 			//m_sprites.textures[2].setRepeated(true);
 			//m_sprites.textures[3].setRepeated(true);
 			//m_sprites.textures[4].setRepeated(true);
-			verifFichierDisponible("resources/textures/Niveau2.png", 1);
+			//verifFichierDisponible("resources/textures/Niveau2.png", 1);
+			m_sprites.avantPlan.loadTexture("resources/textures/Niveau2.png", "resources/textures/Level2.txt");
 			//arrière-plan
-			verifFichierDisponible("resources/textures/cave.png", 8);
-
-			m_sprites.textures[8].setRepeated(true);
-			break;
-		case 3:
-			m_sprites.textures.resize(8);
-			
-			//avant-plan
-			verifFichierDisponible("resources/textures/solMontagne.png", 1);
-			verifFichierDisponible("resources/textures/spikes.png", 2);
-			verifFichierDisponible("resources/sprites/powerUp.png", 3);
-			verifFichierDisponible("resources/textures/movingplatform.png", 4);
-			verifFichierDisponible("resources/textures/snowDirt.png", 5);
-			verifFichierDisponible("resources/sprites/snow_97.png", 6);
+			verifFichierDisponible("resources/textures/cave.png", 1);
 
 			m_sprites.textures[1].setRepeated(true);
-			m_sprites.textures[2].setRepeated(true);
-			m_sprites.textures[5].setRepeated(true);
+			//m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level2.txt");
+			break;
+		case 3:
+			m_sprites.textures.resize(2);
+			
+			//avant-plan
+			//verifFichierDisponible("resources/textures/solMontagne.png", 1);
+			//verifFichierDisponible("resources/textures/spikes.png", 2);
+			//verifFichierDisponible("resources/sprites/powerUp.png", 3);
+			//verifFichierDisponible("resources/textures/movingplatform.png", 4);
+			//verifFichierDisponible("resources/textures/snowDirt.png", 5);
+			//verifFichierDisponible("resources/sprites/snow_97.png", 6);
+			//verifFichierDisponible("resources/textures/Niveau3.png", 1);
+
+			m_sprites.avantPlan.loadTexture("resources/textures/Niveau3.png", "resources/textures/Level3.txt");
+			//m_sprites.textures[1].setRepeated(true);
+			//m_sprites.textures[2].setRepeated(true);
+			//m_sprites.textures[5].setRepeated(true);
 
 			//arrière-plan
-			verifFichierDisponible("resources/textures/repeatedMountains.png", 7);
+			verifFichierDisponible("resources/textures/repeatedMountains.png", 1);
 
-			m_sprites.textures[7].setRepeated(true);
+			m_sprites.textures[1].setRepeated(true);
+			//m_sprites.avantPlan.loadTexture(m_sprites.textures[1], "resources/textures/Level3.txt");
 			break;
 		case 4:
 			m_sprites.textures.resize(10);
