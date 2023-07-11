@@ -772,10 +772,10 @@ public:
 				}
 				animationJoueur(deplacementVectoriel, frameAnimation);
 				++frameAnimation;
-				if (m_sprites.camera.getCenter().x - m_sprites.camera.getSize().x / 2.f >= getWidth(m_sprites.textures[1]))
+				if (m_sprites.camera.getCenter().x - m_sprites.camera.getSize().x / 2.f >= m_sprites.avantPlan.getSubTextureSize(0).x)
 				{
-					m_sprites.camera.move(-getWidth(m_sprites.textures[1]), 0.f);
-					m_sprites.joueur.move(-getWidth(m_sprites.textures[1]), 0.f);
+					m_sprites.camera.move(-m_sprites.avantPlan.getSubTextureSize(0).x, 0.f);
+					m_sprites.joueur.move(-m_sprites.avantPlan.getSubTextureSize(0).x, 0.f);
 				}
 				if (Clv::isKeyPressed(Clv::Enter))
 				{
@@ -832,7 +832,6 @@ public:
 				touchePlateformeBas();
 				deplacementVectoriel.y += utilitaire::deplacement;
 			}
-
 			if ((m_touchesActionnees[0] && m_sprites.joueur.getPosition().x > m_moteur.minCameraX))
 			{
 				touchePlateformeGauche();

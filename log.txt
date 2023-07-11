@@ -11091,3 +11091,128 @@ $  B   �P@ @ B  @ B� �$ �       @       @  h    
 2023-07-07 22:17:57.821 INFO  [6224] [Jeu::~Jeu@206] sprites Structure deleted
 2023-07-07 22:17:57.822 INFO  [6224] [Jeu::~Jeu@207] Main object deleted
 2023-07-07 22:17:57.854 INFO  [6224] [WinMain@23] Program shut down
+2023-07-10 16:11:32.851 INFO  [22004] [WinMain@11] Program started
+2023-07-10 16:11:33.459 INFO  [22004] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:11:40.718 INFO  [9684] [MoteurMenu::ecranChargement@1596] Launching level 1
+2023-07-10 16:12:12.736 INFO  [9684] [MoteurMenu::ecranChargement@1596] Launching level 2
+2023-07-10 16:12:44.064 INFO  [9684] [MoteurMenu::ecranChargement@1596] Launching level 3
+2023-07-10 16:14:13.463 INFO  [5108] [WinMain@11] Program started
+2023-07-10 16:14:13.858 INFO  [5108] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:14:14.856 INFO  [4416] [MoteurMenu::ecranChargement@1596] Launching level 1
+2023-07-10 16:14:44.483 INFO  [4416] [MoteurMenu::ecranChargement@1596] Launching level 2
+2023-07-10 16:15:04.880 INFO  [4416] [MoteurMenu::ecranChargement@1596] Launching level 3
+2023-07-10 16:15:46.791 INFO  [5108] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:15:46.791 INFO  [5108] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:15:49.613 INFO  [5108] [WinMain@23] Program shut down
+2023-07-10 16:22:42.137 INFO  [10524] [WinMain@11] Program started
+2023-07-10 16:22:42.587 INFO  [10524] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:22:43.470 INFO  [19936] [MoteurMenu::ecranChargement@1598] Launching level 1
+2023-07-10 16:23:12.693 INFO  [19936] [MoteurMenu::ecranChargement@1598] Launching level 2
+2023-07-10 16:23:32.641 INFO  [19936] [MoteurMenu::ecranChargement@1598] Launching level 3
+2023-07-10 16:23:52.809 INFO  [19936] [MoteurMenu::ecranChargement@1598] Launching level 4
+2023-07-10 16:24:42.166 INFO  [4520] [WinMain@11] Program started
+2023-07-10 16:24:42.675 INFO  [4520] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:24:45.293 INFO  [20000] [MoteurMenu::ecranChargement@1598] Launching level 1
+2023-07-10 16:25:12.773 INFO  [20000] [MoteurMenu::ecranChargement@1598] Launching level 2
+2023-07-10 16:25:32.553 INFO  [20000] [MoteurMenu::ecranChargement@1598] Launching level 3
+2023-07-10 16:25:51.193 INFO  [20000] [MoteurMenu::ecranChargement@1598] Launching level 4
+2023-07-10 16:27:42.388 INFO  [11268] [WinMain@11] Program started
+2023-07-10 16:27:42.916 INFO  [11268] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:27:43.901 INFO  [2504] [MoteurMenu::ecranChargement@1598] Launching level 1
+2023-07-10 16:28:14.833 INFO  [2504] [MoteurMenu::ecranChargement@1598] Launching level 2
+2023-07-10 16:28:34.753 INFO  [2504] [MoteurMenu::ecranChargement@1598] Launching level 3
+2023-07-10 16:28:56.302 INFO  [2504] [MoteurMenu::ecranChargement@1598] Launching level 4
+2023-07-10 16:29:02.363 INFO  [2504] [MoteurMenu::ecranChargement@1598] Launching level 4
+2023-07-10 16:29:09.123 INFO  [2504] [MoteurMenu::ecranChargement@1598] Launching level 4
+2023-07-10 16:29:25.348 INFO  [11268] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:29:25.349 INFO  [11268] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:29:25.387 INFO  [11268] [WinMain@23] Program shut down
+2023-07-10 16:35:34.863 INFO  [24044] [WinMain@11] Program started
+2023-07-10 16:35:35.256 INFO  [24044] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:35:36.125 INFO  [9588] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:35:47.467 INFO  [24044] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:35:47.467 INFO  [24044] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:35:47.488 INFO  [24044] [WinMain@23] Program shut down
+2023-07-10 16:35:50.382 INFO  [14800] [WinMain@11] Program started
+2023-07-10 16:35:50.836 INFO  [14800] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:35:51.809 INFO  [7456] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:36:06.414 INFO  [14800] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:36:06.414 INFO  [14800] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:36:06.441 INFO  [14800] [WinMain@23] Program shut down
+2023-07-10 16:38:17.807 INFO  [21988] [WinMain@11] Program started
+2023-07-10 16:38:18.241 INFO  [21988] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:38:18.909 INFO  [20804] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:38:21.651 INFO  [20804] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:38:24.464 INFO  [20804] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:38:27.203 INFO  [20804] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:38:29.953 INFO  [20804] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:38:32.733 INFO  [20804] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:38:34.438 INFO  [21988] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:38:34.439 INFO  [21988] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:38:34.463 INFO  [21988] [WinMain@23] Program shut down
+2023-07-10 16:39:29.815 INFO  [17112] [WinMain@11] Program started
+2023-07-10 16:39:30.194 INFO  [17112] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:39:30.861 INFO  [20840] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:39:33.603 INFO  [20840] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:39:36.421 INFO  [20840] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:39:39.253 INFO  [20840] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:39:42.854 INFO  [17112] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:39:42.854 INFO  [17112] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:39:42.892 INFO  [17112] [WinMain@23] Program shut down
+2023-07-10 16:40:28.166 INFO  [10000] [WinMain@11] Program started
+2023-07-10 16:40:28.724 INFO  [10000] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:40:29.154 INFO  [11604] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:41:24.718 INFO  [10000] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:41:24.718 INFO  [10000] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:41:27.620 INFO  [10000] [WinMain@23] Program shut down
+2023-07-10 16:43:27.730 INFO  [11288] [WinMain@11] Program started
+2023-07-10 16:43:28.200 INFO  [11288] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:43:28.972 INFO  [11872] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:43:46.861 INFO  [11288] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:43:46.862 INFO  [11288] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:43:46.885 INFO  [11288] [WinMain@23] Program shut down
+2023-07-10 16:46:15.533 INFO  [19428] [WinMain@11] Program started
+2023-07-10 16:46:15.886 INFO  [19428] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:46:17.180 INFO  [23068] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-10 16:46:29.349 INFO  [19428] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-10 16:46:29.349 INFO  [19428] [Jeu::~Jeu@207] Main object deleted
+2023-07-10 16:46:29.373 INFO  [19428] [WinMain@23] Program shut down
+2023-07-10 16:48:58.205 INFO  [23984] [WinMain@11] Program started
+2023-07-10 16:48:58.637 INFO  [23984] [Jeu::Jeu@194] Main object initialized
+2023-07-10 16:48:59.843 INFO  [2084] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:19:32.089 INFO  [1420] [WinMain@11] Program started
+2023-07-11 15:19:32.625 INFO  [1420] [Jeu::Jeu@194] Main object initialized
+2023-07-11 15:19:33.533 INFO  [12580] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:19:54.343 INFO  [12580] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:20:52.932 INFO  [8736] [WinMain@11] Program started
+2023-07-11 15:20:53.315 INFO  [8736] [Jeu::Jeu@194] Main object initialized
+2023-07-11 15:20:54.080 INFO  [3084] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:21:11.473 INFO  [8736] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-11 15:21:11.473 INFO  [8736] [Jeu::~Jeu@207] Main object deleted
+2023-07-11 15:21:11.510 INFO  [8736] [WinMain@23] Program shut down
+2023-07-11 15:21:52.524 INFO  [12456] [WinMain@11] Program started
+2023-07-11 15:21:52.879 INFO  [12456] [Jeu::Jeu@194] Main object initialized
+2023-07-11 15:21:53.626 INFO  [22456] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:22:02.432 INFO  [22456] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:22:26.980 INFO  [12456] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-11 15:22:26.981 INFO  [12456] [Jeu::~Jeu@207] Main object deleted
+2023-07-11 15:22:27.026 INFO  [12456] [WinMain@23] Program shut down
+2023-07-11 15:23:10.752 INFO  [25060] [WinMain@11] Program started
+2023-07-11 15:23:11.138 INFO  [25060] [Jeu::Jeu@194] Main object initialized
+2023-07-11 15:23:12.863 INFO  [9340] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:23:21.455 INFO  [9340] [MoteurMenu::ecranChargement@1599] Launching level 4
+2023-07-11 15:23:45.616 INFO  [9340] [MoteurMenu::ecranChargement@1599] Launching level 5
+2023-07-11 15:23:49.954 INFO  [25060] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-11 15:23:49.955 INFO  [25060] [Jeu::~Jeu@207] Main object deleted
+2023-07-11 15:23:49.982 INFO  [25060] [WinMain@23] Program shut down
+2023-07-11 15:31:05.715 INFO  [14520] [WinMain@11] Program started
+2023-07-11 15:31:06.342 INFO  [14520] [Jeu::Jeu@194] Main object initialized
+2023-07-11 15:31:08.071 INFO  [19224] [MoteurMenu::ecranChargement@1606] Launching level 4
+2023-07-11 15:31:30.946 INFO  [19224] [MoteurMenu::ecranChargement@1606] Launching level 5
+2023-07-11 15:33:55.996 INFO  [13472] [WinMain@11] Program started
+2023-07-11 15:33:56.480 INFO  [13472] [Jeu::Jeu@194] Main object initialized
+2023-07-11 15:33:57.560 INFO  [6624] [MoteurMenu::ecranChargement@1606] Launching level 4
+2023-07-11 15:34:22.352 INFO  [6624] [MoteurMenu::ecranChargement@1606] Launching level 5
+2023-07-11 15:34:47.002 INFO  [13472] [Jeu::~Jeu@206] sprites Structure deleted
+2023-07-11 15:34:47.002 INFO  [13472] [Jeu::~Jeu@207] Main object deleted
+2023-07-11 15:34:47.031 INFO  [13472] [WinMain@23] Program shut down
