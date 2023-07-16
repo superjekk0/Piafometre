@@ -38,6 +38,15 @@ public:
 		for (int i{ 0 }; i < pEnsembleArrierePlan.size(); ++i)
 			m_CoordonneesArrierePlan[i] = pEnsembleArrierePlan[i].getPosition();
 	}
+	void miseAJourCheckpoint(const sf::Vector2f& pCoordonneesCamera, const sf::Sprite& pCoordonneesJoueur, const std::vector<sf::Sprite>& pEnsembleArrierePlan, const PlateformeOptimisee& pCheckpoint)
+	{
+		m_CoordonneesCamera = pCoordonneesCamera;
+		m_CoordonneesJoueur = pCheckpoint.bottomLeftCorner() + sf::Vector2f(0.f, -getHeight(pCoordonneesJoueur));
+		m_checkpointActif = true;
+		m_CoordonneesArrierePlan.resize(pEnsembleArrierePlan.size());
+		for (int i{ 0 }; i < pEnsembleArrierePlan.size(); ++i)
+			m_CoordonneesArrierePlan[i] = pEnsembleArrierePlan[i].getPosition();
+	}
 
 	sf::Vector2f coordonneesCamera() const
 	{

@@ -1,7 +1,7 @@
 #include "ressources.h"
 #include "moteur.h"
-#include "MoteurMenu.h"
-#include "Checkpoint.h"
+//#include "MoteurMenu.h"
+//#include "Checkpoint.h"
 
 void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables)
 {
