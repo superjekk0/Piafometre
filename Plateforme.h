@@ -2,11 +2,12 @@
 #ifndef PLATEFORME_H
 #define PLATEFORME_H
 
+#include <Level.h>
+#include <Tile.h>
 #include "ressources.h"
-#include "Plateformes.h"
 
 /// TODO : Changer le nom de PlateformeOptimisee à Plateforme
-class PlateformeOptimisee : public Tile {
+class PlateformeOptimisee : public opt::Tile {
 private:
 	TypePlateforme m_comportement;
 public:
@@ -26,7 +27,7 @@ public:
 	/// <param name="subTextureCount">Nombre de sous-textures</param>
 	/// <param name="textureRule">Règle appliquée à la texture</param>
 	/// <param name="subTextures">Les positions et tailles des sous-textures</param>
-	PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures);
+	PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, opt::TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures);
 
 	/// <summary>
 	/// Initialise une plateforme en incorporant un comportement à ladite plateforme
@@ -39,7 +40,7 @@ public:
 	/// <param name="textureRule">Règle appliquée à la texture</param>
 	/// <param name="subTextures">Les positions et tailles des sous-textures</param>
 	/// <param name="comportement">Comportement de la plateforme</param>
-	PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, TypePlateforme comportement);
+	PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, opt::TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, TypePlateforme comportement);
 
 	/// <summary>
 	/// Initialise une plateforme en incorporant un comportement à la plateforme et en mettant une échelle autre que 1:1
@@ -53,7 +54,7 @@ public:
 	/// <param name="subTextures">Les positions et tailles des sous-textures</param>
 	/// <param name="scale">Échelle de la texture</param>
 	/// <param name="comportement">Comportement de la plateforme</param>
-	PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, const sf::Vector2f& scale, TypePlateforme comportement);
+	PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, opt::TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, const sf::Vector2f& scale, TypePlateforme comportement);
 
 	/// <summary>
 	/// Retourne le comportement de la plateforme
@@ -69,28 +70,28 @@ public:
 	/// <summary>
 	/// Permet d'accéder aux objets polymorphiques PlateformeOptimisee depuis le niveau
 	/// </summary>
-	std::unique_ptr<Tile> clone() const override;
+	std::unique_ptr<opt::Tile> clone() const override;
 };
 
-inline PlateformeOptimisee::PlateformeOptimisee() : Tile(), m_comportement{ TypePlateforme::solide }
+inline PlateformeOptimisee::PlateformeOptimisee() : opt::Tile(), m_comportement{ TypePlateforme::solide }
 {
 
 }
 
-inline PlateformeOptimisee::PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures)
-	: Tile{ texture, noTuileDebutTexture,desiredSize, position, textureRule, subTextures }, m_comportement{ TypePlateforme::solide }
+inline PlateformeOptimisee::PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, opt::TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures)
+	: opt::Tile{ texture, noTuileDebutTexture,desiredSize, position, textureRule, subTextures }, m_comportement{ TypePlateforme::solide }
 {
 
 }
 
-inline PlateformeOptimisee::PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, TypePlateforme comportement)
-	: Tile{ texture, noTuileDebutTexture, desiredSize, position, textureRule, subTextures }, m_comportement{ comportement }
+inline PlateformeOptimisee::PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, opt::TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, TypePlateforme comportement)
+	: opt::Tile{ texture, noTuileDebutTexture, desiredSize, position, textureRule, subTextures }, m_comportement{ comportement }
 {
 
 }
 
-inline PlateformeOptimisee::PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, const sf::Vector2f& scale, TypePlateforme comportement)
-	: Tile{ texture, noTuileDebutTexture, desiredSize, position, textureRule, scale, subTextures }, m_comportement{ comportement }
+inline PlateformeOptimisee::PlateformeOptimisee(const sf::Texture& texture, int noTuileDebutTexture, const sf::Vector2f& desiredSize, const sf::Vector2f& position, opt::TextureRule textureRule, const std::vector<sf::FloatRect>& subTextures, const sf::Vector2f& scale, TypePlateforme comportement)
+	: opt::Tile{ texture, noTuileDebutTexture, desiredSize, position, textureRule, scale, subTextures }, m_comportement{ comportement }
 {
 
 }
@@ -105,7 +106,7 @@ inline void PlateformeOptimisee::comportement(TypePlateforme nouvComportement)
 	m_comportement = nouvComportement;
 }
 
-inline std::unique_ptr<Tile> PlateformeOptimisee::clone() const
+inline std::unique_ptr<opt::Tile> PlateformeOptimisee::clone() const
 {
 	return std::make_unique<PlateformeOptimisee>(*this);
 }
@@ -147,8 +148,7 @@ public:
 
 struct ObjetADessiner {
 	std::vector <sf::Sprite> arrierePlan;
-	//std::vector <Plateforme> avantPlan;
-	Niveau avantPlan;
+	opt::Level avantPlan;
 	sf::Sprite joueur;
 	std::vector <sf::Text> hud;
 	Langue langue;

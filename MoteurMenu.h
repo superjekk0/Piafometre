@@ -5,6 +5,8 @@
 #include "ressources.h"
 #include "Jeu.h"
 //#include "Checkpoint.h"
+#include <Tile.h>
+#include <Level.h>
 #include "Plateforme.h"
 
 class MoteurMenu {
@@ -307,19 +309,19 @@ private:
 				1,
 				sf::Vector2f(3000.f, m_sprites.avantPlan.getSubTexture(1).height),
 				sf::Vector2f(0.f, 720.f - m_sprites.avantPlan.getSubTexture(1).height),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::solide));
-			m_sprites.avantPlan[0]->setScale(0.75f, 0.75f, TextureRule::adjustable_size);
-			
+			m_sprites.avantPlan[0]->setScale(0.75f, 0.75f, opt::TextureRule::adjustable_size);
+
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				0, 
 				sf::Vector2f(m_sprites.avantPlan.getSubTexture(0).width, m_sprites.avantPlan.getSubTexture(0).height * 2.5f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::solide));
-			m_sprites.avantPlan[1]->setScale(0.75f, 0.75f, TextureRule::adjustable_size);
+			m_sprites.avantPlan[1]->setScale(0.75f, 0.75f, opt::TextureRule::adjustable_size);
 			m_sprites.avantPlan[1]->setPosition(3.f * m_sprites.avantPlan[1]->subTextureSize().x,
 				m_sprites.avantPlan[0]->getPosition().y + m_sprites.avantPlan[0]->height() - m_sprites.avantPlan[1]->height());
 
@@ -327,7 +329,7 @@ private:
 				2,
 				sf::Vector2f(m_sprites.avantPlan.getSubTextureSize(2).x * 4.f, m_sprites.avantPlan.getSubTextureSize(2).y),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 			m_sprites.avantPlan[2]->setPosition(m_sprites.avantPlan[1]->getPosition().x + m_sprites.avantPlan[1]->width(), m_sprites.avantPlan[0]->getPosition().y - m_sprites.avantPlan[2]->height());
@@ -336,22 +338,22 @@ private:
 				0,
 				sf::Vector2f(m_sprites.avantPlan[0]->width(), m_sprites.avantPlan.getSubTexture(0).height * 3.f),
 				sf::Vector2f(m_sprites.avantPlan[0]->getPosition().x, m_sprites.avantPlan[0]->getPosition().y + m_sprites.avantPlan[0]->height()),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
-			m_sprites.avantPlan[3]->setScale(0.75f, 0.75f, TextureRule::keep_size);
+			m_sprites.avantPlan[3]->setScale(0.75f, 0.75f, opt::TextureRule::keep_size);
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				1,
 				sf::Vector2f(3000.f, m_sprites.avantPlan.getSubTexture(1).height),
 				sf::Vector2f(0.f, m_sprites.avantPlan[3]->getPosition().y + m_sprites.avantPlan[3]->height() + 500.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				sf::Vector2f(m_sprites.avantPlan.getSubTextureSize(2)),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 			m_sprites.avantPlan[5]->setPosition(1500.f, m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[5]->height());
@@ -360,7 +362,7 @@ private:
 				2,
 				m_sprites.avantPlan[5]->getSize(),
 				m_sprites.avantPlan[5]->getPosition() + sf::Vector2f(-750.f, 0.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 
@@ -368,10 +370,11 @@ private:
 				4,
 				sf::Vector2f(m_sprites.avantPlan.getSubTextureSize(4)),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::checkPoint));
-			m_sprites.avantPlan[7]->setScale(2.f, TextureRule::keep_height);
+			m_sprites.avantPlan[7]->changeColor(sf::Color(0xFFEEFFFF));
+			m_sprites.avantPlan[7]->setScale(2.f, opt::TextureRule::keep_height);
 			m_sprites.avantPlan[7]->setPosition(m_sprites.avantPlan[5]->getPosition().x + 500.f,
 				m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[7]->height());
 
@@ -379,7 +382,7 @@ private:
 				7,
 				m_sprites.avantPlan.getSubTextureSize(7),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[8]->setPosition(m_sprites.avantPlan[1]->getPosition().x - m_sprites.avantPlan[8]->width() -100.f,
@@ -389,7 +392,7 @@ private:
 				7,
 				m_sprites.avantPlan.getSubTextureSize(7),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet
 			));
@@ -400,7 +403,7 @@ private:
 				3,
 				m_sprites.avantPlan.getSubTextureSize(3),
 				m_sprites.avantPlan[4]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan.getSubTextureSize(3).y),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::finTableau
 			));
@@ -428,14 +431,14 @@ private:
 				0,
 				sf::Vector2f(500.f, m_sprites.avantPlan.getSubTextureSize(0).y),
 				sf::Vector2f(0.f, 400.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				sf::Vector2f(m_sprites.avantPlan.getSubTexture(2).width, 200.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 			m_sprites.avantPlan[1]->setPosition(m_sprites.avantPlan[0]->topRightCorner() - m_sprites.avantPlan[1]->getSize());
 
@@ -443,7 +446,7 @@ private:
 				3,
 				sf::Vector2f(400.f, m_sprites.avantPlan.getSubTextureSize(3).y),
 				m_sprites.avantPlan[0]->topRightCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 
@@ -451,14 +454,14 @@ private:
 				0,
 				sf::Vector2f(400.f, 200.f),
 				m_sprites.avantPlan[2]->bottomLeftCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				3,
 				sf::Vector2f(400.f, m_sprites.avantPlan[2]->height()),
 				m_sprites.avantPlan[0]->topRightCorner() + sf::Vector2f(600.f, 0.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 
@@ -466,14 +469,14 @@ private:
 				0,
 				sf::Vector2f(400.f, 200.f),
 				m_sprites.avantPlan[4]->bottomLeftCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				3,
 				sf::Vector2f(400.f, m_sprites.avantPlan[2]->height()),
 					m_sprites.avantPlan[4]->topRightCorner() + sf::Vector2f(400.f, 0.f),
-					TextureRule::repeat_texture,
+					opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 
@@ -481,21 +484,21 @@ private:
 				0,
 				sf::Vector2f(400.f, 200.f),
 				m_sprites.avantPlan[6]->bottomLeftCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				0,
 				sf::Vector2f(400.f, 200.f),
 				m_sprites.avantPlan[2]->bottomLeftCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				4,
 				m_sprites.avantPlan.getSubTextureSize(4),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[9]->setPosition(((m_sprites.avantPlan[2]->topRightCorner().x + m_sprites.avantPlan[4]->topLeftCorner().x) / 2.f) - m_sprites.avantPlan[9]->width() / 2.f, 250.f);
@@ -504,7 +507,7 @@ private:
 				4,
 				m_sprites.avantPlan.getSubTextureSize(4),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[10]->setPosition(((m_sprites.avantPlan[4]->topRightCorner().x + m_sprites.avantPlan[6]->topLeftCorner().x) / 2.f) - m_sprites.avantPlan[10]->width() / 2.f, 250.f);
@@ -513,14 +516,14 @@ private:
 				0,
 				sf::Vector2f(700.f, m_sprites.avantPlan.getSubTextureSize(0).y),
 				m_sprites.avantPlan[7]->topRightCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				6,
 				m_sprites.avantPlan.getSubTextureSize(6),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::checkPoint));
 			m_sprites.avantPlan[12]->setScale(2.f);
@@ -530,7 +533,7 @@ private:
 				4,
 				m_sprites.avantPlan.getSubTextureSize(4),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[13]->setPosition(m_sprites.avantPlan[1]->bottomLeftCorner() - sf::Vector2f(75.f, m_sprites.avantPlan[13]->height()));
@@ -539,14 +542,14 @@ private:
 				2,
 				sf::Vector2f(3000.f, 400.f),
 				sf::Vector2f(0.f, -500.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				sf::Vector2f(200.f, 1000.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 			m_sprites.avantPlan[15]->setPosition(m_sprites.avantPlan[11]->topRightCorner() - sf::Vector2f(m_sprites.avantPlan[15]->width(), 1200.f));
 
@@ -554,14 +557,14 @@ private:
 				2,
 				sf::Vector2f(300.f, 700.f),
 				m_sprites.avantPlan[11]->topRightCorner() + sf::Vector2f(500.f, -400.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				4,
 				m_sprites.avantPlan.getSubTextureSize(4),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[17]->setPosition(m_sprites.avantPlan[11]->topRightCorner() - sf::Vector2f(200.f, m_sprites.avantPlan[17]->height()));
@@ -570,7 +573,7 @@ private:
 				4,
 				m_sprites.avantPlan.getSubTextureSize(4),
 				(m_sprites.avantPlan[11]->topRightCorner() + m_sprites.avantPlan[16]->topLeftCorner()) / 2.f,
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 
@@ -578,14 +581,14 @@ private:
 				1,
 				sf::Vector2f(1000.f, m_sprites.avantPlan.getSubTextureSize(1).y),
 				m_sprites.avantPlan[15]->topRightCorner() + sf::Vector2f(0.f, 300.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				sf::Vector2f(1000.f, 500.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 			m_sprites.avantPlan[20]->setPosition(m_sprites.avantPlan[19]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan[20]->height()));
 
@@ -593,7 +596,7 @@ private:
 				5,
 				m_sprites.avantPlan.getSubTextureSize(5) * 1.5f,
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::finTableau));
 			m_sprites.avantPlan[21]->setPosition(m_sprites.avantPlan[16]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan[21]->height()));
@@ -616,14 +619,14 @@ private:
 				0,
 				sf::Vector2f(1280.f, 200.f),
 				sf::Vector2f(0.f, 550.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				m_sprites.avantPlan.getSubTextureSize(2),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[1]->setPosition(m_sprites.avantPlan[0]->topRightCorner() - m_sprites.avantPlan[1]->getSize() + sf::Vector2f(-120.f, 0.f));
@@ -632,7 +635,7 @@ private:
 				0,
 				sf::Vector2f(300.f, 500.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::semiSolide));
 			m_sprites.avantPlan[2]->changeColor(sf::Color(0xAAAAAAFF));
@@ -642,21 +645,21 @@ private:
 				0,
 				sf::Vector2f(400.f, 150.f),
 				m_sprites.avantPlan[2]->topRightCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				0,
 				sf::Vector2f(500.f, 250.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				m_sprites.avantPlan.getSubTextureSize(2),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[5]->setPosition(m_sprites.avantPlan[4]->getPosition() + sf::Vector2f(200.f, -m_sprites.avantPlan[5]->height()));
@@ -665,7 +668,7 @@ private:
 				0,
 				sf::Vector2f(300.f, 500.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::semiSolide));
 			m_sprites.avantPlan[6]->setPosition(m_sprites.avantPlan[4]->topRightCorner() - sf::Vector2f(150.f, m_sprites.avantPlan[6]->height()));
@@ -675,14 +678,14 @@ private:
 				0,
 				sf::Vector2f(300.f, 150.f),
 				m_sprites.avantPlan[6]->topRightCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				1,
 				sf::Vector2f(350.f, m_sprites.avantPlan.getSubTextureSize(1).y),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 			m_sprites.avantPlan[8]->setPosition(m_sprites.avantPlan[3]->topRightCorner() - m_sprites.avantPlan[8]->getSize());
@@ -691,7 +694,7 @@ private:
 				3,
 				m_sprites.avantPlan.getSubTextureSize(3),
 				m_sprites.avantPlan[7]->topLeftCorner() + sf::Vector2f(0.f, -350.f),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::semiSolide));
 			m_sprites.avantPlan[9]->setScale(10.f, 5.f);
@@ -700,14 +703,14 @@ private:
 				4,
 				sf::Vector2f(400.f, 180.f),
 				m_sprites.avantPlan[9]->topRightCorner(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				2,
 				m_sprites.avantPlan.getSubTextureSize(2),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[11]->setPosition((m_sprites.avantPlan[7]->topLeftCorner() + m_sprites.avantPlan[7]->topRightCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[11]->height()));
@@ -716,7 +719,7 @@ private:
 				5,
 				m_sprites.avantPlan.getSubTextureSize(5) * 2.f,
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::finTableau));
 			m_sprites.avantPlan[12]->setPosition(m_sprites.avantPlan[10]->topLeftCorner() + sf::Vector2f(0.f, -m_sprites.avantPlan[12]->height()));
@@ -739,21 +742,21 @@ private:
 				0,
 				sf::Vector2f(1280.f, m_sprites.avantPlan.getSubTextureSize(0).y),
 				sf::Vector2f(0.f, 720.f - m_sprites.avantPlan.getSubTextureSize(0).y),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				1,
 				sf::Vector2f(1280.f, m_sprites.avantPlan.getSubTextureSize(1).y),
 				m_sprites.avantPlan[0]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan.getSubTextureSize(1).y),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				1,
 				sf::Vector2f(600.f, m_sprites.avantPlan.getSubTextureSize(1).y),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 			m_sprites.avantPlan[2]->setPosition((m_sprites.avantPlan[1]->topRightCorner() + m_sprites.avantPlan[1]->topLeftCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[2]->width() / 2.f, 150.f + m_sprites.avantPlan[2]->height()));
 
@@ -761,7 +764,7 @@ private:
 				8,
 				m_sprites.avantPlan.getSubTextureSize(8),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[3]->setPosition(m_sprites.avantPlan[2]->bottomLeftCorner().x - m_sprites.avantPlan[3]->width(), m_sprites.avantPlan[1]->getPosition().y - m_sprites.avantPlan[3]->height());
@@ -770,7 +773,7 @@ private:
 				8,
 				m_sprites.avantPlan.getSubTextureSize(8),
 				sf::Vector2f(m_sprites.avantPlan[2]->bottomRightCorner().x, m_sprites.avantPlan[1]->getPosition().y - m_sprites.avantPlan[3]->height()),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 
@@ -778,7 +781,7 @@ private:
 				2,
 				sf::Vector2f(m_sprites.avantPlan[2]->width(), m_sprites.avantPlan.getSubTextureSize(2).y),
 				m_sprites.avantPlan[2]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan.getSubTextureSize(2).y),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 
@@ -786,7 +789,7 @@ private:
 				0,
 				sf::Vector2f(125.f, m_sprites.avantPlan.getSubTextureSize(0).y * 5.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 			m_sprites.avantPlan[6]->setPosition((m_sprites.avantPlan[2]->bottomLeftCorner() + m_sprites.avantPlan[2]->bottomRightCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[6]->width() / 2.f, m_sprites.avantPlan[6]->height()));
 
@@ -794,7 +797,7 @@ private:
 				8,
 				m_sprites.avantPlan.getSubTextureSize(6),
 				m_sprites.avantPlan[6]->getPosition() + sf::Vector2f(-100.f, 200.f),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 
@@ -802,7 +805,7 @@ private:
 				8,
 				m_sprites.avantPlan.getSubTextureSize(6),
 				m_sprites.avantPlan[6]->topRightCorner() + sf::Vector2f(50.f, 200.f),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 
@@ -810,7 +813,7 @@ private:
 				3,
 				m_sprites.avantPlan.getSubTextureSize(3),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::semiSolide));
 			m_sprites.avantPlan[9]->setScale(10.f, 5.f);
@@ -820,21 +823,21 @@ private:
 				1,
 				sf::Vector2f(300.f, m_sprites.avantPlan.getSubTextureSize(1).y - 180.f),
 				sf::Vector2f(0.f, m_sprites.avantPlan[9]->getPosition().y - 180.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				1,
 				sf::Vector2f(600.f, m_sprites.avantPlan.getSubTextureSize(1).y),
 				m_sprites.avantPlan[10]->topRightCorner() + sf::Vector2f(0.f, -250.f),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				7,
 				m_sprites.avantPlan.getSubTextureSize(7) * 1.5f,
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::decor));
 			m_sprites.avantPlan[12]->setPosition(m_sprites.avantPlan[11]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[12]->height()));
@@ -843,7 +846,7 @@ private:
 				7,
 				m_sprites.avantPlan.getSubTextureSize(7) * 1.5f,
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::decor));
 			m_sprites.avantPlan[13]->setPosition(m_sprites.avantPlan[11]->topRightCorner() - m_sprites.avantPlan[13]->getSize());
@@ -852,7 +855,7 @@ private:
 				4,
 				m_sprites.avantPlan.getSubTextureSize(4) * 2.f,
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::checkPoint));
 			m_sprites.avantPlan[14]->setPosition((m_sprites.avantPlan[12]->bottomRightCorner() + m_sprites.avantPlan[13]->bottomLeftCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[14]->width() / 2.f, m_sprites.avantPlan[14]->height()));
@@ -861,14 +864,14 @@ private:
 				0,
 				sf::Vector2f(150.f, m_sprites.avantPlan.getSubTextureSize(0).y),
 				sf::Vector2f(0.f, m_sprites.avantPlan[12]->getPosition().y),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(m_sprites.avantPlan.getTexture(),
 				8,
 				m_sprites.avantPlan.getSubTextureSize(8),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[16]->setPosition(m_sprites.avantPlan[12]->bottomLeftCorner() - sf::Vector2f(0.f, m_sprites.avantPlan[16]->height()));
@@ -877,7 +880,7 @@ private:
 				0,
 				sf::Vector2f(1000.f, 350.f),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 			m_sprites.avantPlan[17]->setPosition(m_sprites.avantPlan[15]->topRightCorner() - sf::Vector2f(-150.f, m_sprites.avantPlan[17]->height()));
 
@@ -885,7 +888,7 @@ private:
 				8,
 				m_sprites.avantPlan.getSubTextureSize(8),
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::objet));
 			m_sprites.avantPlan[18]->setPosition(m_sprites.avantPlan[15]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[18]->height()));
@@ -894,7 +897,7 @@ private:
 				2,
 				sf::Vector2f(150.f, m_sprites.avantPlan.getSubTextureSize(2).y),
 				sf::Vector2f(),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::pics));
 			m_sprites.avantPlan[19]->setPosition(m_sprites.avantPlan[17]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[19]->height()));
@@ -903,7 +906,7 @@ private:
 				9,
 				m_sprites.avantPlan.getSubTextureSize(9) * 5.f,
 				sf::Vector2f(),
-				TextureRule::fill_space,
+				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
 				TypePlateforme::finTableau));
 			m_sprites.avantPlan[20]->setPosition(m_sprites.avantPlan[17]->topRightCorner() - m_sprites.avantPlan[20]->getSize());
@@ -925,7 +928,7 @@ private:
 				0,
 				sf::Vector2f(m_sprites.avantPlan.getSubTextureSize(0).x * 3.f, m_sprites.avantPlan.getSubTextureSize(0).y),
 				sf::Vector2f(0.f, 720.f - m_sprites.avantPlan.getSubTextureSize(0).y),
-				TextureRule::repeat_texture,
+				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures()));
 
 			m_sprites.joueur.setPosition(375.f, 50.f);
@@ -1139,7 +1142,6 @@ public:
 					{
 					case 0:
 						m_sprites.arrierePlan.resize(0);
-						//m_sprites.avantPlan.resize(0);
 						m_sprites.avantPlan.resetTiles();
 						m_sprites.textures.resize(0);
 						m_textesHUD.resize(4);

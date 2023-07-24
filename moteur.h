@@ -2,6 +2,8 @@
 #ifndef MOTEUR_H
 #define MOTEUR_H
 
+#include <Level.h>
+#include <Tile.h>
 #include "ressources.h"
 #include "MoteurMenu.h"
 #include "Plateforme.h"
@@ -105,7 +107,7 @@ bool procheSol(const sf::Sprite& joueur, const sf::Sprite& bloc)
 {
 	return joueur.getPosition().y + getHeight(joueur) - utilitaire::deplacement <= bloc.getPosition().y;
 }
-bool procheSol(const sf::Sprite& joueur, const Tile& bloc)
+bool procheSol(const sf::Sprite& joueur, const opt::Tile& bloc)
 {
 	return joueur.getPosition().y + getHeight(joueur) - utilitaire::deplacement <= bloc.getPosition().y;
 }
@@ -152,7 +154,7 @@ bool collisionBas(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y + getHeight(joueur) <= bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
 
-bool collisionBas(const sf::Sprite& joueur, const Tile& bloc)
+bool collisionBas(const sf::Sprite& joueur, const opt::Tile& bloc)
 {
 	return (joueur.getPosition().x + getWidth(joueur) > bloc.getPosition().x)
 		&& (joueur.getPosition().x < bloc.getPosition().x + bloc.width())
@@ -171,7 +173,7 @@ bool collisionHaut(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
 
-bool collisionHaut(const sf::Sprite& joueur, const Tile& bloc)
+bool collisionHaut(const sf::Sprite& joueur, const opt::Tile& bloc)
 {
 	return (joueur.getPosition().x + getWidth(joueur) > bloc.getPosition().x)
 		&& (joueur.getPosition().x < bloc.getPosition().x + bloc.width())
@@ -189,7 +191,7 @@ bool collisionDroite(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
 
-bool collisionDroite(const sf::Sprite& joueur, const Tile& bloc)
+bool collisionDroite(const sf::Sprite& joueur, const opt::Tile& bloc)
 {
 	return (joueur.getPosition().x + getWidth(joueur) >= bloc.getPosition().x)
 		&& (joueur.getPosition().x + getWidth(joueur) <= bloc.getPosition().x + bloc.width())
@@ -207,7 +209,7 @@ bool collisionGauche(const sf::Sprite& joueur, const Plateforme& bloc)
 		&& (joueur.getPosition().y < bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
 
-bool collisionGauche(const sf::Sprite& joueur, const Tile& bloc)
+bool collisionGauche(const sf::Sprite& joueur, const opt::Tile& bloc)
 {
 	return (joueur.getPosition().x >= bloc.getPosition().x)
 		&& (joueur.getPosition().x <= bloc.getPosition().x + bloc.width())
@@ -315,7 +317,7 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 			assert(plateforme);
 			if (plateforme && !collisionPresente(i) && collisionBas(m_sprites.joueur, *plateforme) && procheSol(m_sprites.joueur, *plateforme))
 			{
@@ -368,7 +370,7 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 			if (plateforme && !collisionPresente(i) && collisionGauche(m_sprites.joueur, *plateforme))
 			{
 				switch (plateforme->comportement())
@@ -411,7 +413,7 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 			if (plateforme && !collisionPresente(i) && collisionDroite(m_sprites.joueur, *plateforme))
 			{
 				switch (plateforme->comportement())
@@ -454,7 +456,7 @@ private:
 	{
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 			if (plateforme && !collisionPresente(i) && collisionHaut(m_sprites.joueur, *plateforme))
 			{
 				switch (plateforme->comportement())
@@ -606,7 +608,7 @@ private:
 		//Il regarde quel objet a le comportement Checkpoint. Puis, une fois qu'il l'a trouvé, il vérifie quel est l'index de la texture correspondante au checkpoint
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
-			PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 			if (plateforme->comportement() == TypePlateforme::checkPoint)
 			{
 				return i;
@@ -651,7 +653,7 @@ private:
 	{
 		for (auto& collision : m_collisions)
 		{
-			PlateformeOptimisee* plateforme = m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(collision.indexPlateforme());
+			PlateformeOptimisee* const plateforme = m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(collision.indexPlateforme());
 			switch (collision.collision())
 			{
 			case Collision::pics:
@@ -749,7 +751,7 @@ public:
 				{
 					if (m_collisions.size() > 0) m_collisions.pop_back();
 					deplacementVectoriel.y = 0.f;
-					PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(0) };
+					PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(0) };
 					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::normale, 0));
 					m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
 					m_sprites.camera.move(deplacementVectoriel.x, 0.f);
@@ -805,7 +807,7 @@ public:
 		{
 			for (int i {0}; i < m_sprites.avantPlan.size(); ++i)
 			{
-				PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
+				PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 				if (plateforme && plateforme->comportement() == TypePlateforme::objet)
 					minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(*plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
 			}
@@ -928,8 +930,8 @@ public:
 		//tempsDixiemeSeconde.release();
 		//reglerVisible.release();
 		sautEffectif.release();
+		m_sprites.avantPlan.resetTiles();
 	}
-
 };
 
 
