@@ -298,6 +298,8 @@ private:
 
 		switch (m_moteur.niveau)
 		{
+		case 0:
+			break;
 		case 1:
 			m_sprites.couleur = sf::Color(119, 181, 254);
 			m_sprites.positionDansJeu = PositionJeu::jeu;
@@ -934,6 +936,9 @@ private:
 			m_sprites.joueur.setPosition(375.f, 50.f);
 			break;
 		}
+		m_sprites.avantPlan.add(opt::Tile());
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->changeColor(sf::Color(0x0));
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->resize(m_sprites.camera.getSize(), opt::TextureRule::fill_space);
 		m_sprites.avantPlan.reloadVertexes();
 	}
 
@@ -951,6 +956,8 @@ private:
 		//l'index 0 est réservé pour le sprite du joueur
 		switch (m_moteur.niveau)
 		{
+		case 0:
+			break;
 		case 1:
 			m_sprites.textures.resize(3);
 			//avant-plan
@@ -1035,7 +1042,8 @@ public:
 
 		m_textesHUD.resize(4);
 		chargementTexteHUD();
-
+		chargementNiveau();
+		m_moteur.niveau = 0;
 		while (!m_peutDeplacer)
 		{
 			sf::Clock debutCycle; //TRÈS IMPORTANT! NE PAS DÉPLACER
@@ -1058,7 +1066,6 @@ public:
 					switch (m_index)
 					{
 					case 0: //Entrer dans le jeu
-						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 						m_moteur.nbVie = 3;
 						m_sprites.positionDansJeu = PositionJeu::chargement;
 						//peutDeplacer = true;
@@ -1067,8 +1074,8 @@ public:
 						return;
 						break;
 					case 1: //Entrer dans les options
-						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-						m_sprites.ecranNoir.setFillColor(sf::Color::Color(0x00000080));
+						m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
+						//m_sprites.ecranNoir.setFillColor(sf::Color::Color(0x00000080));
 						m_sprites.hud.resize(15);
 						m_textesHUD.resize(15);
 						m_sprites.textures.resize(9);
@@ -1088,7 +1095,8 @@ public:
 						break;
 					case 3: //Entrer dans les crédits
 						//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-						m_sprites.ecranNoir.setFillColor(sf::Color(0x00000080));
+						m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
+						//m_sprites.ecranNoir.setFillColor(sf::Color(0x00000080));
 						m_sprites.positionDansJeu = PositionJeu::credits;
 						m_textesHUD.resize(1);
 						m_sprites.hud.resize(1);
@@ -1127,7 +1135,8 @@ public:
 					switch (m_index)
 					{
 					case 0:
-						m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+						m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
+						//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 						m_peutDeplacer = !m_peutDeplacer;
 						m_sprites.hud.resize(0);
 						return;
@@ -1148,7 +1157,8 @@ public:
 						m_sprites.hud.resize(4);
 						m_sprites.positionDansJeu = PositionJeu::accueil;
 						m_sprites.couleur = couleur;
-						m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+						m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
+						//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 						m_indexMax = 3;
 						m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 						chargementTexteHUD();
@@ -1169,7 +1179,8 @@ public:
 				{
 				case PositionJeu::options:
 					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-					m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+					m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
+					//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 					m_sprites.hud.resize(4);
 					m_textesHUD.resize(4);
 					//m_sprites.textures.resize(2);
@@ -1182,7 +1193,8 @@ public:
 					break;
 				case PositionJeu::credits:
 					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
-					m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+					//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+					m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
 					m_sprites.hud.resize(4);
 					m_textesHUD.resize(4);
 					//m_sprites.textures.resize(2);
@@ -1194,7 +1206,8 @@ public:
 					PLOGI << "Entering main menu";
 					break;
 				case PositionJeu::pause:
-					m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+					//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+					m_sprites.avantPlan.changeColor(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
 					m_peutDeplacer = !m_peutDeplacer;
 					m_index = 1;
 					m_sprites.hud.resize(0);
@@ -1227,14 +1240,16 @@ public:
 		m_sprites.hud.resize(1);
 		m_sprites.positionDansJeu = PositionJeu::chargement;
 		m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
-		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
+		//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->changeColor(sf::Color(0x000000FF));
 		m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
 		chargementTexteHUD();
 		affichageHUD();
 		chargementNiveau();
 		creationLimiteCamera(m_moteur);
 		std::this_thread::sleep_for(std::chrono::seconds(2));
-		m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->changeColor(sf::Color(0x0));
+		//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 		m_peutDeplacer = true;
 		m_sprites.hud.resize(0);
 		//m_sprites.positionDansJeu = PositionJeu::jeu;

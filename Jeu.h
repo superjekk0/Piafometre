@@ -57,7 +57,7 @@ private:
 		fenetre->draw(sprites->avantPlan);
 		if (deplacementActif)
 			fenetre->draw(sprites->joueur);
-		fenetre->draw(sprites->ecranNoir);
+		//fenetre->draw(sprites->ecranNoir);
 		for (int i{ 0 }; i < sprites->hud.size(); ++i)
 		{
 			fenetre->draw(sprites->hud[i]);
