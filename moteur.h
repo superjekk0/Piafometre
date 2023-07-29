@@ -318,49 +318,49 @@ private:
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
 			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
-			assert(plateforme);
-			if (plateforme && !collisionPresente(i) && collisionBas(m_sprites.joueur, *plateforme) && procheSol(m_sprites.joueur, *plateforme))
-			{
-				switch (plateforme->comportement())
+			if (plateforme)
+				if (!collisionPresente(i) && collisionBas(m_sprites.joueur, *plateforme) && procheSol(m_sprites.joueur, *plateforme))
 				{
-				case TypePlateforme::solide:
-				case TypePlateforme::semiSolide:
-					//if (procheSol(m_sprites.joueur, plateforme.sprite))
-					//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
-					//return Collision::normale;
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::normale, i));
-					break;
-				case TypePlateforme::pics:
-					//if (procheSol(m_sprites.joueur, plateforme.sprite))
-					//{
-						//--m_moteur.nbVie;
-						//return Collision::pics;
-					//}
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::pics, i));
-					break;
-				case TypePlateforme::checkPoint:
-					//return Collision::checkpoint;
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::checkpoint, i));
-					break;
-				case TypePlateforme::objet:
-					//if (!plateforme.touche)
-					//{
-					//	m_autorisationsSaut.set(3);
-					//	m_autorisationsSaut.set(1);
-					//	m_DixiemeSecondePeutSauter = 0;
-					//	plateforme.touche = true;
-					//}
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::objet, i));
-					break;
-				case TypePlateforme::finTableau:
-					//return Collision::fin;
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::fin, i));
-					break;
-				default:
-					break;
-				}
+					switch (plateforme->comportement())
+					{
+					case TypePlateforme::solide:
+					case TypePlateforme::semiSolide:
+						//if (procheSol(m_sprites.joueur, plateforme.sprite))
+						//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme.sprite.getPosition().y - getHeight(m_sprites.joueur));
+						//return Collision::normale;
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::normale, i));
+						break;
+					case TypePlateforme::pics:
+						//if (procheSol(m_sprites.joueur, plateforme.sprite))
+						//{
+							//--m_moteur.nbVie;
+							//return Collision::pics;
+						//}
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::pics, i));
+						break;
+					case TypePlateforme::checkPoint:
+						//return Collision::checkpoint;
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::checkpoint, i));
+						break;
+					case TypePlateforme::objet:
+						//if (!plateforme.touche)
+						//{
+						//	m_autorisationsSaut.set(3);
+						//	m_autorisationsSaut.set(1);
+						//	m_DixiemeSecondePeutSauter = 0;
+						//	plateforme.touche = true;
+						//}
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::objet, i));
+						break;
+					case TypePlateforme::finTableau:
+						//return Collision::fin;
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::fin, i));
+						break;
+					default:
+						break;
+					}
 
-			}
+				}
 			//if (plateformes[i].comportement != TypePlateforme::objet)
 		}
 		//return Collision::aucune;
@@ -371,40 +371,41 @@ private:
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
 			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
-			if (plateforme && !collisionPresente(i) && collisionGauche(m_sprites.joueur, *plateforme))
-			{
-				switch (plateforme->comportement())
+			if (plateforme)
+				if (!collisionPresente(i) && collisionGauche(m_sprites.joueur, *plateforme))
 				{
-				case TypePlateforme::solide:
-				case TypePlateforme::pics:
-					//if (procheBordGauche(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
-					//	m_sprites.joueur.setPosition(m_sprites.avantPlan[i].sprite.getPosition().x + getWidth(m_sprites.avantPlan[i].sprite), m_sprites.joueur.getPosition().y);
-					//return Collision::normale;
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::normale, i));
-					break;
-				case TypePlateforme::checkPoint:
-					//return Collision::checkpoint;
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::checkpoint, i));
-					break;
-				case TypePlateforme::objet:
-					//if (!m_sprites.avantPlan[i].touche)
-					//{
-					//	m_autorisationsSaut.set(3);
-					//	m_autorisationsSaut.set(1);
-					//	m_DixiemeSecondePeutSauter = 0;
-					//	m_sprites.avantPlan[i].touche = true;
-					//}
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::objet, i));
-					break;
-				case TypePlateforme::finTableau:
-					//return Collision::fin;
-					m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::fin, i));
-					break;
-				default:
-					break;
-				}
+					switch (plateforme->comportement())
+					{
+					case TypePlateforme::solide:
+					case TypePlateforme::pics:
+						//if (procheBordGauche(m_sprites.joueur, m_sprites.avantPlan[i].sprite))
+						//	m_sprites.joueur.setPosition(m_sprites.avantPlan[i].sprite.getPosition().x + getWidth(m_sprites.avantPlan[i].sprite), m_sprites.joueur.getPosition().y);
+						//return Collision::normale;
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::normale, i));
+						break;
+					case TypePlateforme::checkPoint:
+						//return Collision::checkpoint;
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::checkpoint, i));
+						break;
+					case TypePlateforme::objet:
+						//if (!m_sprites.avantPlan[i].touche)
+						//{
+						//	m_autorisationsSaut.set(3);
+						//	m_autorisationsSaut.set(1);
+						//	m_DixiemeSecondePeutSauter = 0;
+						//	m_sprites.avantPlan[i].touche = true;
+						//}
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::objet, i));
+						break;
+					case TypePlateforme::finTableau:
+						//return Collision::fin;
+						m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::gauche, Collision::fin, i));
+						break;
+					default:
+						break;
+					}
 
-			}
+				}
 		}
 		//return Collision::aucune;
 	}
@@ -414,7 +415,8 @@ private:
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
 			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
-			if (plateforme && !collisionPresente(i) && collisionDroite(m_sprites.joueur, *plateforme))
+			if (plateforme)
+				if (!collisionPresente(i) && collisionDroite(m_sprites.joueur, *plateforme))
 			{
 				switch (plateforme->comportement())
 				{
@@ -457,7 +459,8 @@ private:
 		for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 		{
 			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
-			if (plateforme && !collisionPresente(i) && collisionHaut(m_sprites.joueur, *plateforme))
+			if (plateforme) 
+				if(!collisionPresente(i) && collisionHaut(m_sprites.joueur, *plateforme))
 			{
 				switch (plateforme->comportement())
 				{
@@ -729,12 +732,12 @@ public:
 		int positionTableauCheckpoint{ indexCheckpoint() };
 		sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 		const int nbVieDebut{ m_moteur.nbVie };
-		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); }} };
+		std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); } } };
 		//std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)} };
 		std::vector<std::thread> minuterieObjetsTouches;
 		//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
 		//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
-		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{[&]() {peutSauter(); }} };
+		std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{ [&]() {peutSauter(); } } };
 		sf::Clock debutCycle;
 		long frameAnimation{ 0 };
 		int checkpointSubTexture{ (positionTableauCheckpoint < 0) ? -1 : m_sprites.avantPlan[positionTableauCheckpoint]->subTextureIndex() };
@@ -805,7 +808,7 @@ public:
 		}
 		else
 		{
-			for (int i {0}; i < m_sprites.avantPlan.size(); ++i)
+			for (int i{ 0 }; i < m_sprites.avantPlan.size(); ++i)
 			{
 				PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 				if (plateforme && plateforme->comportement() == TypePlateforme::objet)
@@ -856,7 +859,9 @@ public:
 			}
 			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 			{
-				m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 127));
+				//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 127));
+				m_sprites.avantPlan.changeColor(sf::Color(0x00000080), m_sprites.avantPlan.size() - 1);
+				m_sprites.avantPlan.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f, m_sprites.avantPlan.size() - 1);
 				m_peutDeplacer = !m_peutDeplacer;
 				m_sprites.positionDansJeu = PositionJeu::pause;
 				std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
@@ -870,7 +875,7 @@ public:
 				m_gauche = false;
 				if (cameraPeutContinuerDroite(m_sprites.joueur, m_sprites.camera, m_moteur))
 				{
-					m_sprites.camera.move(deplacementVectoriel.x, 0);
+					m_sprites.camera.move(deplacementVectoriel.x, 0.f);
 					for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
 					{
 						m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75f, 0);
