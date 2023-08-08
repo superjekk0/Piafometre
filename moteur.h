@@ -260,10 +260,10 @@ void rendreObjetVisible(PlateformeOptimisee& plateforme, const bool& threadsActi
 	sf::Clock minuterie;
 	while (threadsActifs && peutDeplacer)
 	{
-		if (plateforme.getColor() == sf::Color(0x0))
+		if (plateforme.getColour() == sf::Color(0x0))
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(3));
-			plateforme.resetColor();
+			plateforme.resetColour();
 		}
 		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage));
 	}
@@ -669,12 +669,12 @@ private:
 					*plateforme);
 				break;
 			case Collision::objet:
-				if (plateforme->getColor() != sf::Color(0x0))
+				if (plateforme->getColour() != sf::Color(0x0))
 				{
 					m_autorisationsSaut.set(3);
 					m_autorisationsSaut.set(1);
 					m_DixiemeSecondePeutSauter = 0;
-					m_sprites.avantPlan.changeColor(sf::Color(0x0), collision.indexPlateforme());
+					m_sprites.avantPlan.changeColour(sf::Color(0x0), collision.indexPlateforme());
 				}
 				break;
 			case Collision::normale:
@@ -860,7 +860,7 @@ public:
 			if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 			{
 				//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 127));
-				m_sprites.avantPlan.changeColor(sf::Color(0x00000080), m_sprites.avantPlan.size() - 1);
+				m_sprites.avantPlan.changeColour(sf::Color(0x00000080), m_sprites.avantPlan.size() - 1);
 				m_sprites.avantPlan.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f, m_sprites.avantPlan.size() - 1);
 				m_peutDeplacer = !m_peutDeplacer;
 				m_sprites.positionDansJeu = PositionJeu::pause;
