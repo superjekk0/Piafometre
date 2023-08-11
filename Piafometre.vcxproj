@@ -147,6 +147,7 @@ xcopy /y /d "..\OptTile\$(IntDir)OptTile.pdb" "$(OutDir)"</Command>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>
     </ClCompile>
     <ClCompile Include="moteur.cpp" />
+    <ClCompile Include="MoteurMenu.cpp" />
     <ClCompile Include="Piafometre.cpp">
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stdcpp20</LanguageStandard>
       <LanguageStandard Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stdcpp20</LanguageStandard>

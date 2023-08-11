@@ -5,21 +5,23 @@
 #include "ressources.h"
 #include "Plateforme.h"
 #include "Checkpoint.h"
+#include "moteur.h"
+#include "MoteurMenu.h"
 
-void deplacementAChoisir(touchesActives& touchesActionnees, int& index, int& indexMax, bool& peutDeplacer, ObjetADessiner& spritesEtFond, ensembleTouches& pTouches, bool& threadsActifs, sf::Event& pEvenement, Moteur& moteur, std::bitset<3>& touchesNonRepetables);
+void deplacementAChoisir(bool& peutDeplacer, bool& threadsActifs, MoteurPhysique& moteurJeu, MoteurMenu& moteurMenu);
 
 class Jeu {
 private:
 
 	ensembleTouches touches{};
 	int vitesseDeBase{ 0 };
-	int indexMenus{ 0 }; //Indique l'index dans la section du jeu
+	int indexMenus{ 0 };			//Indique l'index dans la section du jeu
 	int indexMaxMenu{ 3 };			//Indique dans quelle section du jeu on est
 	bool threadsActifs{ true };
 	bool deplacementActif{ false };
 	//int niveau{ 0 };
 
-	std::unique_ptr<sf::RenderWindow> fenetre{ new (std::nothrow) sf::RenderWindow {sf::VideoMode(1280, 720), "Piafometre", sf::Style::Default} };
+	std::unique_ptr<sf::RenderWindow> fenetre{ std::make_unique<sf::RenderWindow>(sf::VideoMode(1280, 720), "Piafometre", sf::Style::Default) };
 
 	//Index 0: touche de confirmation
 	//Index 1: touche de pause
@@ -40,6 +42,9 @@ private:
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
 	std::unique_ptr<ObjetADessiner> sprites{ std::make_unique<ObjetADessiner>() };
 	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
+	std::unique_ptr<MoteurMenu> m_menus{};
+	std::unique_ptr<MoteurPhysique> m_moteur{};
+	std::binary_semaphore m_semaphore{0};
 
 	void rendu()
 	{
@@ -219,15 +224,13 @@ public:
 	{
 		sprites->positionDansJeu = PositionJeu::accueil;
 
-		std::unique_ptr<sf::Event> evenementFenetre{ new (std::nothrow) sf::Event };
-		std::unique_ptr<std::thread> mouvementMenu{ new (std::nothrow) std::thread
-		{deplacementAChoisir, std::ref(touchesActionnees), std::ref(indexMenus),
-			std::ref(indexMaxMenu) , std::ref(deplacementActif),
-			std::ref(*sprites),
-			std::ref(touches), std::ref(threadsActifs),
-			std::ref(*evenementFenetre), std::ref(*moteurJeu), std::ref(toucheNonRepetables)} };
+		std::unique_ptr<sf::Event> evenementFenetre{ std::make_unique<sf::Event>()};
+		m_menus = std::make_unique<MoteurMenu>(touchesActionnees, indexMenus, indexMaxMenu, deplacementActif, *sprites, touches, *moteurJeu, toucheNonRepetables, threadsActifs, *evenementFenetre, m_semaphore);
+		m_moteur = std::make_unique<MoteurPhysique>(touchesActionnees, *sprites, deplacementActif, threadsActifs, *moteurJeu, toucheNonRepetables, *m_menus, m_semaphore);
+		std::unique_ptr<std::thread> mouvementMenu{ std::make_unique<std::thread>(
+			deplacementAChoisir, std::ref(deplacementActif),
+			std::ref(threadsActifs), std::ref(*m_moteur), std::ref(*m_menus) )};
 		//Permet de changer entre les deux types de déplacement
-
 
 		if ((!evenementFenetre) || (!fenetre) || (!mouvementMenu) || (!sprites))
 		{
@@ -243,17 +246,20 @@ public:
 		//evenementValide = 
 			//fenetre->pollEvent(*evenementFenetre);
 		//detecTouches->detach();
-		mouvementMenu->detach();
+		//mouvementMenu->detach();
 
 		//std::thread evenements{ [&] {detectionEvenement(*evenementFenetre); } }; //À modifier plus tard
 
 		sf::Clock debutCycle;
 		/// TODO : Changer les fonctions pour enlever les boucles while dedans et changer "detach" par "join" dans les threads associés
+		m_semaphore.release();
 		while (threadsActifs)
 		{
 			//evenements.join();
+			m_semaphore.acquire();
 			detectionEvenement(*evenementFenetre);
 			rendu();
+			m_semaphore.release();
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds())); //Se met à jour à chaque 1/60ème de seconde
 		}
 
@@ -262,6 +268,5 @@ public:
 		return 0;
 	}
 };
-
 
 #endif

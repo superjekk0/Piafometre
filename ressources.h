@@ -21,6 +21,7 @@
 #include <algorithm>
 #include <memory>
 #include <filesystem>
+#include <semaphore>
 
 enum class Langue {
 	fr,
@@ -65,10 +66,6 @@ enum FrameDrapeau {
 	frame2 = 1
 };
 
-//class Checkpoint;
-
-//struct Moteur;
-
 using Clv = sf::Keyboard;									//La classe sf::Keyboard (Clavier), en somme
 using ensembleTouches = std::array<sf::Keyboard::Key, 7>;
 //using fonctionsRessources = std::function<std::string(const int&)>;
@@ -95,13 +92,5 @@ float getHeight(const sf::Sprite& sprite);
 void verifFichierExiste(const std::string& chemin);
 sf::Keyboard::Key assignationTouche(const sf::Event& pEvenement, const sf::Keyboard::Key& toucheExclue, sf::Clock& cycle);
 bool confirmerReiniTouches(sf::Event& pEvenement, sf::Clock& cycle);
-//std::vector<std::string> splitString(std::string str, const char separator);
-//template <typename T>
-//T parse(const std::string& line);
-
-inline std::vector<std::string> splitString(std::string str, const char separator);
-
-template <typename T>
-T parse(const std::string& line);
 
 #endif 
