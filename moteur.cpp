@@ -86,7 +86,7 @@ bool collisionBas(const sf::Sprite& joueur, const Plateforme& bloc)
 	return (joueur.getPosition().x + getWidth(joueur) > bloc.sprite.getPosition().x)
 		&& (joueur.getPosition().x < bloc.sprite.getPosition().x + getWidth(bloc.sprite))
 		&& (joueur.getPosition().y + getHeight(joueur) >= bloc.sprite.getPosition().y)
-		&& (joueur.getPosition().y + getHeight(joueur) <= bloc.sprite.getPosition().y + getHeight(bloc.sprite));
+		&& (joueur.getPosition().y <= bloc.sprite.getPosition().y + getHeight(bloc.sprite));
 }
 
 bool collisionBas(const sf::Sprite& joueur, const opt::Tile& bloc)
@@ -94,7 +94,7 @@ bool collisionBas(const sf::Sprite& joueur, const opt::Tile& bloc)
 	return (joueur.getPosition().x + getWidth(joueur) > bloc.getPosition().x)
 		&& (joueur.getPosition().x < bloc.getPosition().x + bloc.width())
 		&& (joueur.getPosition().y + getHeight(joueur) >= bloc.getPosition().y)
-		&& (joueur.getPosition().y + getHeight(joueur) <= bloc.getPosition().y + bloc.height());
+		&& (joueur.getPosition().y <= bloc.getPosition().y + bloc.height());
 }
 
 /// <summary>
@@ -489,7 +489,7 @@ int MoteurPhysique::indexCheckpoint()
 
 bool MoteurPhysique::personnagePeutSauter()
 {
-	return m_autorisationsSaut.test(3) && (m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1));
+	return m_autorisationsSaut.test(3) && ((m_autorisationsSaut.test(0) || m_autorisationsSaut.test(1)));
 }
 
 void MoteurPhysique::mort(std::unique_ptr<std::thread>& sautEffectif)
@@ -554,11 +554,13 @@ bool MoteurPhysique::gestionCollisions(int pIndexCheckpoint, std::unique_ptr<std
 				m_autorisationsSaut.reset(2);
 				break;
 			case PositionCollision::bas:
-				if (procheSol(m_sprites.joueur, *plateforme))
-					m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme->getPosition().y - getHeight(m_sprites.joueur));
+				//if (procheSol(m_sprites.joueur, *plateforme))
+				//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme->getPosition().y - getHeight(m_sprites.joueur));
+				pDeplacements.y -= utilitaire::deplacement;
 
 				m_autorisationsSaut.set(0);
 				m_autorisationsSaut.set(1);
+				m_autorisationsSaut.reset(2);
 				break;
 			}
 			break;
@@ -717,7 +719,6 @@ void MoteurPhysique::deplacement()
 			touchePlateformeDroite();
 			deplacementVectoriel.x += utilitaire::deplacement;
 		}
-		//assert(m_collisions.size() <= m_sprites.avantPlan.size() && "Il ne peut pas y avoir plus de collisions que de plateformes");
 		if (gestionCollisions(positionTableauCheckpoint, sautEffectif, deplacementVectoriel))
 		{
 			//m_semaphore.release();
