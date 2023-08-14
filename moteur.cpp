@@ -1,5 +1,6 @@
 #include "ressources.h"
 #include "moteur.h"
+#include "MoteurMenu.h"
 
 float getWidth(const sf::Texture& texture)
 {
@@ -160,21 +161,23 @@ bool dansEcran(const sf::View& camera, const sf::Sprite& plateforme)
 		&& (plateforme.getPosition().y + getHeight(plateforme) > camera.getCenter().y - camera.getSize().y / 2 - longueurSecurite));
 }
 
-void rendreObjetVisible(PlateformeOptimisee& plateforme, const bool& threadsActifs, const bool& peutDeplacer)
+void MoteurPhysique::rendreObjetVisible(int index)
 {
+	const static sf::Color invisible{sf::Color(0x0)};
 	sf::Clock minuterie;
-	while (threadsActifs && peutDeplacer)
+	PlateformeOptimisee* plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(index) };
+
+	while (m_threadsActifs && m_peutDeplacer)
 	{
-		if (plateforme.getColour() == sf::Color(0x0))
+		if (m_sprites.avantPlan[index].getColour() == invisible)
 		{
 			std::this_thread::sleep_for(std::chrono::seconds(3));
-			plateforme.resetColour();
+			plateforme->resetColour();
+			m_sprites.avantPlan.reloadBuffer();
 		}
 		std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage));
 	}
 }
-
-#include "MoteurMenu.h"
 
 bool MoteurPhysique::collisionPresente(const int pPlateformeRecherchee)
 {
@@ -593,14 +596,13 @@ void MoteurPhysique::deplacement()
 	sf::Vector2f deplacementVectoriel{ 0.f, 0.f };
 	const int nbVieDebut{ m_moteur.nbVie };
 	std::unique_ptr<std::thread> sautEffectif{ new std::thread{ [&]() { desactiverSaut(); } } };
-	//std::unique_ptr<std::thread> reglerVisible{ new std::thread {doitAfficher, std::ref(m_sprites.camera), std::ref(m_sprites.avantPlan), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)} };
 	std::vector<std::thread> minuterieObjetsTouches;
 	//std::unique_ptr<std::thread> animationDrapeau{ new std::thread {[&]() {animationCheckpoint(m_sprites.avantPlan[indexCheckpoint()].sprite); }} };
 	//std::unique_ptr<std::thread> animerJoueur{ new std::thread{ [&]() {animationJoueur(deplacementVectoriel); }} };
 	std::unique_ptr<std::thread> joueurPeutSauter{ new std::thread{ [&]() {peutSauter(); } } };
 	sf::Clock debutCycle;
 	long frameAnimation{ 0 };
-	int checkpointSubTexture{ (positionTableauCheckpoint < 0) ? -1 : m_sprites.avantPlan[positionTableauCheckpoint]->subTextureIndex() };
+	int checkpointSubTexture{ (positionTableauCheckpoint < 0) ? -1 : m_sprites.avantPlan[positionTableauCheckpoint].subTextureIndex() };
 	if (m_sprites.positionDansJeu == PositionJeu::fin)
 	{
 		//m_sprites.camera.zoom(3.f);
@@ -608,7 +610,7 @@ void MoteurPhysique::deplacement()
 		int tempsZoomOut{ 0 };
 		while (m_peutDeplacer && m_threadsActifs)
 		{
-			m_semaphore.acquire();
+			//m_semaphore.acquire();
 			deplacementVectoriel.x = utilitaire::deplacement;
 			m_collisions.resize(1);
 			if (frameAnimation < 50l)
@@ -617,31 +619,39 @@ void MoteurPhysique::deplacement()
 				deplacementVectoriel.y = 0.f;
 				PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(0) };
 				m_collisions.push_back(InfosCollision(*plateforme, PositionCollision::bas, Collision::normale, 0));
+				m_semaphore.acquire();
 				m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
 				m_sprites.camera.move(deplacementVectoriel.x, 0.f);
+				m_semaphore.release();
 			}
 			else if (frameAnimation < 170l)
 			{
 				deplacementVectoriel.y = -utilitaire::deplacement;
+				m_semaphore.acquire();
 				m_sprites.joueur.move(deplacementVectoriel);
 				m_sprites.camera.move(deplacementVectoriel);
+				m_semaphore.release();
 			}
 			else
 			{
 				if (tempsZoomOut >= 170)
 					zoom = 1.f;
+				m_semaphore.acquire();
 				m_sprites.camera.zoom(zoom);
 				++tempsZoomOut;
 				deplacementVectoriel.y = -utilitaire::deplacement;
 				m_sprites.joueur.move(deplacementVectoriel.x, 0.f);
 				m_sprites.camera.move(deplacementVectoriel.x, 0.f);
+				m_semaphore.release();
 			}
 			animationJoueur(deplacementVectoriel, frameAnimation);
 			++frameAnimation;
 			if (m_sprites.camera.getCenter().x - m_sprites.camera.getSize().x / 2.f >= m_sprites.avantPlan.getSubTextureSize(0).x)
 			{
+				m_semaphore.acquire();
 				m_sprites.camera.move(-m_sprites.avantPlan.getSubTextureSize(0).x, 0.f);
 				m_sprites.joueur.move(-m_sprites.avantPlan.getSubTextureSize(0).x, 0.f);
+				m_semaphore.release();
 			}
 			if (Clv::isKeyPressed(Clv::Enter))
 			{
@@ -649,25 +659,27 @@ void MoteurPhysique::deplacement()
 				m_touchesNonRepetables[0] = true;
 				m_sprites.positionDansJeu = PositionJeu::accueil;
 				m_sprites.couleur = sf::Color(0x808080FF);
+				sautEffectif.release();
+				joueurPeutSauter.release();
+				m_semaphore.acquire();
 				m_sprites.camera.setSize(1280.f, 720.f);
 				m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 				//reglerVisible.release();
-				sautEffectif.release();
-				joueurPeutSauter.release();
 				m_sprites.hud.resize(4);
 				m_sprites.arrierePlan.resize(0);
 				m_sprites.avantPlan.resetTiles();
 				m_semaphore.release();
+				//m_semaphore.release();
 				return;
 			}
-			m_semaphore.release();
+			//m_semaphore.release();
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage - debutCycle.restart().asMicroseconds()));
 		}
 		//reglerVisible.release();
 		sautEffectif.release();
 		joueurPeutSauter.release();
 		std::this_thread::sleep_for(std::chrono::milliseconds(500));
-		m_semaphore.release();
+		//m_semaphore.release();
 		return;
 	}
 	else
@@ -676,19 +688,12 @@ void MoteurPhysique::deplacement()
 		{
 			PlateformeOptimisee* const plateforme{ m_sprites.avantPlan.derivedPointer<PlateformeOptimisee>(i) };
 			if (plateforme && plateforme->comportement() == TypePlateforme::objet)
-				minuterieObjetsTouches.push_back(std::thread(rendreObjetVisible, std::ref(*plateforme), std::ref(m_threadsActifs), std::ref(m_peutDeplacer)));
+					minuterieObjetsTouches.push_back(std::thread([=]() mutable {rendreObjetVisible(i); }));
 		}
-
-		for (auto& minuterie : minuterieObjetsTouches)
-			minuterie.detach();
-
-		//reglerVisible->detach();
-		joueurPeutSauter->detach();
-		sautEffectif->detach();
 	}
 	while (m_peutDeplacer)
 	{
-		m_semaphore.acquire();
+		//m_semaphore.acquire();
 		m_collisions.resize(0);
 		deplacementVectoriel.x = 0.f;
 		deplacementVectoriel.y = 0.f;
@@ -712,10 +717,10 @@ void MoteurPhysique::deplacement()
 			touchePlateformeDroite();
 			deplacementVectoriel.x += utilitaire::deplacement;
 		}
-		assert(m_collisions.size() <= m_sprites.avantPlan.size() && "Il ne peut pas y avoir plus de collisions que de plateformes");
+		//assert(m_collisions.size() <= m_sprites.avantPlan.size() && "Il ne peut pas y avoir plus de collisions que de plateformes");
 		if (gestionCollisions(positionTableauCheckpoint, sautEffectif, deplacementVectoriel))
 		{
-			m_semaphore.release();
+			//m_semaphore.release();
 			return;
 		}
 		if (m_touchesActionnees[5] && !m_touchesNonRepetables.test(2) && personnagePeutSauter())
@@ -728,13 +733,15 @@ void MoteurPhysique::deplacement()
 		if (m_touchesActionnees[6] && !m_touchesNonRepetables.test(1))
 		{
 			//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 127));
+			m_peutDeplacer = !m_peutDeplacer;
+			m_semaphore.acquire();
+			m_sprites.positionDansJeu = PositionJeu::pause;
 			m_sprites.avantPlan.changeColour(sf::Color(0x00000080), m_sprites.avantPlan.size() - 1);
 			m_sprites.avantPlan.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f, m_sprites.avantPlan.size() - 1);
-			m_peutDeplacer = !m_peutDeplacer;
-			m_sprites.positionDansJeu = PositionJeu::pause;
+			m_sprites.hud.resize(2);
+			m_semaphore.release();
 			std::this_thread::sleep_for(std::chrono::microseconds(tempsParImage * 10));
 			sautEffectif.release();
-			m_sprites.hud.resize(2);
 			m_menus.pause();
 			m_semaphore.release();
 			return;
@@ -744,11 +751,13 @@ void MoteurPhysique::deplacement()
 			m_gauche = false;
 			if (cameraPeutContinuerDroite(m_sprites.joueur, m_sprites.camera, m_moteur))
 			{
+				m_semaphore.acquire();
 				m_sprites.camera.move(deplacementVectoriel.x, 0.f);
 				for (int i{ 0 }; i < m_sprites.arrierePlan.size(); ++i)
 				{
 					m_sprites.arrierePlan[i].move(deplacementVectoriel.x * .75f, 0);
 				}
+				m_semaphore.release();
 			}
 		}
 		else if (deplacementVectoriel.x < vecteurNul)
@@ -756,43 +765,51 @@ void MoteurPhysique::deplacement()
 			m_gauche = true;
 			if (cameraPeutContinuerGauche(m_sprites.joueur, m_sprites.camera, m_moteur))
 			{
+				m_semaphore.acquire();
 				m_sprites.camera.move(deplacementVectoriel.x, 0);
 				for (auto& arrierePlan : m_sprites.arrierePlan)
 				{
 					arrierePlan.move(deplacementVectoriel.x * .75f, 0);
 				}
+				m_semaphore.release();
 			}
 		}
 		if (deplacementVectoriel.y < vecteurNul)
 		{
 			if (cameraPeutContinuerHaut(m_sprites.joueur, m_sprites.camera, m_moteur))
 			{
+				m_semaphore.acquire();
 				m_sprites.camera.move(0, deplacementVectoriel.y);
 				for (auto& arrierePlan : m_sprites.arrierePlan)
 				{
 					arrierePlan.move(0, deplacementVectoriel.y * .75f);
 				}
+				m_semaphore.release();
 			}
 		}
 		else if (deplacementVectoriel.y > vecteurNul)
 		{
 			if (cameraPeutContinuerBas(m_sprites.joueur, m_sprites.camera, m_moteur))
 			{
+				m_semaphore.acquire();
 				m_sprites.camera.move(0, deplacementVectoriel.y);
 				for (auto& arrierePlan : m_sprites.arrierePlan)
 				{
 					arrierePlan.move(0, deplacementVectoriel.y * .75f);
 				}
+				m_semaphore.release();
 			}
 			else if (m_sprites.joueur.getPosition().y > m_moteur.maxCameraY)
 			{
 				mort(sautEffectif);
-				m_semaphore.release();
+				//m_semaphore.release();
 				return;
 			}
 		}
+		m_semaphore.acquire();
 		m_sprites.joueur.move(deplacementVectoriel);
-		m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
+		PLOGD << L"Position x: " << m_sprites.joueur.getPosition().x;
+		//m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
 		if (positionTableauCheckpoint != -1)
 			animationCheckpoint(positionTableauCheckpoint, frameAnimation, checkpointSubTexture);
 		animationJoueur(deplacementVectoriel, frameAnimation);
@@ -805,7 +822,11 @@ void MoteurPhysique::deplacement()
 	std::this_thread::sleep_for(std::chrono::milliseconds(500));
 	//tempsDixiemeSeconde.release();
 	//reglerVisible.release();
+	for (auto& minuterie : minuterieObjetsTouches)
+		minuterie.join();
 	sautEffectif.release();
+	if (joueurPeutSauter && joueurPeutSauter->joinable()) joueurPeutSauter->join();
+	if (sautEffectif && sautEffectif->joinable()) sautEffectif->join();
 	m_sprites.avantPlan.resetTiles();
 }
 

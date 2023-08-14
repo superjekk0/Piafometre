@@ -135,7 +135,6 @@ bool collisionGauche(const sf::Sprite& joueur, const opt::Tile& bloc);
 
 bool dansEcran(const sf::View& camera, const sf::Sprite& plateforme);
 
-void rendreObjetVisible(PlateformeOptimisee& plateforme, const bool& threadsActifs, const bool& peutDeplacer);
 
 class MoteurPhysique {
 private:
@@ -186,6 +185,8 @@ private:
 	/// Indique si le joueur a pied sur une plateforme
 	/// </summary>
 	bool piedSurPlateforme();
+
+	void rendreObjetVisible(int index);
 
 	/// <summary>
 /// 

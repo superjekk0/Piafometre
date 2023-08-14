@@ -284,8 +284,8 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
 			m_sprites.avantPlan.setScale(0.75f, 0.75f, opt::TextureRule::adjustable_size, 1);
-			m_sprites.avantPlan[1]->setPosition(3.f * m_sprites.avantPlan[1]->subTextureSize().x,
-				m_sprites.avantPlan[0]->getPosition().y + m_sprites.avantPlan[0]->height() - m_sprites.avantPlan[1]->height());
+			m_sprites.avantPlan[1].setPosition(3.f * m_sprites.avantPlan[1].subTextureSize().x,
+				m_sprites.avantPlan[0].getPosition().y + m_sprites.avantPlan[0].height() - m_sprites.avantPlan[1].height());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(2,
 				sf::FloatRect(sf::Vector2f(),
@@ -296,11 +296,11 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::pics));
-			m_sprites.avantPlan[2]->setPosition(m_sprites.avantPlan[1]->getPosition().x + m_sprites.avantPlan[1]->width(), m_sprites.avantPlan[0]->getPosition().y - m_sprites.avantPlan[2]->height());
+			m_sprites.avantPlan[2].setPosition(m_sprites.avantPlan[1].getPosition().x + m_sprites.avantPlan[1].width(), m_sprites.avantPlan[0].getPosition().y - m_sprites.avantPlan[2].height());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(sf::Vector2f(m_sprites.avantPlan[0]->getPosition().x, m_sprites.avantPlan[0]->getPosition().y + m_sprites.avantPlan[0]->height()),
-					sf::Vector2f(m_sprites.avantPlan[0]->width(), m_sprites.avantPlan.getSubTexture(0).height * 3.f)),
+				sf::FloatRect(sf::Vector2f(m_sprites.avantPlan[0].getPosition().x, m_sprites.avantPlan[0].getPosition().y + m_sprites.avantPlan[0].height()),
+					sf::Vector2f(m_sprites.avantPlan[0].width(), m_sprites.avantPlan.getSubTexture(0).height * 3.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
@@ -308,7 +308,7 @@ void MoteurMenu::chargementNiveau()
 			m_sprites.avantPlan.setScale(0.75f, 0.75f, opt::TextureRule::keep_size, 3);
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(1,
-				sf::FloatRect(sf::Vector2f(0.f, m_sprites.avantPlan[3]->getPosition().y + m_sprites.avantPlan[3]->height() + 500.f),
+				sf::FloatRect(sf::Vector2f(0.f, m_sprites.avantPlan[3].getPosition().y + m_sprites.avantPlan[3].height() + 500.f),
 					sf::Vector2f(3000.f, m_sprites.avantPlan.getSubTexture(1).height)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -324,11 +324,11 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::pics));
-			m_sprites.avantPlan[5]->setPosition(1500.f, m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[5]->height());
+			m_sprites.avantPlan[5].setPosition(1500.f, m_sprites.avantPlan[4].getPosition().y - m_sprites.avantPlan[5].height());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(2,
-				sf::FloatRect(m_sprites.avantPlan[5]->getPosition() + sf::Vector2f(-750.f, 0.f),
-					m_sprites.avantPlan[5]->getSize()),
+				sf::FloatRect(m_sprites.avantPlan[5].getPosition() + sf::Vector2f(-750.f, 0.f),
+					m_sprites.avantPlan[5].getSize()),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
@@ -345,10 +345,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::checkPoint));
-			m_sprites.avantPlan[7]->changeColour(sf::Color(0xFFEEFFFF));
+			m_sprites.avantPlan[7].changeColour(sf::Color(0xFFEEFFFF));
 			m_sprites.avantPlan.setScale(2.f, opt::TextureRule::keep_height, 7);
-			m_sprites.avantPlan[7]->setPosition(m_sprites.avantPlan[5]->getPosition().x + 500.f,
-				m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[7]->height());
+			m_sprites.avantPlan[7].setPosition(m_sprites.avantPlan[5].getPosition().x + 500.f,
+				m_sprites.avantPlan[4].getPosition().y - m_sprites.avantPlan[7].height());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(7,
 				sf::FloatRect(sf::Vector2f(),
@@ -359,8 +359,8 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[8]->setPosition(m_sprites.avantPlan[1]->getPosition().x - m_sprites.avantPlan[8]->width() - 100.f,
-				m_sprites.avantPlan[0]->getPosition().y - m_sprites.avantPlan[8]->height());
+			m_sprites.avantPlan[8].setPosition(m_sprites.avantPlan[1].getPosition().x - m_sprites.avantPlan[8].width() - 100.f,
+				m_sprites.avantPlan[0].getPosition().y - m_sprites.avantPlan[8].height());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(7,
 				sf::FloatRect(sf::Vector2f(),
@@ -371,11 +371,11 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[9]->setPosition(sf::Vector2f(m_sprites.avantPlan[7]->getPosition().x - m_sprites.avantPlan[9]->getSize().x - 40.f,
-				m_sprites.avantPlan[4]->getPosition().y - m_sprites.avantPlan[9]->height()));
+			m_sprites.avantPlan[9].setPosition(sf::Vector2f(m_sprites.avantPlan[7].getPosition().x - m_sprites.avantPlan[9].getSize().x - 40.f,
+				m_sprites.avantPlan[4].getPosition().y - m_sprites.avantPlan[9].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(3,
-				sf::FloatRect(m_sprites.avantPlan[4]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan.getSubTextureSize(3).y),
+				sf::FloatRect(m_sprites.avantPlan[4].getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan.getSubTextureSize(3).y),
 					m_sprites.avantPlan.getSubTextureSize(3)),
 				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
@@ -384,8 +384,8 @@ void MoteurMenu::chargementNiveau()
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::finTableau));
 
-			m_sprites.joueur.setPosition(m_sprites.avantPlan[0]->getPosition().x,
-				m_sprites.avantPlan[0]->topLeftCorner().y - getHeight(m_sprites.joueur));
+			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].getPosition().x,
+				m_sprites.avantPlan[0].topLeftCorner().y - getHeight(m_sprites.joueur));
 
 			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1], true);
 			m_sprites.arrierePlan[0].setScale(7, 7);
@@ -418,10 +418,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
-			m_sprites.avantPlan[1]->setPosition(m_sprites.avantPlan[0]->topRightCorner() - m_sprites.avantPlan[1]->getSize());
+			m_sprites.avantPlan[1].setPosition(m_sprites.avantPlan[0].topRightCorner() - m_sprites.avantPlan[1].getSize());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(3,
-				sf::FloatRect(m_sprites.avantPlan[0]->topRightCorner(),
+				sf::FloatRect(m_sprites.avantPlan[0].topRightCorner(),
 					sf::Vector2f(400.f, m_sprites.avantPlan.getSubTextureSize(3).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -431,7 +431,7 @@ void MoteurMenu::chargementNiveau()
 				TypePlateforme::pics));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[2]->bottomLeftCorner(),
+				sf::FloatRect(m_sprites.avantPlan[2].bottomLeftCorner(),
 					sf::Vector2f(400.f, 200.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -440,8 +440,8 @@ void MoteurMenu::chargementNiveau()
 				sf::Vector2f(1.f, 1.f)));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(3,
-				sf::FloatRect(m_sprites.avantPlan[0]->topRightCorner() + sf::Vector2f(600.f, 0.f),
-					sf::Vector2f(400.f, m_sprites.avantPlan[2]->height())),
+				sf::FloatRect(m_sprites.avantPlan[0].topRightCorner() + sf::Vector2f(600.f, 0.f),
+					sf::Vector2f(400.f, m_sprites.avantPlan[2].height())),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
@@ -450,7 +450,7 @@ void MoteurMenu::chargementNiveau()
 				TypePlateforme::pics));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[4]->bottomLeftCorner(),
+				sf::FloatRect(m_sprites.avantPlan[4].bottomLeftCorner(),
 					sf::Vector2f(400.f, 200.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -458,8 +458,8 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(3,
-				sf::FloatRect(m_sprites.avantPlan[4]->topRightCorner() + sf::Vector2f(400.f, 0.f),
-					sf::Vector2f(400.f, m_sprites.avantPlan[2]->height())),
+				sf::FloatRect(m_sprites.avantPlan[4].topRightCorner() + sf::Vector2f(400.f, 0.f),
+					sf::Vector2f(400.f, m_sprites.avantPlan[2].height())),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
@@ -468,7 +468,7 @@ void MoteurMenu::chargementNiveau()
 				TypePlateforme::pics));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[6]->bottomLeftCorner(),
+				sf::FloatRect(m_sprites.avantPlan[6].bottomLeftCorner(),
 					sf::Vector2f(400.f, 200.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -476,7 +476,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[2]->bottomLeftCorner(),
+				sf::FloatRect(m_sprites.avantPlan[2].bottomLeftCorner(),
 					sf::Vector2f(400.f, 200.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -492,7 +492,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[9]->setPosition(((m_sprites.avantPlan[2]->topRightCorner().x + m_sprites.avantPlan[4]->topLeftCorner().x) / 2.f) - m_sprites.avantPlan[9]->width() / 2.f, 250.f);
+			m_sprites.avantPlan[9].setPosition(((m_sprites.avantPlan[2].topRightCorner().x + m_sprites.avantPlan[4].topLeftCorner().x) / 2.f) - m_sprites.avantPlan[9].width() / 2.f, 250.f);
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(4,
 				sf::FloatRect(sf::Vector2f(),
@@ -503,10 +503,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[10]->setPosition(((m_sprites.avantPlan[4]->topRightCorner().x + m_sprites.avantPlan[6]->topLeftCorner().x) / 2.f) - m_sprites.avantPlan[10]->width() / 2.f, 250.f);
+			m_sprites.avantPlan[10].setPosition(((m_sprites.avantPlan[4].topRightCorner().x + m_sprites.avantPlan[6].topLeftCorner().x) / 2.f) - m_sprites.avantPlan[10].width() / 2.f, 250.f);
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[7]->topRightCorner(),
+				sf::FloatRect(m_sprites.avantPlan[7].topRightCorner(),
 					sf::Vector2f(700.f, m_sprites.avantPlan.getSubTextureSize(0).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -523,7 +523,7 @@ void MoteurMenu::chargementNiveau()
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::checkPoint));
 			m_sprites.avantPlan.setScale(2.f, 12);
-			m_sprites.avantPlan[12]->setPosition(m_sprites.avantPlan[11]->getPosition() + sf::Vector2f(50.f, -m_sprites.avantPlan[12]->width()));
+			m_sprites.avantPlan[12].setPosition(m_sprites.avantPlan[11].getPosition() + sf::Vector2f(50.f, -m_sprites.avantPlan[12].width()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(4,
 				sf::FloatRect(sf::Vector2f(),
@@ -534,7 +534,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[13]->setPosition(m_sprites.avantPlan[1]->bottomLeftCorner() - sf::Vector2f(75.f, m_sprites.avantPlan[13]->height()));
+			m_sprites.avantPlan[13].setPosition(m_sprites.avantPlan[1].bottomLeftCorner() - sf::Vector2f(75.f, m_sprites.avantPlan[13].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(2,
 				sf::FloatRect(sf::Vector2f(0.f, -500.f),
@@ -551,10 +551,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
-			m_sprites.avantPlan[15]->setPosition(m_sprites.avantPlan[11]->topRightCorner() - sf::Vector2f(m_sprites.avantPlan[15]->width(), 1200.f));
+			m_sprites.avantPlan[15].setPosition(m_sprites.avantPlan[11].topRightCorner() - sf::Vector2f(m_sprites.avantPlan[15].width(), 1200.f));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(2,
-				sf::FloatRect(m_sprites.avantPlan[11]->topRightCorner() + sf::Vector2f(500.f, -400.f),
+				sf::FloatRect(m_sprites.avantPlan[11].topRightCorner() + sf::Vector2f(500.f, -400.f),
 					sf::Vector2f(300.f, 700.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -570,10 +570,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[17]->setPosition(m_sprites.avantPlan[11]->topRightCorner() - sf::Vector2f(200.f, m_sprites.avantPlan[17]->height()));
+			m_sprites.avantPlan[17].setPosition(m_sprites.avantPlan[11].topRightCorner() - sf::Vector2f(200.f, m_sprites.avantPlan[17].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(4,
-				sf::FloatRect((m_sprites.avantPlan[11]->topRightCorner() + m_sprites.avantPlan[16]->topLeftCorner()) / 2.f,
+				sf::FloatRect((m_sprites.avantPlan[11].topRightCorner() + m_sprites.avantPlan[16].topLeftCorner()) / 2.f,
 					m_sprites.avantPlan.getSubTextureSize(4)),
 				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
@@ -583,7 +583,7 @@ void MoteurMenu::chargementNiveau()
 				TypePlateforme::objet));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(1,
-				sf::FloatRect(m_sprites.avantPlan[15]->topRightCorner() + sf::Vector2f(0.f, 300.f),
+				sf::FloatRect(m_sprites.avantPlan[15].topRightCorner() + sf::Vector2f(0.f, 300.f),
 					sf::Vector2f(1000.f, m_sprites.avantPlan.getSubTextureSize(1).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -597,7 +597,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
-			m_sprites.avantPlan[20]->setPosition(m_sprites.avantPlan[19]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan[20]->height()));
+			m_sprites.avantPlan[20].setPosition(m_sprites.avantPlan[19].getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan[20].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(5,
 				sf::FloatRect(sf::Vector2f(),
@@ -608,9 +608,9 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::finTableau));
-			m_sprites.avantPlan[21]->setPosition(m_sprites.avantPlan[16]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan[21]->height()));
+			m_sprites.avantPlan[21].setPosition(m_sprites.avantPlan[16].getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan[21].height()));
 
-			m_sprites.joueur.setPosition(m_sprites.avantPlan[0]->topLeftCorner() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
+			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].topLeftCorner() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 
 			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1], true);
 			m_sprites.arrierePlan[0].setTextureRect(sf::IntRect(0, 0, 8000, getHeight(m_sprites.textures[1])));
@@ -641,7 +641,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[1]->setPosition(m_sprites.avantPlan[0]->topRightCorner() - m_sprites.avantPlan[1]->getSize() + sf::Vector2f(-120.f, 0.f));
+			m_sprites.avantPlan[1].setPosition(m_sprites.avantPlan[0].topRightCorner() - m_sprites.avantPlan[1].getSize() + sf::Vector2f(-120.f, 0.f));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
 				sf::FloatRect(sf::Vector2f(),
@@ -652,11 +652,11 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::semiSolide));
-			m_sprites.avantPlan[2]->changeColour(sf::Color(0xAAAAAAFF));
-			m_sprites.avantPlan[2]->setPosition((m_sprites.avantPlan[0]->topRightCorner() + m_sprites.avantPlan[0]->topLeftCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[2]->height()));
+			m_sprites.avantPlan[2].changeColour(sf::Color(0xAAAAAAFF));
+			m_sprites.avantPlan[2].setPosition((m_sprites.avantPlan[0].topRightCorner() + m_sprites.avantPlan[0].topLeftCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[2].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[2]->topRightCorner(),
+				sf::FloatRect(m_sprites.avantPlan[2].topRightCorner(),
 					sf::Vector2f(400.f, 150.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -680,7 +680,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[5]->setPosition(m_sprites.avantPlan[4]->getPosition() + sf::Vector2f(200.f, -m_sprites.avantPlan[5]->height()));
+			m_sprites.avantPlan[5].setPosition(m_sprites.avantPlan[4].getPosition() + sf::Vector2f(200.f, -m_sprites.avantPlan[5].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
 				sf::FloatRect(sf::Vector2f(),
@@ -691,11 +691,11 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::semiSolide));
-			m_sprites.avantPlan[6]->setPosition(m_sprites.avantPlan[4]->topRightCorner() - sf::Vector2f(150.f, m_sprites.avantPlan[6]->height()));
-			m_sprites.avantPlan[6]->changeColour(sf::Color(0xAAAAAAFF));
+			m_sprites.avantPlan[6].setPosition(m_sprites.avantPlan[4].topRightCorner() - sf::Vector2f(150.f, m_sprites.avantPlan[6].height()));
+			m_sprites.avantPlan[6].changeColour(sf::Color(0xAAAAAAFF));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(m_sprites.avantPlan[6]->topRightCorner(),
+				sf::FloatRect(m_sprites.avantPlan[6].topRightCorner(),
 					sf::Vector2f(300.f, 150.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -711,10 +711,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::pics));
-			m_sprites.avantPlan[8]->setPosition(m_sprites.avantPlan[3]->topRightCorner() - m_sprites.avantPlan[8]->getSize());
+			m_sprites.avantPlan[8].setPosition(m_sprites.avantPlan[3].topRightCorner() - m_sprites.avantPlan[8].getSize());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(3,
-				sf::FloatRect(m_sprites.avantPlan[7]->topLeftCorner() + sf::Vector2f(0.f, -350.f),
+				sf::FloatRect(m_sprites.avantPlan[7].topLeftCorner() + sf::Vector2f(0.f, -350.f),
 					m_sprites.avantPlan.getSubTextureSize(3)),
 				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
@@ -725,7 +725,7 @@ void MoteurMenu::chargementNiveau()
 			m_sprites.avantPlan.setScale(10.f, 5.f, 9);
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(4,
-				sf::FloatRect(m_sprites.avantPlan[9]->topRightCorner(),
+				sf::FloatRect(m_sprites.avantPlan[9].topRightCorner(),
 					sf::Vector2f(400.f, 180.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -741,7 +741,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[11]->setPosition((m_sprites.avantPlan[7]->topLeftCorner() + m_sprites.avantPlan[7]->topRightCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[11]->height()));
+			m_sprites.avantPlan[11].setPosition((m_sprites.avantPlan[7].topLeftCorner() + m_sprites.avantPlan[7].topRightCorner()) / 2.f + sf::Vector2f(0.f, -m_sprites.avantPlan[11].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(5,
 				sf::FloatRect(sf::Vector2f(),
@@ -752,9 +752,9 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::finTableau));
-			m_sprites.avantPlan[12]->setPosition(m_sprites.avantPlan[10]->topLeftCorner() + sf::Vector2f(0.f, -m_sprites.avantPlan[12]->height()));
+			m_sprites.avantPlan[12].setPosition(m_sprites.avantPlan[10].topLeftCorner() + sf::Vector2f(0.f, -m_sprites.avantPlan[12].height()));
 
-			m_sprites.joueur.setPosition(m_sprites.avantPlan[0]->topLeftCorner() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
+			m_sprites.joueur.setPosition(m_sprites.avantPlan[0].topLeftCorner() + sf::Vector2f(0.f, -getHeight(m_sprites.joueur)));
 
 			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1]);
 			m_sprites.arrierePlan[0].setScale(4.25f, 4.25f);
@@ -777,7 +777,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(1,
-				sf::FloatRect(m_sprites.avantPlan[0]->getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan.getSubTextureSize(1).y),
+				sf::FloatRect(m_sprites.avantPlan[0].getPosition() + sf::Vector2f(0.f, -m_sprites.avantPlan.getSubTextureSize(1).y),
 					sf::Vector2f(1280.f, m_sprites.avantPlan.getSubTextureSize(1).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -791,7 +791,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
-			m_sprites.avantPlan[2]->setPosition((m_sprites.avantPlan[1]->topRightCorner() + m_sprites.avantPlan[1]->topLeftCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[2]->width() / 2.f, 150.f + m_sprites.avantPlan[2]->height()));
+			m_sprites.avantPlan[2].setPosition((m_sprites.avantPlan[1].topRightCorner() + m_sprites.avantPlan[1].topLeftCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[2].width() / 2.f, 150.f + m_sprites.avantPlan[2].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(8,
 				sf::FloatRect(sf::Vector2f(),
@@ -802,10 +802,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[3]->setPosition(m_sprites.avantPlan[2]->bottomLeftCorner().x - m_sprites.avantPlan[3]->width(), m_sprites.avantPlan[1]->getPosition().y - m_sprites.avantPlan[3]->height());
+			m_sprites.avantPlan[3].setPosition(m_sprites.avantPlan[2].bottomLeftCorner().x - m_sprites.avantPlan[3].width(), m_sprites.avantPlan[1].getPosition().y - m_sprites.avantPlan[3].height());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(8,
-				sf::FloatRect(sf::Vector2f(m_sprites.avantPlan[2]->bottomRightCorner().x, m_sprites.avantPlan[1]->getPosition().y - m_sprites.avantPlan[3]->height()),
+				sf::FloatRect(sf::Vector2f(m_sprites.avantPlan[2].bottomRightCorner().x, m_sprites.avantPlan[1].getPosition().y - m_sprites.avantPlan[3].height()),
 					m_sprites.avantPlan.getSubTextureSize(8)),
 				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
@@ -815,8 +815,8 @@ void MoteurMenu::chargementNiveau()
 				TypePlateforme::objet));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(2,
-				sf::FloatRect(m_sprites.avantPlan[2]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan.getSubTextureSize(2).y),
-					sf::Vector2f(m_sprites.avantPlan[2]->width(), m_sprites.avantPlan.getSubTextureSize(2).y)),
+				sf::FloatRect(m_sprites.avantPlan[2].getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan.getSubTextureSize(2).y),
+					sf::Vector2f(m_sprites.avantPlan[2].width(), m_sprites.avantPlan.getSubTextureSize(2).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
@@ -831,10 +831,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
-			m_sprites.avantPlan[6]->setPosition((m_sprites.avantPlan[2]->bottomLeftCorner() + m_sprites.avantPlan[2]->bottomRightCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[6]->width() / 2.f, m_sprites.avantPlan[6]->height()));
+			m_sprites.avantPlan[6].setPosition((m_sprites.avantPlan[2].bottomLeftCorner() + m_sprites.avantPlan[2].bottomRightCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[6].width() / 2.f, m_sprites.avantPlan[6].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(8,
-				sf::FloatRect(m_sprites.avantPlan[6]->getPosition() + sf::Vector2f(-100.f, 200.f),
+				sf::FloatRect(m_sprites.avantPlan[6].getPosition() + sf::Vector2f(-100.f, 200.f),
 					m_sprites.avantPlan.getSubTextureSize(6)),
 				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
@@ -844,7 +844,7 @@ void MoteurMenu::chargementNiveau()
 				TypePlateforme::objet));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(8,
-				sf::FloatRect(m_sprites.avantPlan[6]->topRightCorner() + sf::Vector2f(50.f, 200.f),
+				sf::FloatRect(m_sprites.avantPlan[6].topRightCorner() + sf::Vector2f(50.f, 200.f),
 					m_sprites.avantPlan.getSubTextureSize(6)),
 				opt::TextureRule::fill_space,
 				m_sprites.avantPlan.getSubTextures(),
@@ -863,10 +863,10 @@ void MoteurMenu::chargementNiveau()
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::semiSolide));
 			m_sprites.avantPlan.setScale(10.f, 5.f, 9);
-			m_sprites.avantPlan[9]->setPosition((m_sprites.avantPlan[6]->topRightCorner() + m_sprites.avantPlan[6]->getPosition()) / 2.f - sf::Vector2f(m_sprites.avantPlan[9]->width() / 2.f, m_sprites.avantPlan[9]->height()));
+			m_sprites.avantPlan[9].setPosition((m_sprites.avantPlan[6].topRightCorner() + m_sprites.avantPlan[6].getPosition()) / 2.f - sf::Vector2f(m_sprites.avantPlan[9].width() / 2.f, m_sprites.avantPlan[9].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(1,
-				sf::FloatRect(sf::Vector2f(0.f, m_sprites.avantPlan[9]->getPosition().y - 180.f),
+				sf::FloatRect(sf::Vector2f(0.f, m_sprites.avantPlan[9].getPosition().y - 180.f),
 					sf::Vector2f(300.f, m_sprites.avantPlan.getSubTextureSize(1).y - 180.f)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -874,7 +874,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(1,
-				sf::FloatRect(m_sprites.avantPlan[10]->topRightCorner() + sf::Vector2f(0.f, -250.f),
+				sf::FloatRect(m_sprites.avantPlan[10].topRightCorner() + sf::Vector2f(0.f, -250.f),
 					sf::Vector2f(600.f, m_sprites.avantPlan.getSubTextureSize(1).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -890,7 +890,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::decor));
-			m_sprites.avantPlan[12]->setPosition(m_sprites.avantPlan[11]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[12]->height()));
+			m_sprites.avantPlan[12].setPosition(m_sprites.avantPlan[11].getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[12].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(7,
 				sf::FloatRect(sf::Vector2f(),
@@ -901,7 +901,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::decor));
-			m_sprites.avantPlan[13]->setPosition(m_sprites.avantPlan[11]->topRightCorner() - m_sprites.avantPlan[13]->getSize());
+			m_sprites.avantPlan[13].setPosition(m_sprites.avantPlan[11].topRightCorner() - m_sprites.avantPlan[13].getSize());
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(4,
 				sf::FloatRect(sf::Vector2f(),
@@ -912,10 +912,10 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::checkPoint));
-			m_sprites.avantPlan[14]->setPosition((m_sprites.avantPlan[12]->bottomRightCorner() + m_sprites.avantPlan[13]->bottomLeftCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[14]->width() / 2.f, m_sprites.avantPlan[14]->height()));
+			m_sprites.avantPlan[14].setPosition((m_sprites.avantPlan[12].bottomRightCorner() + m_sprites.avantPlan[13].bottomLeftCorner()) / 2.f - sf::Vector2f(m_sprites.avantPlan[14].width() / 2.f, m_sprites.avantPlan[14].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
-				sf::FloatRect(sf::Vector2f(0.f, m_sprites.avantPlan[12]->getPosition().y),
+				sf::FloatRect(sf::Vector2f(0.f, m_sprites.avantPlan[12].getPosition().y),
 					sf::Vector2f(150.f, m_sprites.avantPlan.getSubTextureSize(0).y)),
 				opt::TextureRule::repeat_texture,
 				m_sprites.avantPlan.getSubTextures(),
@@ -931,7 +931,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[16]->setPosition(m_sprites.avantPlan[12]->bottomLeftCorner() - sf::Vector2f(0.f, m_sprites.avantPlan[16]->height()));
+			m_sprites.avantPlan[16].setPosition(m_sprites.avantPlan[12].bottomLeftCorner() - sf::Vector2f(0.f, m_sprites.avantPlan[16].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(0,
 				sf::FloatRect(sf::Vector2f(),
@@ -940,7 +940,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.getSubTextures(),
 				m_sprites.avantPlan.beginTileIndexes(),
 				m_sprites.avantPlan.vertices()));
-			m_sprites.avantPlan[17]->setPosition(m_sprites.avantPlan[15]->topRightCorner() - sf::Vector2f(-150.f, m_sprites.avantPlan[17]->height()));
+			m_sprites.avantPlan[17].setPosition(m_sprites.avantPlan[15].topRightCorner() - sf::Vector2f(-150.f, m_sprites.avantPlan[17].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(8,
 				sf::FloatRect(sf::Vector2f(),
@@ -951,7 +951,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::objet));
-			m_sprites.avantPlan[18]->setPosition(m_sprites.avantPlan[15]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[18]->height()));
+			m_sprites.avantPlan[18].setPosition(m_sprites.avantPlan[15].getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[18].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(2,
 				sf::FloatRect(sf::Vector2f(),
@@ -962,7 +962,7 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::pics));
-			m_sprites.avantPlan[19]->setPosition(m_sprites.avantPlan[17]->getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[19]->height()));
+			m_sprites.avantPlan[19].setPosition(m_sprites.avantPlan[17].getPosition() - sf::Vector2f(0.f, m_sprites.avantPlan[19].height()));
 
 			m_sprites.avantPlan.add(PlateformeOptimisee(9,
 				sf::FloatRect(sf::Vector2f(),
@@ -973,9 +973,9 @@ void MoteurMenu::chargementNiveau()
 				m_sprites.avantPlan.vertices(),
 				sf::Vector2f(1.f, 1.f),
 				TypePlateforme::finTableau));
-			m_sprites.avantPlan[20]->setPosition(m_sprites.avantPlan[17]->topRightCorner() - m_sprites.avantPlan[20]->getSize());
+			m_sprites.avantPlan[20].setPosition(m_sprites.avantPlan[17].topRightCorner() - m_sprites.avantPlan[20].getSize());
 
-			m_sprites.joueur.setPosition((m_sprites.avantPlan[3]->bottomRightCorner() + m_sprites.avantPlan[4]->bottomLeftCorner()) / 2.f - sf::Vector2f(getWidth(m_sprites.joueur) / 2.f, getHeight(m_sprites.joueur)));
+			m_sprites.joueur.setPosition((m_sprites.avantPlan[3].bottomRightCorner() + m_sprites.avantPlan[4].bottomLeftCorner()) / 2.f - sf::Vector2f(getWidth(m_sprites.joueur) / 2.f, getHeight(m_sprites.joueur)));
 
 			m_sprites.arrierePlan[0].setTexture(m_sprites.textures[1], true);
 			m_sprites.arrierePlan[0].setScale(4.25f, 4.25f);
@@ -1008,14 +1008,14 @@ void MoteurMenu::chargementNiveau()
 	{
 	case PositionJeu::pause:
 	case PositionJeu::quitter_pause:
-		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->changeColour(sf::Color(0x00000080));
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1].changeColour(sf::Color(0x00000080));
 		break;
 	case PositionJeu::chargement:
 	case PositionJeu::jeu:
-		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->changeColour(sf::Color(0x000000FF));
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1].changeColour(sf::Color(0x000000FF));
 		break;
 	default:
-		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1]->changeColour(sf::Color(0x0));
+		m_sprites.avantPlan[m_sprites.avantPlan.size() - 1].changeColour(sf::Color(0x0));
 		break;
 	}
 	m_sprites.avantPlan.resize(m_sprites.camera.getSize(), opt::TextureRule::fill_space, m_sprites.avantPlan.size() - 1);
@@ -1115,7 +1115,6 @@ void MoteurMenu::deplacementMenus()
 	{
 		sf::Clock debutCycle; //TRÈS IMPORTANT! NE PAS DÉPLACER
 		//static bool imageClavier{ false };
-		m_semaphore.acquire();
 		if (m_touchesActionnees[0] && m_sprites.positionDansJeu == PositionJeu::quitter_pause)
 			--m_index;
 		if (m_touchesActionnees[1] && m_sprites.positionDansJeu == PositionJeu::quitter_pause)
@@ -1136,35 +1135,33 @@ void MoteurMenu::deplacementMenus()
 				case 0: //Entrer dans le jeu
 					m_moteur.nbVie = 3;
 					m_sprites.positionDansJeu = PositionJeu::chargement;
-					//peutDeplacer = true;
 					m_moteur.niveau = 1; //Dès que la construction des niveaux est terminée, remettre à 1
 					ecranChargement();
-					m_semaphore.release();
 					return;
 					break;
 				case 1: //Entrer dans les options
+					m_semaphore.acquire();
 					m_sprites.avantPlan.changeColour(sf::Color(0x00000080), m_sprites.avantPlan.size() - 1);
 					//m_sprites.ecranNoir.setFillColor(sf::Color::Color(0x00000080));
 					m_sprites.hud.resize(15);
 					m_textesHUD.resize(15);
 					m_sprites.textures.resize(9);
 					m_sprites.positionDansJeu = PositionJeu::options;
+					chargementTexteHUD();
+					m_semaphore.release();
 					m_index = 0;
 					m_indexMax = 7;
-					chargementTexteHUD();
 					PLOGI << "Exiting main menu";
 					PLOGI << "Entering in settings region";
 					break;
 				case 2: //Quitter le logiciel
 					Jeu::preparerQuitter(m_threadsActifs, m_touchesActionnees, m_peutDeplacer);
-					//threadsActifs = false;
 					std::this_thread::sleep_for(std::chrono::milliseconds(100));
-					//touchesActionnees.set(7);
-					m_semaphore.release();
 					return;
 					break;
 				case 3: //Entrer dans les crédits
 					//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
+					m_semaphore.acquire();
 					m_sprites.avantPlan.changeColour(sf::Color(0x00000080), m_sprites.avantPlan.size() - 1);
 					//m_sprites.ecranNoir.setFillColor(sf::Color(0x00000080));
 					m_sprites.positionDansJeu = PositionJeu::credits;
@@ -1173,6 +1170,7 @@ void MoteurMenu::deplacementMenus()
 					m_sprites.hud[0].setPosition(0, 0);
 					//m_sprites.textures.resize(1);
 					chargementTexteHUD();
+					m_semaphore.release();
 					PLOGI << "Exiting main menu";
 					PLOGI << "Entering credits";
 					break;
@@ -1181,9 +1179,11 @@ void MoteurMenu::deplacementMenus()
 			case PositionJeu::options:
 				PLOGI << "Remapping touch number " << m_index;
 				m_sprites.positionDansJeu = PositionJeu::remmapage;
+				m_semaphore.acquire();
 				m_sprites.hud.resize(1);
 				m_textesHUD.resize(1);
 				chargementTexteHUD();
+				m_semaphore.release();
 				//std::this_thread::sleep_for(200ms);
 				if (m_index < 7)
 				{
@@ -1197,12 +1197,15 @@ void MoteurMenu::deplacementMenus()
 					if (confirmerReiniTouches(m_evenements, debutCycle)) resetTouches(m_touches);
 				}
 				m_sprites.positionDansJeu = PositionJeu::options;
+				m_semaphore.acquire();
 				m_textesHUD.resize(15);
 				m_sprites.hud.resize(15);
 				chargementTexteHUD();
+				m_semaphore.release();
 				break;
 				//m_sprites.textures.resize(9);
 			case PositionJeu::pause:
+				m_semaphore.acquire();
 				switch (m_index)
 				{
 				case 0:
@@ -1210,15 +1213,17 @@ void MoteurMenu::deplacementMenus()
 					//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
 					m_peutDeplacer = !m_peutDeplacer;
 					m_sprites.hud.resize(0);
-					m_semaphore.release();
+					//m_semaphore.release();
 					return;
 				case 1:
 					m_sprites.positionDansJeu = PositionJeu::quitter_pause;
 					chargementTexteHUD();
 					break;
 				}
+				m_semaphore.release();
 				break;
 			case PositionJeu::quitter_pause:
+				m_semaphore.acquire();
 				switch (m_index)
 				{
 				case 0:
@@ -1231,9 +1236,9 @@ void MoteurMenu::deplacementMenus()
 					m_sprites.hud.resize(4);
 					m_sprites.couleur = couleur;
 					m_sprites.avantPlan.changeColour(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
-					m_indexMax = 3;
 					m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 					chargementTexteHUD();
+					m_indexMax = 3;
 					break;
 				case 1:
 					m_sprites.positionDansJeu = PositionJeu::pause;
@@ -1241,6 +1246,7 @@ void MoteurMenu::deplacementMenus()
 					m_index = 0;
 					break;
 				}
+				m_semaphore.release();
 			}
 
 		}
@@ -1250,6 +1256,7 @@ void MoteurMenu::deplacementMenus()
 			switch (m_sprites.positionDansJeu)
 			{
 			case PositionJeu::options:
+				m_semaphore.acquire();
 				//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 				m_sprites.avantPlan.changeColour(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
 				//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
@@ -1257,37 +1264,44 @@ void MoteurMenu::deplacementMenus()
 				m_textesHUD.resize(4);
 				//m_sprites.textures.resize(2);
 				m_sprites.positionDansJeu = PositionJeu::accueil;
+				chargementTexteHUD();
+				m_semaphore.release();
 				m_index = 0;
 				m_indexMax = 3;
-				chargementTexteHUD();
 				PLOGI << "Exiting settings region";
 				PLOGI << "Entering main menu";
 				break;
 			case PositionJeu::credits:
 				//affichageHUD(m_sprites, index, ptrFcnFichier, pTouches);
 				//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+				m_semaphore.acquire();
 				m_sprites.avantPlan.changeColour(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
 				m_sprites.hud.resize(4);
 				m_textesHUD.resize(4);
 				//m_sprites.textures.resize(2);
 				m_sprites.positionDansJeu = PositionJeu::accueil;
+				chargementTexteHUD();
+				m_semaphore.release();
 				m_index = 0;
 				m_indexMax = 3;
-				chargementTexteHUD();
 				PLOGI << "Exiting credits";
 				PLOGI << "Entering main menu";
 				break;
 			case PositionJeu::pause:
 				//m_sprites.ecranNoir.setFillColor(sf::Color(0x0));
+				m_semaphore.acquire();
 				m_sprites.avantPlan.changeColour(sf::Color(0x0), m_sprites.avantPlan.size() - 1);
-				m_peutDeplacer = !m_peutDeplacer;
-				m_index = 1;
 				m_sprites.hud.resize(0);
 				m_semaphore.release();
+				m_peutDeplacer = !m_peutDeplacer;
+				m_index = 1;
+				//m_semaphore.release();
 				return;
 			case PositionJeu::quitter_pause:
+				m_semaphore.acquire();
 				m_sprites.positionDansJeu = PositionJeu::pause;
 				chargementTexteHUD();
+				m_semaphore.release();
 				m_index = 0;
 				break;
 			}
@@ -1301,7 +1315,7 @@ void MoteurMenu::deplacementMenus()
 			m_index = 0;
 		affichageHUD();
 
-		m_semaphore.release();
+		//m_semaphore.release();
 		std::this_thread::sleep_for(std::chrono::milliseconds(100 - debutCycle.restart().asMilliseconds()));
 	}
 }
@@ -1309,14 +1323,18 @@ void MoteurMenu::deplacementMenus()
 void MoteurMenu::ecranChargement()
 {
 	PLOGI << "Launching level " << m_moteur.niveau;
+	m_semaphore.acquire();
 	m_sprites.hud.resize(1);
 	m_sprites.positionDansJeu = PositionJeu::chargement;
 	m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 	//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
 	m_sprites.avantPlan.changeColour(sf::Color(0x000000FF), m_sprites.avantPlan.size() - 1);
 	m_sprites.ecranNoir.setPosition(m_sprites.camera.getCenter() - m_sprites.camera.getSize() / 2.f);
+	m_semaphore.release();
+	std::this_thread::sleep_for(std::chrono::milliseconds(250));
 	chargementTexteHUD();
 	affichageHUD();
+	m_semaphore.acquire();
 	chargementNiveau();
 	creationLimiteCamera(m_moteur);
 	std::this_thread::sleep_for(std::chrono::seconds(2));
@@ -1324,6 +1342,7 @@ void MoteurMenu::ecranChargement()
 	//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 0));
 	m_peutDeplacer = true;
 	m_sprites.hud.resize(0);
+	m_semaphore.release();
 	//m_sprites.positionDansJeu = PositionJeu::jeu;
 }
 

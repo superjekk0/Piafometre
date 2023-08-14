@@ -28,8 +28,6 @@ private:
 	//Index 2: touche de saut
 	std::bitset<3> toucheNonRepetables{ 0b000 };
 
-	//PositionJeu sectionJeu{ PositionJeu::accueil };
-	//sf::Text test{};
 	//index 0: touche pour le bouton de gauche
 	//index 1: touche pour le bouton de droite
 	//index 2: touche pour le bouton de haut
@@ -41,7 +39,7 @@ private:
 	touchesActives touchesActionnees{ false, false, false, false, false, false, false, false };
 	std::fstream* fichierReglages; //Pour être capable d'écrire dedans lors de la fermeture
 	std::unique_ptr<ObjetADessiner> sprites{ std::make_unique<ObjetADessiner>() };
-	std::unique_ptr<Moteur> moteurJeu{ new (std::nothrow) Moteur{} };
+	std::unique_ptr<Moteur> moteurJeu{ std::make_unique<Moteur>() };
 	std::unique_ptr<MoteurMenu> m_menus{};
 	std::unique_ptr<MoteurPhysique> m_moteur{};
 	std::binary_semaphore m_semaphore{0};
@@ -243,13 +241,6 @@ public:
 		sprites->hud.resize(4);
 		sprites->police.loadFromFile("resources/font/verdanai.ttf");
 
-		//evenementValide = 
-			//fenetre->pollEvent(*evenementFenetre);
-		//detecTouches->detach();
-		//mouvementMenu->detach();
-
-		//std::thread evenements{ [&] {detectionEvenement(*evenementFenetre); } }; //À modifier plus tard
-
 		sf::Clock debutCycle;
 		/// TODO : Changer les fonctions pour enlever les boucles while dedans et changer "detach" par "join" dans les threads associés
 		m_semaphore.release();
@@ -264,6 +255,7 @@ public:
 		}
 
 		fenetre->close();
+		mouvementMenu->join();
 		std::this_thread::sleep_for(std::chrono::milliseconds(150));
 		return 0;
 	}
