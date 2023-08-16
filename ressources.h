@@ -68,7 +68,6 @@ enum FrameDrapeau {
 
 using Clv = sf::Keyboard;									//La classe sf::Keyboard (Clavier), en somme
 using ensembleTouches = std::array<sf::Keyboard::Key, 7>;
-//using fonctionsRessources = std::function<std::string(const int&)>;
 using touchesActives = std::vector<bool>;
 
 constexpr float vecteurNul{ 0.f };

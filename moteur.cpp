@@ -554,8 +554,6 @@ bool MoteurPhysique::gestionCollisions(int pIndexCheckpoint, std::unique_ptr<std
 				m_autorisationsSaut.reset(2);
 				break;
 			case PositionCollision::bas:
-				//if (procheSol(m_sprites.joueur, *plateforme))
-				//	m_sprites.joueur.setPosition(m_sprites.joueur.getPosition().x, plateforme->getPosition().y - getHeight(m_sprites.joueur));
 				pDeplacements.y -= utilitaire::deplacement;
 
 				m_autorisationsSaut.set(0);

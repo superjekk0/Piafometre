@@ -221,6 +221,11 @@ public:
 	int principal()
 	{
 		sprites->positionDansJeu = PositionJeu::accueil;
+		
+		sprites->arrierePlan.resize(0);
+		sprites->avantPlan.resetTiles();
+		sprites->hud.resize(4);
+		sprites->police.loadFromFile("resources/font/verdanai.ttf");
 
 		std::unique_ptr<sf::Event> evenementFenetre{ std::make_unique<sf::Event>()};
 		m_menus = std::make_unique<MoteurMenu>(touchesActionnees, indexMenus, indexMaxMenu, deplacementActif, *sprites, touches, *moteurJeu, toucheNonRepetables, threadsActifs, *evenementFenetre, m_semaphore);
@@ -235,11 +240,6 @@ public:
 			PLOGE << "A dynamic variable is NULL";
 			return -1;
 		}
-
-		sprites->arrierePlan.resize(0);
-		sprites->avantPlan.resetTiles();
-		sprites->hud.resize(4);
-		sprites->police.loadFromFile("resources/font/verdanai.ttf");
 
 		sf::Clock debutCycle;
 		/// TODO : Changer les fonctions pour enlever les boucles while dedans et changer "detach" par "join" dans les threads associés

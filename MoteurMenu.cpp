@@ -33,6 +33,8 @@ void creationLimiteCamera(Moteur& moteur)
 
 void MoteurMenu::chargementTexteHUD()
 {
+	for (auto& hud : m_sprites.hud)
+		hud.setFont(m_sprites.police);
 	std::string chemin{ chargementTextures(Jeu::symboleLangue(m_sprites.langue), m_sprites.positionDansJeu) };
 	verifFichierExiste(chemin);
 	std::wfstream fichier{ chemin };
@@ -97,6 +99,7 @@ void MoteurMenu::chargementTexteHUD()
 			m_textesHUD[0] = texteActuel;
 			m_sprites.hud[0].setString(m_textesHUD[0]);
 		}
+		break;
 	case PositionJeu::chargement:
 		m_textesHUD[0] = L"";
 		for (std::wstring& texte : m_descriptionsNiveau)
@@ -1325,6 +1328,7 @@ void MoteurMenu::ecranChargement()
 	PLOGI << "Launching level " << m_moteur.niveau;
 	m_semaphore.acquire();
 	m_sprites.hud.resize(1);
+	m_textesHUD.resize(1);
 	m_sprites.positionDansJeu = PositionJeu::chargement;
 	m_sprites.camera.setCenter(m_sprites.camera.getSize() / 2.f);
 	//m_sprites.ecranNoir.setFillColor(sf::Color(0, 0, 0, 255));
